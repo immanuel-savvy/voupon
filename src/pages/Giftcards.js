@@ -12,7 +12,7 @@ class Giftcards extends React.Component {
   render() {
     return (
       <div>
-        <Nav />
+        <Nav page="gift cards" />
         <Footer />
       </div>
     );

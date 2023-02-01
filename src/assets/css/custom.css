@@ -7,3 +7,7 @@
 .hero_banner {
   scroll-snap-align: start;
 }
+
+.nav-menu li {
+  text-transform: capitalize;
+}

@@ -1,4 +1,7 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import Login from "../components/login";
+import Modal from "../components/modal";
 
 class Nav extends React.Component {
   constructor(props) {
@@ -7,74 +10,88 @@ class Nav extends React.Component {
     this.state = {};
   }
 
+  navs = new Array("", "vouchers", "coupons", "tickets", "gift cards");
+
   render() {
+    let { page } = this.props;
+
     return (
-      <div
-        className="header dark-text"
-        style={{ backgroundColor: "#000", position: "fixed", width: "100vw" }}
-      >
-        <div className="container">
-          <nav id="navigation" className="navigation navigation-landscape">
-            <div className="nav-header">
-              <a className="nav-brand" href="#">
-                {/* <img src="assets/img/logo.png" className="logo" alt="" /> */}
-                <h2 className="text-light">Voupon</h2>
-              </a>
-              <div className="nav-toggle"></div>
-              <div className="mobile_nav">
-                <ul>
+      <div style={{}}>
+        <div
+          className="header dark-text"
+          style={{
+            backgroundColor: "#000",
+            position: "fixed",
+            width: "100vw",
+          }}
+        >
+          <div className="container">
+            <nav id="navigation" className="navigation navigation-landscape">
+              <div className="nav-header">
+                <a className="nav-brand" href="#">
+                  {/* <img src="assets/img/logo.png" className="logo" alt="" /> */}
+                  <Link to="/">
+                    <h2 className="text-light">Voupon</h2>
+                  </Link>
+                </a>
+                <div className="nav-toggle"></div>
+                <div className="mobile_nav">
+                  <ul>
+                    <li>
+                      <a
+                        href="javascript:void(0);"
+                        data-toggle="modal"
+                        data-target="#login"
+                        className="crs_yuo12 w-auto text-white theme-bg"
+                      >
+                        <span className="embos_45">
+                          <i className="fas fa-sign-in-alt mr-1"></i>Sign In
+                        </span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div className="nav-menus-wrapper">
+                <ul className="nav-menu">
+                  {this.navs.map((nav) => (
+                    <li
+                      className={`text-light ${page === nav ? "active" : ""}`}
+                    >
+                      <Link to={`/${nav.replace(/ /g, "")}`}>
+                        {nav || "home"}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+
+                <ul className="nav-menu nav-menu-social align-to-right">
                   <li>
                     <a
-                      href="javascript:void(0);"
+                      href="#"
+                      onClick={this.login_modal?.toggle}
+                      className="alio_green"
                       data-toggle="modal"
                       data-target="#login"
-                      className="crs_yuo12 w-auto text-white theme-bg"
                     >
-                      <span className="embos_45">
-                        <i className="fas fa-sign-in-alt mr-1"></i>Sign In
-                      </span>
+                      <i className="fas fa-sign-in-alt mr-1"></i>
+                      <span className="dn-lg">Sign In</span>
                     </a>
+                  </li>
+                  <li className="add-listing theme-bg">
+                    <Link to="/signup" className="text-white">
+                      Get Started
+                    </Link>
                   </li>
                 </ul>
               </div>
-            </div>
-            <div className="nav-menus-wrapper">
-              <ul className="nav-menu">
-                <li className="text-light active">
-                  <a href="#">Home</a>
-                </li>
-                <li className="text-light">
-                  <a href="#">Vouchers</a>
-                </li>
-                <li className="text-light">
-                  <a href="#">Coupons</a>
-                </li>
-                <li className="text-light">
-                  <a href="#">Gift Cards</a>
-                </li>
-              </ul>
-
-              <ul className="nav-menu nav-menu-social align-to-right">
-                <li>
-                  <a
-                    href="#"
-                    className="alio_green"
-                    data-toggle="modal"
-                    data-target="#login"
-                  >
-                    <i className="fas fa-sign-in-alt mr-1"></i>
-                    <span className="dn-lg">Sign In</span>
-                  </a>
-                </li>
-                <li className="add-listing theme-bg">
-                  <a href="signup.html" className="text-white">
-                    Get Started
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </nav>
+            </nav>
+          </div>
         </div>
+
+        <Modal ref={(login_modal) => (this.login_modal = login_modal)}>
+          <Login />
+        </Modal>
       </div>
     );
   }

@@ -4,6 +4,14 @@ import "./assets/css/custom.css";
 import { Loggeduser, Nav_context } from "./Contexts";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
+import Vouchers from "./pages/Vouchers";
+import Tickets from "./pages/Tickets";
+import Giftcards from "./pages/Giftcards";
+import Coupons from "./pages/Coupons";
+import Login from "./pages/Login";
+import Forgot_password from "./pages/Forgot_password";
+import Signup from "./pages/Signup";
+import Page_not_found from "./pages/404";
 
 class Voupon extends React.Component {
   constructor(props) {
@@ -45,6 +53,14 @@ class Voupon extends React.Component {
           <BrowserRouter>
             <Routes>
               <Route index element={<Home />} />
+              <Route path="vouchers" element={<Vouchers />} />
+              <Route path="tickets" element={<Tickets />} />
+              <Route path="giftcards" element={<Giftcards />} />
+              <Route path="coupons" element={<Coupons />} />
+              <Route path="login" element={<Login />} />
+              <Route path="signup" element={<Signup />} />
+              <Route path="forgot_password" element={<Forgot_password />} />
+              <Route path="*" element={<Page_not_found />} />
             </Routes>
           </BrowserRouter>
         </Nav_context.Provider>

@@ -14,7 +14,7 @@ class Home extends React.Component {
     let heros = new Array(
       {
         main_text:
-          "We've Got Your Coupon, Vouchers, Gift Cards And Favorite Event All In One Place",
+          "We've Got Your Coupon, Vouchers, Gift Cards And Favorite Events All In One Place",
         sub_text:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore.",
         bg: require("../assets/img/hero1.png"),
@@ -57,7 +57,7 @@ class Home extends React.Component {
 
     return (
       <div>
-        <Nav />
+        <Nav page="" />
         <div className="body">
           {heros ? (
             heros.map((hero, index) => <Hero_banner hero={hero} key={index} />)
