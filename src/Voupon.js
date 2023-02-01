@@ -1,8 +1,9 @@
 import React from "react";
 import "./assets/css/styles.css";
-import Loadindicator from "./components/loadindicator";
-import Hero_banner from "./sections/hero_banner";
-import Nav from "./sections/nav";
+import "./assets/css/custom.css";
+import { Loggeduser, Nav_context } from "./Contexts";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
 
 class Voupon extends React.Component {
   constructor(props) {
@@ -35,49 +36,21 @@ class Voupon extends React.Component {
 
   componentDidMount = () => {
     this.script_paths.map((scr) => this.append_script(scr));
-
-    let heros = new Array(
-      {
-        main_text:
-          "We've Got Your Coupon, Vouchers, Gift Cards And Favorite Event All In One Place",
-        sub_text:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore.",
-      },
-      {
-        main_text: "Vouchers",
-        sub_text:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore.",
-      },
-
-      {
-        main_text: "Coupons",
-        sub_text:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore.",
-      },
-      {
-        main_text: "Gift cards",
-        sub_text:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore.",
-      }
-    );
-
-    this.setState({ heros });
   };
 
-  render() {
-    let { heros } = this.state;
-
+  render = () => {
     return (
-      <div>
-        <Nav />
-        {heros ? (
-          heros.map((hero, index) => <Hero_banner hero={hero} key={index} />)
-        ) : (
-          <Loadindicator />
-        )}
-      </div>
+      <Loggeduser.Provider>
+        <Nav_context.Provider>
+          <BrowserRouter>
+            <Routes>
+              <Route index element={<Home />} />
+            </Routes>
+          </BrowserRouter>
+        </Nav_context.Provider>
+      </Loggeduser.Provider>
     );
-  }
+  };
 }
 
 export default Voupon;

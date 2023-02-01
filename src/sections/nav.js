@@ -9,7 +9,10 @@ class Nav extends React.Component {
 
   render() {
     return (
-      <div className="header dark-text" style={{ backgroundColor: "#000" }}>
+      <div
+        className="header dark-text"
+        style={{ backgroundColor: "#000", position: "fixed", width: "100vw" }}
+      >
         <div className="container">
           <nav id="navigation" className="navigation navigation-landscape">
             <div className="nav-header">
