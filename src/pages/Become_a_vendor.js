@@ -14,6 +14,7 @@ class Become_a_vendor extends React.Component {
 
   componentDidMount = () => {
     if (!this.loggeduser || typeof this.loggeduser === "string") {
+      window.sessionStorage.setItem("redired", window.location.href);
       window.location.assign(`${client_domain}/login`);
     }
   };

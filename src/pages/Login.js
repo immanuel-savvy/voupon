@@ -40,7 +40,7 @@ class Login extends React.Component {
           this.login = login;
           return (
             <div id="main-wrapper">
-              <Nav page="signup" lock={lock} />
+              <Nav page="login" lock={lock} />
               <Padder />
               <section>
                 <div className="container">

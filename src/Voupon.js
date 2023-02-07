@@ -60,9 +60,13 @@ class Voupon extends React.Component {
   restore_loggeduser = (loggeduser) => this.setState({ loggeduser });
 
   login = (user) =>
-    this.setState({ loggeduser: user }, () =>
-      window.sessionStorage.setItem("loggeduser", JSON.stringify(user))
-    );
+    this.setState({ loggeduser: user }, () => {
+      window.sessionStorage.setItem("loggeduser", JSON.stringify(user));
+
+      let should_redired =
+        window.sessionStorage.getItem("redirect")(should_redired) &&
+        window.location.assign(should_redired);
+    });
 
   log_admin = (admin) =>
     this.setState({ admin_logged: admin }, () => {
