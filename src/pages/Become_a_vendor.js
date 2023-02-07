@@ -1,10 +1,15 @@
 import React from "react";
 import { client_domain } from "../assets/js/utils/constants";
-import { to_title } from "../assets/js/utils/functions";
+import { email_regex, to_title } from "../assets/js/utils/functions";
+import { post_request } from "../assets/js/utils/services";
+import Become_a_vender_request from "../components/become_a_vender_request";
 import Checkbox from "../components/checkbox";
-import Handle_file_upload from "../components/handle_file_upload";
+import File_input from "../components/file_input";
+import handle_file_upload from "../components/handle_file_upload";
 import Loadindicator from "../components/loadindicator";
+import Modal from "../components/modal";
 import Padder from "../components/padder";
+import Text_input from "../components/text_input";
 import { Loggeduser } from "../Contexts";
 import Footer from "../sections/footer";
 import Nav from "../sections/nav";
@@ -16,7 +21,7 @@ const means_of_id = new Array(
   "voters_card"
 );
 
-class Become_a_vendor extends Handle_file_upload {
+class Become_a_vendor extends handle_file_upload {
   constructor(props) {
     super(props);
 
@@ -49,23 +54,98 @@ class Become_a_vendor extends Handle_file_upload {
     }
   };
 
+  is_set = () => {
+    let {
+      director,
+      attest,
+      rc_number,
+      name,
+      email,
+      address,
+      ID_type,
+      logo,
+      cac,
+    } = this.state;
+
+    if (
+      !rc_number ||
+      !name ||
+      !email_regex.test(email) ||
+      !address ||
+      !ID_type ||
+      !logo ||
+      !cac ||
+      !attest
+    )
+      return;
+
+    if (
+      !director.firstname ||
+      !director.lastname ||
+      !email_regex.test(director.email)
+    )
+      return;
+    let ID = this.state[ID_type];
+    if (!ID) return;
+
+    return true;
+  };
+
   set_ID_type = (means) =>
     this.setState({
       ID_type: means,
     });
+
+  submit = async () => {
+    let {
+      director,
+      attest,
+      rc_number,
+      name,
+      email,
+      address,
+      ID_type,
+      logo,
+      cac,
+    } = this.state;
+    let ID = this.state[ID_type];
+
+    let documents = {
+      director,
+      rc_number,
+      name,
+      email,
+      address,
+      logo,
+      cac,
+      ID,
+    };
+
+    let res = await post_request("request_to_become_a_vendor", documents);
+    if (res._id) {
+      this.setState({ details: res }, this.toggle_success_modal);
+    } else this.setState({ message: res.message });
+  };
+
+  toggle_success_modal = () => this.success_modal.toggle();
 
   render() {
     let {
       render,
       director,
       cac_filename,
-      brand_filename,
-      ID_filename,
+      logo_filename,
       name,
       email,
       ID_type,
       address,
+      attest,
+      loading,
+      rc_number,
+      details,
     } = this.state;
+
+    let ID_filename = this.state[`${ID_type}_filename`];
 
     return (
       <Loggeduser.Consumer>
@@ -123,79 +203,51 @@ class Become_a_vendor extends Handle_file_upload {
                                     Brand Information
                                   </h4>
                                 </div>
-                                <div className="col-xl-6 col-lg-12 col-md-12 col-sm-12">
-                                  <div className="form-group">
-                                    <label>Name*</label>
-                                    <input
-                                      type="text"
-                                      className="form-control"
-                                      placeholder="Brand Name"
-                                      value={name}
-                                      onChange={({ target }) =>
-                                        this.setState({
-                                          name: target.value,
-                                          message: "",
-                                        })
-                                      }
-                                    />
-                                  </div>
-                                </div>
-                                <div className="col-xl-6 col-lg-12 col-md-12 col-sm-12">
-                                  <div className="form-group">
-                                    <label>Email*</label>
-                                    <input
-                                      type="email"
-                                      className="form-control"
-                                      placeholder="Email"
-                                      value={email}
-                                      onChange={({ target }) =>
-                                        this.setState({
-                                          email: target.value,
-                                          message: "",
-                                        })
-                                      }
-                                    />
-                                  </div>
-                                </div>
-                                <div className="col-xl-6 col-lg-12 col-md-12 col-sm-12">
-                                  <div className="form-group">
-                                    <label>Address*</label>
-                                    <input
-                                      type="text"
-                                      className="form-control"
-                                      placeholder="Address"
-                                      value={address}
-                                      onChange={({ target }) =>
-                                        this.setState({
-                                          address: target.value,
-                                          message: "",
-                                        })
-                                      }
-                                    />
-                                  </div>
-                                </div>
-                                <div className="col-xl-6 col-lg-12 col-md-12 col-sm-12">
-                                  <div className="form-group">
-                                    <label>Logo*</label>
-                                    <div className="custom-file">
-                                      <input
-                                        type="file"
-                                        className="custom-file-input"
-                                        id="customFileBanner"
-                                        accept="image/*"
-                                        onChange={(e) =>
-                                          this.handle_file(e, "brand")
-                                        }
-                                      />
-                                      <label
-                                        className="custom-file-label"
-                                        for="customFileBanner"
-                                      >
-                                        {brand_filename || "Choose file"}
-                                      </label>
-                                    </div>
-                                  </div>
-                                </div>
+                                <Text_input
+                                  value={name}
+                                  title="Name"
+                                  action={(name) =>
+                                    this.setState({
+                                      name,
+                                      message: "",
+                                    })
+                                  }
+                                  important
+                                  error_message="Your brand name"
+                                />
+
+                                <Text_input
+                                  value={email}
+                                  type="email"
+                                  title="email"
+                                  action={(email) =>
+                                    this.setState({
+                                      email,
+                                      message: "",
+                                    })
+                                  }
+                                  important
+                                  error_message="Your brand email"
+                                />
+
+                                <Text_input
+                                  value={address}
+                                  title="address"
+                                  action={(address) =>
+                                    this.setState({
+                                      address,
+                                      message: "",
+                                    })
+                                  }
+                                  important
+                                />
+
+                                <File_input
+                                  title="logo"
+                                  action={(e) => this.handle_file(e, "logo")}
+                                  important
+                                  filename={logo_filename}
+                                />
                                 <hr />
 
                                 <div
@@ -214,66 +266,51 @@ class Become_a_vendor extends Handle_file_upload {
                                   </h4>
                                 </div>
 
-                                <div className="col-xl-6 col-lg-12 col-md-12 col-sm-12">
-                                  <div className="form-group">
-                                    <label>Firstname</label>
-                                    <input
-                                      type="text"
-                                      className="form-control"
-                                      placeholder="Firstname"
-                                      value={director.firstname}
-                                      onChange={({ target }) =>
-                                        this.setState({
-                                          director: {
-                                            ...this.state.director,
-                                            firstname: target.value,
-                                          },
-                                          message: "",
-                                        })
-                                      }
-                                    />
-                                  </div>
-                                </div>
-                                <div className="col-xl-6 col-lg-12 col-md-12 col-sm-12">
-                                  <div className="form-group">
-                                    <label>Lastname</label>
-                                    <input
-                                      type="text"
-                                      className="form-control"
-                                      placeholder="Lastname"
-                                      value={director.lastname}
-                                      onChange={({ target }) =>
-                                        this.setState({
-                                          director: {
-                                            ...this.state.director,
-                                            lastname: target.value,
-                                          },
-                                          message: "",
-                                        })
-                                      }
-                                    />
-                                  </div>
-                                </div>
-                                <div className="col-xl-6 col-lg-12 col-md-12 col-sm-12">
-                                  <div className="form-group">
-                                    <label>Email</label>
-                                    <input
-                                      type="email"
-                                      className="form-control"
-                                      placeholder="Email"
-                                      value={director.email}
-                                      onChange={({ target }) =>
-                                        this.setState({
-                                          director: {
-                                            ...this.state.director,
-                                            email: target.value,
-                                          },
-                                          message: "",
-                                        })
-                                      }
-                                    />
-                                  </div>
-                                </div>
+                                <Text_input
+                                  value={director.firstname}
+                                  title="firstname"
+                                  action={(firstname) =>
+                                    this.setState({
+                                      director: {
+                                        ...this.state.director,
+                                        firstname,
+                                      },
+                                      message: "",
+                                    })
+                                  }
+                                  important
+                                  error_message="Director firstname"
+                                />
+                                <Text_input
+                                  value={director.lastname}
+                                  title="lastname"
+                                  action={(lastname) =>
+                                    this.setState({
+                                      director: {
+                                        ...this.state.director,
+                                        lastname,
+                                      },
+                                      message: "",
+                                    })
+                                  }
+                                  important
+                                  error_message="Director lastname"
+                                />
+                                <Text_input
+                                  value={director.email}
+                                  title="email"
+                                  action={(email) =>
+                                    this.setState({
+                                      director: {
+                                        ...this.state.director,
+                                        email,
+                                      },
+                                      message: "",
+                                    })
+                                  }
+                                  important
+                                  error_message="Director email"
+                                />
 
                                 <div className="col-xl-6 col-lg-12 col-md-12 col-sm-12">
                                   <div className="form-group">
@@ -300,29 +337,12 @@ class Become_a_vendor extends Handle_file_upload {
                                 </div>
 
                                 {ID_type ? (
-                                  <div className="col-xl-6 col-lg-12 col-md-12 col-sm-12">
-                                    <div className="form-group">
-                                      <label>
-                                        {to_title(ID_type.replace(/_/g, " "))}*
-                                      </label>
-                                      <div className="custom-file">
-                                        <input
-                                          type="file"
-                                          className="custom-file-input"
-                                          id="customFileBanner"
-                                          onChange={(e) =>
-                                            this.handle_file(e, "ID")
-                                          }
-                                        />
-                                        <label
-                                          className="custom-file-label"
-                                          for="customFileBanner"
-                                        >
-                                          {ID_filename || "Choose file"}
-                                        </label>
-                                      </div>
-                                    </div>
-                                  </div>
+                                  <File_input
+                                    title={to_title(ID_type.replace(/_/g, " "))}
+                                    action={(e) => this.handle_file(e, ID_type)}
+                                    filename={ID_filename}
+                                    important
+                                  />
                                 ) : null}
 
                                 <hr />
@@ -342,28 +362,55 @@ class Become_a_vendor extends Handle_file_upload {
                                     Business Registration Details
                                   </h4>
                                 </div>
-                                <div className="col-xl-6 col-lg-12 col-md-12 col-sm-12">
-                                  <div className="form-group">
-                                    <label>
-                                      Certification of Incorporation
-                                    </label>
-                                    <div className="custom-file">
-                                      <input
-                                        type="file"
-                                        className="custom-file-input"
-                                        id="customFileBanner"
-                                        onChange={(e) =>
-                                          this.handle_file(e, "cac")
-                                        }
-                                      />
-                                      <label
-                                        className="custom-file-label"
-                                        for="customFileBanner"
-                                      >
-                                        {cac_filename || "Choose file"}
-                                      </label>
-                                    </div>
-                                  </div>
+                                <File_input
+                                  title="Certification of Incorporation"
+                                  action={(e) => this.handle_file(e, "cac")}
+                                  filename={cac_filename}
+                                  important
+                                />
+
+                                <Text_input
+                                  value={rc_number}
+                                  title="RC Number"
+                                  action={(rc_number) =>
+                                    this.setState({
+                                      rc_number,
+                                      message: "",
+                                    })
+                                  }
+                                  important
+                                />
+
+                                <Checkbox
+                                  title={
+                                    "I hereby declare that the information provided in this form is accurate and complete. I confirm that any information is found incorrect and/or incomplete that leads a violation of regulations may initiate legal actions, and I accept that I am the responsible party for any and all charges, penalties and violations."
+                                  }
+                                  checked={attest}
+                                  _id="attest"
+                                  no_capitalise
+                                  action={() =>
+                                    this.setState({
+                                      attest: !this.state.attest,
+                                    })
+                                  }
+                                />
+
+                                <div className="form-group">
+                                  {loading ? (
+                                    <Loadindicator />
+                                  ) : (
+                                    <button
+                                      type="button"
+                                      className={
+                                        this.is_set()
+                                          ? "btn full-width btn-md theme-bg text-white"
+                                          : "btn full-width btn-md grey text-dark"
+                                      }
+                                      onClick={this.submit}
+                                    >
+                                      Submit
+                                    </button>
+                                  )}
                                 </div>
                               </div>
                             </div>
@@ -376,6 +423,15 @@ class Become_a_vendor extends Handle_file_upload {
               )}
 
               <Footer />
+
+              <Modal
+                ref={(success_modal) => (this.success_modal = success_modal)}
+              >
+                <Become_a_vender_request
+                  details={details}
+                  toggle={this.toggle_success_modal}
+                />
+              </Modal>
             </div>
           );
         }}

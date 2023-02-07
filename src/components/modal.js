@@ -19,6 +19,7 @@ class Modal extends React.Component {
       backdrop,
       keyboard,
       size,
+      no_drop_on_backdrop,
       title,
       centered,
     } = this.props;
@@ -28,9 +29,10 @@ class Modal extends React.Component {
       <Modal_
         size={size}
         scrollable
+        stat
         show={show}
         centered={centered}
-        backdrop={backdrop}
+        backdrop={no_drop_on_backdrop ? "static" : backdrop}
         keyboard={keyboard !== null ? keyboard : null}
         fullscreen="sm-down"
         aria-labelledby={aria_labelled_by}

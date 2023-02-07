@@ -1,7 +1,16 @@
 import React from "react";
 import { to_title } from "../assets/js/utils/functions";
 
-const Checkbox = ({ title, type, name, _id, action, checked }) => {
+const Checkbox = ({
+  title,
+  no_capitalise,
+  type,
+  style,
+  name,
+  _id,
+  action,
+  checked,
+}) => {
   return (
     <div className="form-group smalls" key={_id}>
       <input
@@ -12,8 +21,8 @@ const Checkbox = ({ title, type, name, _id, action, checked }) => {
         checked={checked}
         onChange={() => action(_id)}
       />
-      <label for={_id} className="checkbox-custom-label">
-        {to_title(title)}
+      <label style={{ ...style }} for={_id} className="checkbox-custom-label">
+        {no_capitalise ? title : to_title(title)}
       </label>
     </div>
   );
