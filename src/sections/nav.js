@@ -3,6 +3,15 @@ import { Link } from "react-router-dom";
 import Login from "../components/login";
 import Modal from "../components/modal";
 
+let navs = new Array(
+  "",
+  "vouchers",
+  "coupons",
+  "tickets",
+  "gift cards",
+  "become a vendor"
+);
+
 class Nav extends React.Component {
   constructor(props) {
     super(props);
@@ -10,7 +19,7 @@ class Nav extends React.Component {
     this.state = {};
   }
 
-  navs = new Array("", "vouchers", "coupons", "tickets", "gift cards");
+  toggle_login = () => this.login_modal?.toggle();
 
   render() {
     let { page } = this.props;
@@ -54,11 +63,11 @@ class Nav extends React.Component {
               </div>
               <div className="nav-menus-wrapper">
                 <ul className="nav-menu">
-                  {this.navs.map((nav) => (
+                  {navs.map((nav) => (
                     <li
                       className={`text-light ${page === nav ? "active" : ""}`}
                     >
-                      <Link to={`/${nav.replace(/ /g, "")}`}>
+                      <Link to={`/${nav.replace(/ /g, "_")}`}>
                         {nav || "home"}
                       </Link>
                     </li>
@@ -69,7 +78,7 @@ class Nav extends React.Component {
                   <li>
                     <a
                       href="#"
-                      onClick={this.login_modal?.toggle}
+                      onClick={this.toggle_login}
                       className="alio_green"
                       data-toggle="modal"
                       data-target="#login"
@@ -90,7 +99,7 @@ class Nav extends React.Component {
         </div>
 
         <Modal ref={(login_modal) => (this.login_modal = login_modal)}>
-          <Login />
+          <Login toggle={this.toggle_login} />
         </Modal>
       </div>
     );
@@ -98,3 +107,4 @@ class Nav extends React.Component {
 }
 
 export default Nav;
+export { navs };

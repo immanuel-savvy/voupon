@@ -1,4 +1,8 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import { navs } from "./nav";
+
+const scroll_to_top = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
 class Footer extends React.Component {
   constructor(props) {
@@ -35,21 +39,13 @@ class Footer extends React.Component {
                     <div class="footer_widget">
                       <h4 class="widget_title">Useful Links</h4>
                       <ul class="footer-menu">
-                        <li>
-                          <a href="#">Home</a>
-                        </li>
-                        <li>
-                          <a href="#">Vouchers</a>
-                        </li>
-                        <li>
-                          <a href="#">Coupons</a>
-                        </li>
-                        <li>
-                          <a href="#">Gift cards</a>
-                        </li>
-                        <li>
-                          <a href="#">Tickets</a>
-                        </li>
+                        {navs.map((nav) => (
+                          <li className={`text-light`} onClick={scroll_to_top}>
+                            <Link to={`/${nav.replace(/ /g, "")}`}>
+                              {nav || "home"}
+                            </Link>
+                          </li>
+                        ))}
                       </ul>
                     </div>
                   </div>
@@ -59,13 +55,13 @@ class Footer extends React.Component {
                       <h4 class="widget_title">Company</h4>
                       <ul class="footer-menu">
                         <li>
-                          <a href="#">About</a>
+                          <Link to={`/about`}>About</Link>
                         </li>
                         <li>
-                          <a href="#">Contact</a>
+                          <Link to={`/contact`}>Contact</Link>
                         </li>
                         <li>
-                          <a href="#">Login</a>
+                          <Link to="/login">Login</Link>
                         </li>
                       </ul>
                     </div>
@@ -93,3 +89,4 @@ class Footer extends React.Component {
 }
 
 export default Footer;
+export { scroll_to_top };

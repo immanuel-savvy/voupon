@@ -1,16 +1,14 @@
 const DEV = true;
 
-const hostname = DEV
-  ? "http://localhost"
-  : "https://neovacity.udaralinksapp.com";
+const hostname = DEV ? "http://localhost" : "https://voupon.udaralinksapp.com";
 
 const client_domain = DEV
   ? `${hostname}:3000`
   : `https://magenta-sprinkles-e1e108.netlify.app`;
 
-const domain = DEV ? `${hostname}:1178` : `https://neovacity.udaralinksapp.com`;
+const domain = DEV ? `${hostname}:1448` : `https://voupon.udaralinksapp.com`;
 
-const default_admin = "adminstrators~123neovacity~1234567890123";
+const default_admin = "adminstrators~123voupon~1234567890123";
 
 const month_index = new Object({
   0: "jan",
@@ -47,7 +45,7 @@ const dow_index_inverse = new Object({
   sunday: 7,
 });
 
-const organisation_name = "Neovacity Africa";
+const organisation_name = "Voucher Africa";
 
 export {
   domain,

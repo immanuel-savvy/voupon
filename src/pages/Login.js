@@ -3,9 +3,10 @@ import { Link } from "react-router-dom";
 import { email_regex } from "../assets/js/utils/functions";
 import { post_request } from "../assets/js/utils/services";
 import Loadindicator from "../components/loadindicator";
+import Padder from "../components/padder";
 import { Loggeduser } from "../Contexts";
 import Footer from "../sections/footer";
-import Nac from "../sections/nav";
+import Nav from "../sections/nav";
 
 class Login extends React.Component {
   constructor(props) {
@@ -39,8 +40,8 @@ class Login extends React.Component {
           this.login = login;
           return (
             <div id="main-wrapper">
-              <Nac page="signup" lock={lock} />
-              <div className="clearfix"></div>
+              <Nav page="signup" lock={lock} />
+              <Padder />
               <section>
                 <div className="container">
                   <div className="row justify-content-center">

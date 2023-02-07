@@ -8,6 +8,8 @@ class Login extends React.Component {
   }
 
   render() {
+    let { toggle } = this.props;
+
     return (
       <div>
         <div class="modal-content overli" id="loginmodal">
@@ -18,6 +20,7 @@ class Login extends React.Component {
               class="close"
               data-dismiss="modal"
               aria-label="Close"
+              onClick={() => toggle && toggle()}
             >
               <span aria-hidden="true">
                 <i class="fas fa-times-circle"></i>
