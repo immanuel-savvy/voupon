@@ -30,6 +30,17 @@ class Become_a_vendor extends handle_file_upload {
     };
   }
 
+  set_director = (loggeduser) => {
+    loggeduser = loggeduser || this.loggeduser;
+    this.setState({
+      director: {
+        email: loggeduser.email,
+        firstname: loggeduser.firstname,
+        lastname: loggeduser.lastname,
+      },
+    });
+  };
+
   componentDidMount = () => {
     let loggeduser = window.sessionStorage.getItem("loggeduser");
     if (loggeduser) {
@@ -38,15 +49,9 @@ class Become_a_vendor extends handle_file_upload {
           try {
             loggeduser = JSON.parse(loggeduser);
             this.login(loggeduser);
-            this.setState({
-              director: {
-                email: loggeduser.email,
-                firstname: loggeduser.firstname,
-                lastname: loggeduser.lastname,
-              },
-            });
+            this.set_director(loggeduser);
           } catch (e) {}
-        }
+        } else this.set_director();
       });
     } else {
       window.sessionStorage.setItem("redirect", window.location.href);
@@ -97,18 +102,10 @@ class Become_a_vendor extends handle_file_upload {
     });
 
   submit = async () => {
-    let {
-      director,
-      attest,
-      rc_number,
-      name,
-      email,
-      address,
-      ID_type,
-      logo,
-      cac,
-    } = this.state;
+    let { director, rc_number, name, email, address, ID_type, logo, cac } =
+      this.state;
     let ID = this.state[ID_type];
+    let ID_filename = this.state[`${ID_type}_filename`];
 
     let documents = {
       director,
@@ -118,7 +115,11 @@ class Become_a_vendor extends handle_file_upload {
       address,
       logo,
       cac,
+      user: this.loggeduser._id,
       ID,
+      ID_filename,
+      cac_filename,
+      logo_filename,
     };
 
     let res = await post_request("request_to_become_a_vendor", documents);
@@ -334,6 +335,12 @@ class Become_a_vendor extends handle_file_upload {
                                       );
                                     })}
                                   </div>
+
+                                  {ID_type ? null : (
+                                    <span className="text-danger">
+                                      * Select an ID Type
+                                    </span>
+                                  )}
                                 </div>
 
                                 {ID_type ? (
