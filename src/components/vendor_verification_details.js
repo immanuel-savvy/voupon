@@ -1,4 +1,5 @@
 import React from "react";
+import { domain } from "../assets/js/utils/constants";
 import Form_divider from "./form_divider";
 import Preview_image from "./preview_image";
 import Stretch_button from "./stretch_button";
@@ -11,6 +12,8 @@ class Vendor_verification_details extends React.Component {
 
     this.state = {};
   }
+
+  url = (file) => window.open(`${domain}/files/${file}`);
 
   render() {
     let { vendor, toggle } = this.props;
@@ -72,12 +75,22 @@ class Vendor_verification_details extends React.Component {
               />
               <Text_input value={director.lastname} disabled title="lastname" />
               <Text_input value={director.email} disabled title="email" />
+              <div
+                className="col-xl-12 col-lg-12 col-md-12 col-sm-12"
+                style={{ marginBottom: 30 }}
+              >
+                <Text_btn
+                  text="Send an Email"
+                  action={() => window.open(`mailto:${director.email}`)}
+                  icon="fa-envelope"
+                />
+              </div>
 
               <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                 <div className="form-group">
                   <label>{id_type || "Proof of Identity"}</label>
                   <br />
-                  <Text_btn text={ID} action={this.proof_of_id} />
+                  <Text_btn text={ID} action={() => this.url(ID)} />
                 </div>
               </div>
 
@@ -87,7 +100,7 @@ class Vendor_verification_details extends React.Component {
                 <div className="form-group">
                   <label>Certificate of Incorporation</label>
                   <br />
-                  <Text_btn text={cac} action={this.cac} />
+                  <Text_btn text={cac} action={() => this.url(cac)} />
                 </div>
               </div>
 
