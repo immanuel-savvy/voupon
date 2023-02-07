@@ -30,7 +30,7 @@ class Nav extends React.Component {
 
     return (
       <Loggeduser.Consumer>
-        {({ loggeduser, signout }) => {
+        {({ loggeduser, logout }) => {
           return (
             <div style={{}}>
               <div
@@ -92,7 +92,7 @@ class Nav extends React.Component {
                           <li>
                             <a
                               href="#"
-                              onClick={loggeduser ? signout : this.toggle_login}
+                              onClick={loggeduser ? logout : this.toggle_login}
                               className="alio_green"
                               data-toggle="modal"
                               data-target="#login"

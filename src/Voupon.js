@@ -16,6 +16,8 @@ import Signup from "./pages/Signup";
 import Page_not_found from "./pages/404";
 import Adminstrator from "./pages/Adminstrator";
 import Become_a_vendor from "./pages/Become_a_vendor";
+import Verify_email from "./pages/Verify_email";
+import { client_domain } from "./assets/js/utils/constants";
 
 const emitter = new Emitter();
 
@@ -50,12 +52,22 @@ class Voupon extends React.Component {
 
   componentDidMount = () => {
     this.script_paths.map((scr) => this.append_script(scr));
+
+    let loggeduser = window.sessionStorage.getItem("loggeduser");
+    if (loggeduser) {
+      try {
+        this.setState({ loggeduser: JSON.parse(loggeduser) });
+      } catch (e) {}
+    }
+
+    emitter.single_listener("is_logged_in", this.is_logged_in);
   };
 
   logout = () =>
-    this.setState({ loggeduser: null }, () =>
-      window.sessionStorage.removeItem("loggeduser")
-    );
+    this.setState({ loggeduser: null }, () => {
+      window.sessionStorage.removeItem("loggeduser");
+      window.location.assign(client_domain);
+    });
 
   restore_loggeduser = (loggeduser) => this.setState({ loggeduser });
 
@@ -63,9 +75,9 @@ class Voupon extends React.Component {
     this.setState({ loggeduser: user }, () => {
       window.sessionStorage.setItem("loggeduser", JSON.stringify(user));
 
-      let should_redired =
-        window.sessionStorage.getItem("redirect")(should_redired) &&
-        window.location.assign(should_redired);
+      window.location.assign(
+        window.sessionStorage.getItem("redirect") || client_domain
+      );
     });
 
   log_admin = (admin) =>
@@ -83,12 +95,13 @@ class Voupon extends React.Component {
           logout: this.logout,
           set_loggeduser: this.restore_loggeduser,
           login: this.login,
+          is_logged_in: this.is_logged_in,
         }}
       >
         <Logged_admin.Provider
           value={{ admin_logged, log_admin: this.log_admin }}
         >
-          <Nav_context.Provider>
+          <Nav_context.Provider value={null}>
             <BrowserRouter>
               <Routes>
                 <Route index element={<Home />} />
@@ -96,6 +109,7 @@ class Voupon extends React.Component {
                 <Route path="tickets" element={<Tickets />} />
                 <Route path="gift_cards" element={<Giftcards />} />
                 <Route path="coupons" element={<Coupons />} />
+                <Route path="verify_email" element={<Verify_email />} />
                 <Route path="login" element={<Login />} />
                 <Route path="signup" element={<Signup />} />
                 <Route path="become_a_vendor" element={<Become_a_vendor />} />

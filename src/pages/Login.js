@@ -26,7 +26,6 @@ class Login extends React.Component {
     let res = await post_request("login", { email, password });
     if (res && res._id) {
       this.login(res);
-      document.getElementById("click_login").click();
     } else this.setState({ message: res, logging_in: false });
   };
 
@@ -119,11 +118,6 @@ class Login extends React.Component {
                                 <p className="text-danger">{message}</p>
                               ) : null}
                               <div className="form-group">
-                                <Link
-                                  style={{ display: "none" }}
-                                  to="/"
-                                  id="click_login"
-                                ></Link>
                                 {logging_in ? (
                                   <Loadindicator />
                                 ) : (

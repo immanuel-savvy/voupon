@@ -43,7 +43,6 @@ class Signup extends React.Component {
     user._id = res._id;
     user.created = res.created;
     this.reset_state();
-    this.login(user);
 
     document.getElementById("click_verify").click();
   };
