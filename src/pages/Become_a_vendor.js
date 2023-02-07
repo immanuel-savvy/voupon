@@ -5,6 +5,7 @@ import { post_request } from "../assets/js/utils/services";
 import Become_a_vender_request from "../components/become_a_vender_request";
 import Checkbox from "../components/checkbox";
 import File_input from "../components/file_input";
+import Form_divider from "../components/form_divider";
 import handle_file_upload from "../components/handle_file_upload";
 import Loadindicator from "../components/loadindicator";
 import Modal from "../components/modal";
@@ -32,13 +33,16 @@ class Become_a_vendor extends handle_file_upload {
 
   set_director = (loggeduser) => {
     loggeduser = loggeduser || this.loggeduser;
-    this.setState({
-      director: {
-        email: loggeduser.email,
-        firstname: loggeduser.firstname,
-        lastname: loggeduser.lastname,
-      },
-    });
+
+    if (loggeduser.vendor) window.location.assign(`${client_domain}/vendor`);
+    else
+      this.setState({
+        director: {
+          email: loggeduser.email,
+          firstname: loggeduser.firstname,
+          lastname: loggeduser.lastname,
+        },
+      });
   };
 
   componentDidMount = () => {
@@ -68,6 +72,7 @@ class Become_a_vendor extends handle_file_upload {
       email,
       address,
       ID_type,
+      description,
       logo,
       cac,
     } = this.state;
@@ -79,6 +84,7 @@ class Become_a_vendor extends handle_file_upload {
       !address ||
       !ID_type ||
       !logo ||
+      description ||
       !cac ||
       !attest
     )
@@ -102,8 +108,24 @@ class Become_a_vendor extends handle_file_upload {
     });
 
   submit = async () => {
-    let { director, rc_number, name, email, address, ID_type, logo, cac } =
-      this.state;
+    let {
+      director,
+      loading,
+      rc_number,
+      name,
+      email,
+      address,
+      ID_type,
+      logo,
+      cac,
+      description,
+      cac_filename,
+      logo_filename,
+    } = this.state;
+    if (loading) return;
+
+    this.setState({ loading: true });
+
     let ID = this.state[ID_type];
     let ID_filename = this.state[`${ID_type}_filename`];
 
@@ -113,9 +135,11 @@ class Become_a_vendor extends handle_file_upload {
       name,
       email,
       address,
+      description,
       logo,
       cac,
       user: this.loggeduser._id,
+      id_type: ID_type,
       ID,
       ID_filename,
       cac_filename,
@@ -125,7 +149,15 @@ class Become_a_vendor extends handle_file_upload {
     let res = await post_request("request_to_become_a_vendor", documents);
     if (res._id) {
       this.setState({ details: res }, this.toggle_success_modal);
+
+      this.loggeduser.vendor = res._id;
+      this.loggeduser.vendor_status = "pending";
+      this.set_loggeduser(this.loggeduser);
     } else this.setState({ message: res.message });
+
+    this.setState({ loading: false }, () =>
+      window.location.assign(`${client_domain}/vendor`)
+    );
   };
 
   toggle_success_modal = () => this.success_modal.toggle();
@@ -143,6 +175,7 @@ class Become_a_vendor extends handle_file_upload {
       attest,
       loading,
       rc_number,
+      description,
       details,
     } = this.state;
 
@@ -150,8 +183,9 @@ class Become_a_vendor extends handle_file_upload {
 
     return (
       <Loggeduser.Consumer>
-        {({ loggeduser }) => {
+        {({ loggeduser, set_loggeduser }) => {
           this.loggeduser = loggeduser;
+          this.set_loggeduser = set_loggeduser;
 
           return (
             <div>
@@ -232,6 +266,18 @@ class Become_a_vendor extends handle_file_upload {
                                 />
 
                                 <Text_input
+                                  value={description}
+                                  title="description"
+                                  action={(description) =>
+                                    this.setState({
+                                      description,
+                                      message: "",
+                                    })
+                                  }
+                                  important
+                                />
+
+                                <Text_input
                                   value={address}
                                   title="address"
                                   action={(address) =>
@@ -247,25 +293,12 @@ class Become_a_vendor extends handle_file_upload {
                                   title="logo"
                                   action={(e) => this.handle_file(e, "logo")}
                                   important
+                                  accept="image/*"
                                   filename={logo_filename}
                                 />
                                 <hr />
 
-                                <div
-                                  style={{
-                                    padding: 16,
-                                    borderWidth: 1,
-                                    borderColor: "#03b97c",
-                                    borderStyle: "solid",
-                                    borderRadius: 5,
-                                    paddingBottom: 5,
-                                    marginBottom: 10,
-                                  }}
-                                >
-                                  <h4 style={{ color: "#03b97c" }}>
-                                    Director Details
-                                  </h4>
-                                </div>
+                                <Form_divider text="director details" />
 
                                 <Text_input
                                   value={director.firstname}
@@ -349,6 +382,7 @@ class Become_a_vendor extends handle_file_upload {
                                     action={(e) => this.handle_file(e, ID_type)}
                                     filename={ID_filename}
                                     important
+                                    accept=".doc,.pdf,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                                   />
                                 ) : null}
 
@@ -374,6 +408,7 @@ class Become_a_vendor extends handle_file_upload {
                                   action={(e) => this.handle_file(e, "cac")}
                                   filename={cac_filename}
                                   important
+                                  accept=".doc,.pdf,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                                 />
 
                                 <Text_input
@@ -436,6 +471,7 @@ class Become_a_vendor extends handle_file_upload {
               >
                 <Become_a_vender_request
                   details={details}
+                  no_drop_on_backdrop
                   toggle={this.toggle_success_modal}
                 />
               </Modal>

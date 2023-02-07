@@ -7,6 +7,8 @@ class Become_a_vender_request extends React.Component {
     this.state = {};
   }
 
+  componentDidMount = () => {};
+
   render() {
     return (
       <div>

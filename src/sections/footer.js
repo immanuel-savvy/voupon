@@ -22,8 +22,10 @@ class Footer extends React.Component {
             <div class="row">
               <div class="col-lg-5 col-md-5">
                 <div class="footer_widget">
-                  {/* <img src="assets/img/logo-light.png" class="img-footer small mb-2" alt="" /> */}
-                  <h2 className="text-light">Voupon</h2>
+                  <Link to="/">
+                    {/* <img src="assets/img/logo-light.png" class="img-footer small mb-2" alt="" /> */}
+                    <h2 className="text-light">Voupon</h2>
+                  </Link>
 
                   <h6 class="extream text-light mb-3">Nigeria</h6>
                   <p className="text-light">

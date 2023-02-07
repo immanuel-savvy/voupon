@@ -9,11 +9,21 @@ class Text_input extends React.Component {
   }
 
   render() {
-    let { title, value, type, error_message, placeholder, action, important } =
-      this.props;
+    let {
+      title,
+      value,
+      disabled,
+      type,
+      error_message,
+      placeholder,
+      action,
+      important,
+    } = this.props;
+
+    if (!value && disabled) return null;
 
     return (
-      <div className="col-xl-6 col-lg-12 col-md-12 col-sm-12">
+      <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
         <div className="form-group">
           <label>
             {to_title(title)}
@@ -21,6 +31,7 @@ class Text_input extends React.Component {
           </label>
           <input
             type={type || "text"}
+            disabled={disabled}
             className="form-control"
             placeholder={placeholder || to_title(title)}
             value={value}

@@ -18,6 +18,7 @@ import Adminstrator from "./pages/Adminstrator";
 import Become_a_vendor from "./pages/Become_a_vendor";
 import Verify_email from "./pages/Verify_email";
 import { client_domain } from "./assets/js/utils/constants";
+import Vendor_profile from "./pages/Vendor_profile";
 
 const emitter = new Emitter();
 
@@ -69,7 +70,10 @@ class Voupon extends React.Component {
       window.location.assign(client_domain);
     });
 
-  restore_loggeduser = (loggeduser) => this.setState({ loggeduser });
+  restore_loggeduser = (loggeduser) =>
+    this.setState({ loggeduser }, () =>
+      window.sessionStorage.setItem("loggeduser", JSON.stringify(loggeduser))
+    );
 
   login = (user) =>
     this.setState({ loggeduser: user }, () => {
@@ -109,6 +113,7 @@ class Voupon extends React.Component {
                 <Route path="tickets" element={<Tickets />} />
                 <Route path="gift_cards" element={<Giftcards />} />
                 <Route path="coupons" element={<Coupons />} />
+                <Route path="vendor" element={<Vendor_profile />} />
                 <Route path="verify_email" element={<Verify_email />} />
                 <Route path="login" element={<Login />} />
                 <Route path="signup" element={<Signup />} />

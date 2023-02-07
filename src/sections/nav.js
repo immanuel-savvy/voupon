@@ -80,9 +80,15 @@ class Nav extends React.Component {
                               page === nav ? "active" : ""
                             }`}
                           >
-                            <Link to={`/${nav.replace(/ /g, "_")}`}>
-                              {nav || "home"}
-                            </Link>
+                            {nav === "become a vendor" &&
+                            loggeduser &&
+                            loggeduser.vendor ? (
+                              <Link to="/vendor">Vendor Profile</Link>
+                            ) : (
+                              <Link to={`/${nav.replace(/ /g, "_")}`}>
+                                {nav || "home"}
+                              </Link>
+                            )}
                           </li>
                         ))}
                       </ul>
