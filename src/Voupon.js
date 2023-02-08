@@ -79,9 +79,12 @@ class Voupon extends React.Component {
     this.setState({ loggeduser: user }, () => {
       window.sessionStorage.setItem("loggeduser", JSON.stringify(user));
 
-      window.location.assign(
-        window.sessionStorage.getItem("redirect") || client_domain
-      );
+      let red = window.sessionStorage.getItem("redirect");
+
+      window.sessionStorage.removeItem("redirect");
+      // if (red && red.endsWith("become_a_vendor") && user.vendor)
+      //   red = `${client_domain}/vendor`;
+      window.location.assign(red || client_domain);
     });
 
   log_admin = (admin) =>

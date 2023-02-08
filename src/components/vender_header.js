@@ -12,7 +12,7 @@ class Vendor_header extends React.Component {
     let { vendor, loggeduser } = this.props;
     if (!loggeduser || !vendor) return;
 
-    let { logo, logo_hash, offer_vouchers } = vendor;
+    let { logo, name, logo_hash, offer_vouchers } = vendor;
     let { firstname, lastname, email } = loggeduser;
 
     return (
@@ -36,14 +36,14 @@ class Vendor_header extends React.Component {
             <div className="col-lg-9 col-md-12 col-sm-12">
               <div className="dlkio_452">
                 <div className="ed_detail_wrap">
-                  {/* <div className="crs_cates cl_1">
-                    <span>Web Design</span>
-                  </div>
-                  <div className="crs_cates cl_3">
-                    <span>PHP</span>
-                  </div> */}
+                  {vendor.verified ? null : (
+                    <div className="crs_cates cl_1">
+                      <span>Pending Approval</span>
+                    </div>
+                  )}
                   <div className="ed_header_caption">
-                    <h2 className="ed_title">{`${firstname} ${lastname}`}</h2>
+                    <h4 className="ed_title">{`${firstname} ${lastname}`}</h4>
+                    <h2 className="ed_title">{`${name}`}</h2>
                     <ul>
                       <li>
                         <i className="ti-calendar"></i>

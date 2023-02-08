@@ -18,6 +18,13 @@ class Unverified_vendors extends React.Component {
     this.setState({ vendors });
   };
 
+  on_verify = (vendor) => {
+    let { vendors } = this.state;
+
+    vendors = vendors.filter((v) => v._id !== vendor._id);
+    this.setState({ vendors });
+  };
+
   render() {
     let { vendors } = this.state;
 

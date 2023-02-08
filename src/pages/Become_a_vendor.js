@@ -34,19 +34,20 @@ class Become_a_vendor extends handle_file_upload {
   set_director = (loggeduser) => {
     loggeduser = loggeduser || this.loggeduser;
 
-    if (loggeduser.vendor) window.location.assign(`${client_domain}/vendor`);
-    else
-      this.setState({
-        director: {
-          email: loggeduser.email,
-          firstname: loggeduser.firstname,
-          lastname: loggeduser.lastname,
-        },
-      });
+    // if (loggeduser.vendor) window.location.assign(`${client_domain}/vendor`);
+    // else
+    this.setState({
+      director: {
+        email: loggeduser.email,
+        firstname: loggeduser.firstname,
+        lastname: loggeduser.lastname,
+      },
+    });
   };
 
   componentDidMount = () => {
     let loggeduser = window.sessionStorage.getItem("loggeduser");
+
     if (loggeduser) {
       this.setState({ render: true }, () => {
         if (!this.loggeduser) {

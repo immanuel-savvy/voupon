@@ -1,5 +1,6 @@
 import React from "react";
 import { domain } from "../assets/js/utils/constants";
+import { post_request } from "../assets/js/utils/services";
 import Form_divider from "./form_divider";
 import Preview_image from "./preview_image";
 import Stretch_button from "./stretch_button";
@@ -14,6 +15,14 @@ class Vendor_verification_details extends React.Component {
   }
 
   url = (file) => window.open(`${domain}/files/${file}`);
+
+  verify = async () => {
+    let { vendor, toggle, on_verify } = this.props;
+
+    let res = await post_request(`verify_vendor/${vendor._id}`);
+    if (res.verified) on_verify && on_verify(vendor._id);
+    else toggle && toggle();
+  };
 
   render() {
     let { vendor, toggle } = this.props;
