@@ -1,5 +1,6 @@
 import React from "react";
 import Preview_image from "./preview_image";
+import { Link } from "react-router-dom";
 
 class Vendor extends React.Component {
   constructor(props) {

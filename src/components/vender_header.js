@@ -1,5 +1,8 @@
 import React from "react";
 import Preview_image from "./preview_image";
+import Text_btn from "./text_btn";
+import Modal from "./modal";
+import Create_offer_voucher from "./create_offer_voucher";
 
 class Vendor_header extends React.Component {
   constructor(props) {
@@ -8,12 +11,14 @@ class Vendor_header extends React.Component {
     this.state = {};
   }
 
+  toggle_create_offer_voucher = () => this.create_offer_voucher.toggle();
+
   render() {
     let { vendor, loggeduser } = this.props;
     if (!loggeduser || !vendor) return;
 
     let { logo, name, logo_hash, offer_vouchers } = vendor;
-    let { firstname, lastname, email } = loggeduser;
+    let { firstname, lastname } = loggeduser;
 
     return (
       <div className="ed_detail_head">
@@ -57,9 +62,25 @@ class Vendor_header extends React.Component {
                   <div className="ed_view_link"></div>
                 </div>
               </div>
+
+              <Text_btn
+                text="Create offer voucher"
+                action={this.toggle_create_offer_voucher}
+              />
             </div>
           </div>
         </div>
+
+        <Modal
+          ref={(create_offer_voucher) =>
+            (this.create_offer_voucher = create_offer_voucher)
+          }
+        >
+          <Create_offer_voucher
+            vendor={vendor}
+            toggle={this.toggle_create_offer_voucher}
+          />
+        </Modal>
       </div>
     );
   }

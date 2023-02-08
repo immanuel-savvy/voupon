@@ -18,7 +18,9 @@ class Adminstrator extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      current_nav: "dashboard",
+    };
   }
 
   script_paths = new Array(
@@ -51,7 +53,7 @@ class Adminstrator extends React.Component {
 
   nav_et_component = () =>
     new Object({
-      dashbord: <Dashboard_landing />,
+      dashboard: <Dashboard_landing />,
       vendors: <D_vendors />,
       vouchers: <D_vouchers />,
       unverified_vendors: <Unverified_vendors />,

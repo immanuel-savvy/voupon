@@ -10,7 +10,7 @@ class Dashboard_landing extends React.Component {
     this.state = {};
   }
 
-  stat = () => {
+  stat = ({ title, value }) => {
     return (
       <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
         <div class="dashboard_stats_wrap">
@@ -20,7 +20,10 @@ class Dashboard_landing extends React.Component {
             </div>
           </div>
           <div class="dashboard_stats_wrap_content">
-            <h4>607</h4> <span>Number of Cources</span>
+            <h4>{value}</h4>{" "}
+            <span style={{ textTransform: "capitalize" }}>
+              {title.replace(/_/g, " ")}
+            </span>
           </div>
         </div>
       </div>
@@ -37,7 +40,7 @@ class Dashboard_landing extends React.Component {
 
     return (
       <div className="col-lg-9 col-md-9 col-sm-12">
-        <Dashboard_breadcrumb crumb="unverified vendors" />
+        <Dashboard_breadcrumb crumb="stats" />
         <div className="row">
           {stats ? stats.map((stat) => this.stat(stat)) : <Loadindicator />}
         </div>
