@@ -48,7 +48,6 @@ class Get_voucher extends React.Component {
       phone,
     })
       .then((res) => {
-        console.log(res);
         this.setState({ updating: false, voucher_code: res.voucher_code });
       })
       .catch((e) => console.log(e));
@@ -56,8 +55,12 @@ class Get_voucher extends React.Component {
 
   cancel = () => {};
 
+  set_details = ({ firstname, lastname, email }) =>
+    this.setState({ firstname, lastname, email });
+
   render() {
-    let { firstname, lastname, email, voucher_code, phone } = this.state;
+    let { firstname, lastname, email, updating, voucher_code, phone } =
+      this.state;
     let { voucher, vendor, toggle } = this.props;
     let { value } = voucher;
 
@@ -75,7 +78,10 @@ class Get_voucher extends React.Component {
         {({ loggeduser }) => {
           this.loggeduser = loggeduser;
 
-          if (!this.loggeduser) return <Login no_redirect toggle={() => {}} />;
+          if (!this.loggeduser)
+            return (
+              <Login action={this.set_details} no_redirect toggle={() => {}} />
+            );
 
           return (
             <section>
@@ -163,6 +169,7 @@ class Get_voucher extends React.Component {
                               <Stretch_button
                                 title={`Proceed to Payment`}
                                 disabled={!this.is_set()}
+                                loading={updating}
                                 action={() => {
                                   console.log("what?");
                                   initializePayment(
@@ -188,3 +195,4 @@ class Get_voucher extends React.Component {
 }
 
 export default Get_voucher;
+export { Paystack_public_key };

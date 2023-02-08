@@ -1,7 +1,9 @@
 import React from "react";
 import { get_request } from "../assets/js/utils/services";
+import Create_open_voucher from "../components/create_open_voucher";
 import Listempty from "../components/listempty";
 import Loadindicator from "../components/loadindicator";
+import Modal from "../components/modal";
 import Padder from "../components/padder";
 import Text_btn from "../components/text_btn";
 import Voucher_store from "../components/voucher_store";
@@ -21,6 +23,8 @@ class Vouchers extends React.Component {
 
     this.setState({ vouchers, vendors });
   };
+
+  toggle_create_voucher = () => this.create_voucher?.toggle();
 
   render() {
     let { vouchers, vendors } = this.state;
@@ -44,6 +48,7 @@ class Vouchers extends React.Component {
                   <p>
                     or{" "}
                     <Text_btn
+                      action={this.toggle_create_voucher}
                       text="Create Voucher"
                       style={{ fontSize: 18, fontWeight: "bold" }}
                     />
@@ -72,6 +77,10 @@ class Vouchers extends React.Component {
           </div>
         </section>
         <Footer />
+
+        <Modal ref={(create_voucher) => (this.create_voucher = create_voucher)}>
+          <Create_open_voucher toggle={this.toggle_create_voucher} />
+        </Modal>
       </div>
     );
   }

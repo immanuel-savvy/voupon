@@ -15,6 +15,7 @@ class Login extends React.Component {
   proceed = async () => {
     let { email, password, logging_in } = this.state;
     if (logging_in) return;
+    let { action } = this.props;
 
     this.setState({ logging_in: true });
 
@@ -23,6 +24,7 @@ class Login extends React.Component {
     let res = await post_request("login", { email, password });
 
     if (res && res._id) {
+      action && action(res);
       this.login(res, this.props.no_redirect);
     } else this.setState({ message: res, logging_in: false });
   };
