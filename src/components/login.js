@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { email_regex } from "../assets/js/utils/functions";
 import { post_request } from "../assets/js/utils/services";
 import { Loggeduser } from "../Contexts";
@@ -21,9 +22,8 @@ class Login extends React.Component {
 
     let res = await post_request("login", { email, password });
 
-    console.log(res);
     if (res && res._id) {
-      this.login(res);
+      this.login(res, this.props.no_redirect);
     } else this.setState({ message: res, logging_in: false });
   };
 
@@ -129,16 +129,16 @@ class Login extends React.Component {
                   <div class="fhg_45">
                     <p class="musrt">
                       Don't have account?{" "}
-                      <a href="signup.html" class="theme-cl">
+                      <Link to="/signup" class="theme-cl">
                         Sign Up
-                      </a>
+                      </Link>
                     </p>
                   </div>
                   <div class="fhg_45">
                     <p class="musrt">
-                      <a href="forgot.html" class="text-danger">
+                      <Link to="/forgot_password" class="text-danger">
                         Forgot Password?
-                      </a>
+                      </Link>
                     </p>
                   </div>
                 </div>

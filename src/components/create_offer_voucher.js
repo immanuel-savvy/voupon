@@ -15,13 +15,14 @@ class Create_offer_voucher extends React.Component {
 
   create_offer = async () => {
     let { vendor, toggle } = this.props;
-    let { title, value, quantities, description } = this.state;
+    let { title, value, duration, quantities, description } = this.state;
 
     let offer = {
       title,
       value,
       quantities,
       description,
+      duration: new Date(duration).getTime(),
       vendor: vendor._id,
     };
 
@@ -31,20 +32,20 @@ class Create_offer_voucher extends React.Component {
     offer._id = result._id;
     offer.created = result.created;
 
-    console.log(result);
-
     emitter.emit("new_offer_voucher", offer);
     toggle();
   };
 
   is_set = () => {
-    let { title, value, quantities } = this.state;
+    let { title, value, duration, quantities } = this.state;
 
-    return title && value && Number(value) > 0 && Number(quantities) > 0;
+    return (
+      title && duration && value && Number(value) > 0 && Number(quantities) > 0
+    );
   };
 
   render() {
-    let { title, value, quantities, description } = this.state;
+    let { title, value, duration, quantities, description } = this.state;
 
     return (
       <section>
@@ -103,6 +104,19 @@ class Create_offer_voucher extends React.Component {
                       })
                     }
                     type="number"
+                    important
+                  />
+
+                  <Text_input
+                    value={duration}
+                    title="Duration for sale"
+                    action={(duration) =>
+                      this.setState({
+                        duration,
+                        message: "",
+                      })
+                    }
+                    type="date"
                     important
                   />
 

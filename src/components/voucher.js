@@ -11,54 +11,47 @@ class Voucher extends React.Component {
   }
 
   render() {
-    let { voucher, vendor } = this.props;
+    let { voucher, vendor, full } = this.props;
     let { logo, _id } = vendor;
-    let { title, value, quantities } = voucher;
+    let { title, value, quantities, description } = voucher;
 
     return (
       <Loggeduser>
         {({ loggeduser }) => {
           return (
-            <div class="col-lg-4 col-md-4 col-sm-6">
-              <div class="edu_cat_2 cat-1">
-                <div class="edu_cat_icons">
-                  <a class="pic-main" href="#">
+            <div className={full ? "" : "col-lg-4 col-md-4 col-sm-6"}>
+              <div className="edu_cat_2 cat-1">
+                <div className="edu_cat_icons">
+                  <a className="pic-main" href="#">
                     <img
                       src={`${domain}/images/${logo}`}
-                      class="img-fluid"
+                      className="img-fluid"
                       alt=""
                     />
                   </a>
                 </div>
-                <div class="edu_cat_data">
-                  <h4 class="title">
+                <div className="edu_cat_data">
+                  <h4 className="title">
                     <a href="#">{title}</a>
+                    {loggeduser && loggeduser.vendor === _id ? (
+                      <div>
+                        <Text_btn text="Remove" />
+                      </div>
+                    ) : null}
                   </h4>
-                  <ul class="meta">
-                    <li style={{ fontWeight: "bold" }} class="video">
+                  <ul className="meta">
+                    <li style={{ fontWeight: "bold" }} className="video">
                       <span>&#8358;</span>
                       {value}
                     </li>
-                    <li class="video">
+                    <li className="video">
                       <span>Quantities:</span>
                       {quantities}
                     </li>
                   </ul>
                 </div>
               </div>
-              <span>
-                Voluptate ex culpa do in sint consectetur ullamco excepteur eu
-                culpa cupidatat. Est aliquip ut commodo laboris proident sit
-                anim veniam. Tempor enim amet dolor ea nisi irure culpa in
-                labore enim laborum do. Anim magna officia magna qui. Dolor
-                fugiat commodo ipsum Lorem et do consectetur veniam consequat
-                Lorem qui.
-              </span>
-              {loggeduser && loggeduser.vendor === _id ? (
-                <div>
-                  <Text_btn text="Remove" />
-                </div>
-              ) : null}
+              <span>{description}</span>
             </div>
           );
         }}

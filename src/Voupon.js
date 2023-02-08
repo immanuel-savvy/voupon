@@ -75,9 +75,11 @@ class Voupon extends React.Component {
       window.sessionStorage.setItem("loggeduser", JSON.stringify(loggeduser))
     );
 
-  login = (user) =>
+  login = (user, no_redirect) =>
     this.setState({ loggeduser: user }, () => {
       window.sessionStorage.setItem("loggeduser", JSON.stringify(user));
+
+      if (no_redirect) return;
 
       let red = window.sessionStorage.getItem("redirect");
 

@@ -1,6 +1,9 @@
 import React from "react";
+import { get_request } from "../assets/js/utils/services";
+import Listempty from "../components/listempty";
 import Loadindicator from "../components/loadindicator";
 import Padder from "../components/padder";
+import Text_btn from "../components/text_btn";
 import Voucher_store from "../components/voucher_store";
 import Breadcrumb_banner from "../sections/breadcrumb_banner";
 import Footer from "../sections/footer";
@@ -13,31 +16,14 @@ class Vouchers extends React.Component {
     this.state = {};
   }
 
-  componentDidMount = () => {
-    let vouchers = new Array(
-      {
-        image: require("../assets/img/Jiji_Logo.png"),
-        title: "jiji",
-      },
-      {
-        image: require("../assets/img/mtn.jpg"),
-        title: "MTN",
-      },
-      {
-        image: require("../assets/img/olx.png"),
-        title: "olx",
-      },
-      {
-        image: require("../assets/img/jumia.png"),
-        title: "jumia",
-      }
-    );
+  componentDidMount = async () => {
+    let { vouchers, vendors } = await get_request("get_offer_vouchers/all");
 
-    this.setState({ vouchers });
+    this.setState({ vouchers, vendors });
   };
 
   render() {
-    let { vouchers } = this.state;
+    let { vouchers, vendors } = this.state;
 
     return (
       <div>
@@ -52,18 +38,33 @@ class Vouchers extends React.Component {
               <div class="col-lg-7 col-md-8">
                 <div class="sec-heading center">
                   <h2>
-                    Your favorite vendors <span class="theme-cl"></span>
+                    Your favorite vouchers <span class="theme-cl"></span>
                   </h2>
-                  <p>Find vouchers to your favorite vendors here. </p>
+                  <p>Find vouchers to your favorite vouchers here. </p>
+                  <p>
+                    or{" "}
+                    <Text_btn
+                      text="Create Voucher"
+                      style={{ fontSize: 18, fontWeight: "bold" }}
+                    />
+                  </p>
                 </div>
               </div>
             </div>
 
             <div class="row justify-content-center">
               {vouchers ? (
-                vouchers.map((voucher, index) => (
-                  <Voucher_store voucher={voucher} key={index} />
-                ))
+                vouchers.length ? (
+                  vouchers.map((voucher, index) => (
+                    <Voucher_store
+                      vendor={vendors[voucher.vendor]}
+                      voucher={voucher}
+                      key={index}
+                    />
+                  ))
+                ) : (
+                  <Listempty />
+                )
               ) : (
                 <Loadindicator />
               )}
