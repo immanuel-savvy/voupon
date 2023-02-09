@@ -105,7 +105,10 @@ class User_vouchers extends React.Component {
                               {open_vouchers ? (
                                 open_vouchers.length ? (
                                   open_vouchers.map((voucher, index) => (
-                                    <Voucher voucher={voucher} key={index} />
+                                    <Voucher
+                                      voucher={voucher.voucher}
+                                      key={index}
+                                    />
                                   ))
                                 ) : (
                                   <Listempty />

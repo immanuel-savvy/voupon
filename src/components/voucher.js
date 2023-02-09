@@ -15,7 +15,7 @@ class Voucher extends React.Component {
     let { voucher } = this.props;
     let { vendor } = this.state;
 
-    if (!vendor || typeof vendor !== "object") {
+    if (!vendor || (typeof vendor !== "object" && voucher.vendor)) {
       vendor = await get_request(`vendor/${voucher.vendor}`);
       this.setState({ vendor });
     }
