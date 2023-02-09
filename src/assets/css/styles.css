@@ -3784,8 +3784,8 @@ ul.lt_cr_list li i {
   padding: 1.5rem 1.2rem;
   background: #ffffff;
   margin-bottom: 30px;
-  box-shadow: 0 0 10px 0 rgb(62 28 131 / 7%);
-  -webkit-box-shadow: 0 0 10px 0 rgb(62 28 131 / 7%);
+  box-shadow: 0 10px 5px 10px rgb(62 28 131 / 7%);
+  -webkit-box-shadow: 0 10px 5px 10px rgb(62 28 131 / 7%);
 }
 .crs_trios .crs_cate_icon {
   color: #03b97c;

@@ -52,7 +52,12 @@ class Vendor_vouchers extends React.Component {
           {offer_vouchers ? (
             offer_vouchers.length ? (
               offer_vouchers.map((voucher) => (
-                <Voucher vendor={vendor} voucher={voucher} key={voucher._id} />
+                <Voucher
+                  in_vendor
+                  vendor={vendor}
+                  voucher={voucher}
+                  key={voucher._id}
+                />
               ))
             ) : (
               <Listempty />

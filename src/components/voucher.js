@@ -1,5 +1,5 @@
 import React from "react";
-import { domain } from "../assets/js/utils/constants";
+import { client_domain, domain } from "../assets/js/utils/constants";
 import { Loggeduser } from "../Contexts";
 import Text_btn from "./text_btn";
 
@@ -11,9 +11,12 @@ class Voucher extends React.Component {
   }
 
   render() {
-    let { voucher, vendor, full } = this.props;
+    let { voucher, vendor, full, in_vendor } = this.props;
+    if (!vendor) window.location.assign(client_domain);
+
     let { logo, _id } = vendor;
-    let { title, value, quantities, description } = voucher;
+
+    let { title, value, quantities, total_sales, description } = voucher;
 
     return (
       <Loggeduser>
@@ -44,6 +47,13 @@ class Voucher extends React.Component {
                       <span>&#8358;</span>
                       {value}
                     </li>
+
+                    {in_vendor ? (
+                      <li className="video">
+                        <span>Total Sales:</span>
+                        {total_sales}
+                      </li>
+                    ) : null}
                     <li className="video">
                       <span>Quantities:</span>
                       {quantities}

@@ -8,6 +8,7 @@ import { Paystack_public_key } from "./get_voucher";
 import Login from "./login";
 import Stretch_button from "./stretch_button";
 import Text_input from "./text_input";
+import Voucher_purchase_details from "./voucher_purchase_details";
 
 class Create_open_voucher extends React.Component {
   constructor(props) {
@@ -69,8 +70,17 @@ class Create_open_voucher extends React.Component {
   cancel = () => {};
 
   render() {
-    let { title, value, firstname, updating, lastname, email, phone } =
-      this.state;
+    let { toggle } = this.props;
+    let {
+      title,
+      value,
+      voucher_code,
+      firstname,
+      updating,
+      lastname,
+      email,
+      phone,
+    } = this.state;
 
     let payment_props = {
       email,
@@ -117,78 +127,92 @@ class Create_open_voucher extends React.Component {
                           </div>
                         </div>
 
-                        <Text_input
-                          value={title}
-                          title="voucher title"
-                          action={(title) =>
-                            this.setState({
-                              title,
-                              message: "",
-                            })
-                          }
-                          important
-                        />
-
-                        <Text_input
-                          value={value}
-                          title={`Value ${"(Naira)"}`}
-                          action={(value) =>
-                            this.setState({
-                              value,
-                              message: "",
-                            })
-                          }
-                          type="number"
-                          important
-                        />
-
-                        <Form_divider text="Owner Details" />
-                        <Text_input
-                          value={firstname}
-                          title="firstname"
-                          action={(firstname) =>
-                            this.setState({
-                              firstname,
-                              message: "",
-                            })
-                          }
-                          important
-                        />
-
-                        <Text_input
-                          value={lastname}
-                          title="lastname"
-                          action={(lastname) =>
-                            this.setState({
-                              lastname,
-                              message: "",
-                            })
-                          }
-                          important
-                        />
-                        <Text_input
-                          value={email}
-                          title="email"
-                          action={(email) =>
-                            this.setState({
+                        {voucher_code ? (
+                          <Voucher_purchase_details
+                            toggle={toggle}
+                            details={{
+                              voucher_code,
                               email,
-                              message: "",
-                            })
-                          }
-                          important
-                        />
+                              firstname,
+                              lastname,
+                            }}
+                          />
+                        ) : (
+                          <>
+                            <Text_input
+                              value={title}
+                              title="voucher title"
+                              action={(title) =>
+                                this.setState({
+                                  title,
+                                  message: "",
+                                })
+                              }
+                              important
+                            />
 
-                        <Text_input
-                          value={phone}
-                          title="phone"
-                          action={(phone) =>
-                            this.setState({
-                              phone,
-                              message: "",
-                            })
-                          }
-                          important
-                        />
+                            <Text_input
+                              value={value}
+                              title={`Value ${"(Naira)"}`}
+                              action={(value) =>
+                                this.setState({
+                                  value,
+                                  message: "",
+                                })
+                              }
+                              type="number"
+                              important
+                            />
+
+                            <Form_divider text="Owner Details" />
+                            <Text_input
+                              value={firstname}
+                              title="firstname"
+                              action={(firstname) =>
+                                this.setState({
+                                  firstname,
+                                  message: "",
+                                })
+                              }
+                              important
+                            />
+
+                            <Text_input
+                              value={lastname}
+                              title="lastname"
+                              action={(lastname) =>
+                                this.setState({
+                                  lastname,
+                                  message: "",
+                                })
+                              }
+                              important
+                            />
+                            <Text_input
+                              value={email}
+                              title="email"
+                              action={(email) =>
+                                this.setState({
+                                  email,
+                                  message: "",
+                                })
+                              }
+                              important
+                            />
+
+                            <Text_input
+                              value={phone}
+                              title="phone"
+                              action={(phone) =>
+                                this.setState({
+                                  phone,
+                                  message: "",
+                                })
+                              }
+                              important
+                            />
+                          </>
+                        )}
 
                         <PaystackConsumer {...payment_props}>
                           {({ initializePayment }) => (
