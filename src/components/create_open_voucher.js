@@ -211,24 +211,24 @@ class Create_open_voucher extends React.Component {
                               }
                               important
                             />
+
+                            <PaystackConsumer {...payment_props}>
+                              {({ initializePayment }) => (
+                                <Stretch_button
+                                  title={`Top-up Voucher`}
+                                  loading={updating}
+                                  disabled={!this.is_set()}
+                                  action={() => {
+                                    initializePayment(
+                                      this.payment_successful,
+                                      this.cancel
+                                    );
+                                  }}
+                                />
+                              )}
+                            </PaystackConsumer>
                           </>
                         )}
-
-                        <PaystackConsumer {...payment_props}>
-                          {({ initializePayment }) => (
-                            <Stretch_button
-                              title={`Top-up Voucher`}
-                              loading={updating}
-                              disabled={!this.is_set()}
-                              action={() => {
-                                initializePayment(
-                                  this.payment_successful,
-                                  this.cancel
-                                );
-                              }}
-                            />
-                          )}
-                        </PaystackConsumer>
                       </div>
                     </form>
                   </div>

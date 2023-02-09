@@ -1,5 +1,6 @@
 import React from "react";
 import { client_domain, domain } from "../assets/js/utils/constants";
+import { get_request } from "../assets/js/utils/services";
 import { Loggeduser } from "../Contexts";
 import Text_btn from "./text_btn";
 
@@ -7,14 +8,24 @@ class Voucher extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = { vendor: this.props.vendor };
   }
 
-  render() {
-    let { voucher, vendor, full, in_vendor } = this.props;
-    if (!vendor) window.location.assign(client_domain);
+  componentDidMount = async () => {
+    let { voucher } = this.props;
+    let { vendor } = this.state;
 
-    let { logo, _id } = vendor;
+    if (!vendor || typeof vendor !== "object") {
+      vendor = await get_request(`vendor/${voucher.vendor}`);
+      this.setState({ vendor });
+    }
+  };
+
+  render() {
+    let { vendor } = this.state;
+    let { voucher, full, in_vendor } = this.props;
+
+    let { logo, _id } = vendor || new Object();
 
     let { title, value, quantities, total_sales, description } = voucher;
 
@@ -36,7 +47,7 @@ class Voucher extends React.Component {
                 <div className="edu_cat_data">
                   <h4 className="title">
                     <a href="#">{title}</a>
-                    {loggeduser && loggeduser.vendor === _id ? (
+                    {in_vendor && loggeduser && loggeduser.vendor === _id ? (
                       <div>
                         <Text_btn text="Remove" />
                       </div>
