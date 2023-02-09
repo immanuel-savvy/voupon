@@ -1,9 +1,11 @@
 import React from "react";
 import { email_regex, to_title } from "../assets/js/utils/functions";
-import { post_request } from "../assets/js/utils/services";
+import { get_request, post_request } from "../assets/js/utils/services";
 import { Loggeduser } from "../Contexts";
 import Checkbox from "./checkbox";
 import Form_divider from "./form_divider";
+import Listempty from "./listempty";
+import Loadindicator from "./loadindicator";
 import Login from "./login";
 import Stretch_button from "./stretch_button";
 import Text_input from "./text_input";
@@ -18,24 +20,37 @@ class Redeem_voucher extends React.Component {
     this.state = { voucher_type: voucher_types[0] };
   }
 
-  componentDidMount = () => {
+  componentDidMount = async () => {
     if (this.loggeduser) {
       let { firstname, lastname, email } = this.loggeduser;
       this.setState({ firstname, lastname, email });
     }
+
+    let banks = await get_request("https://api.paystack.co/bank?currency=NGN", {
+      headers: {
+        Authorization: `Bearer ${"sk_test_8f53d8f0d9303a18a856d4aeba97603d0795fdcb"}`,
+      },
+    });
+
+    this.setState({ banks });
   };
 
   is_set = () => {
-    let { firstname, proceeding, lastname, email, phone, value, title } =
-      this.state;
+    let {
+      proceeding,
+      voucher_code,
+      voucher_type,
+      bank,
+      account_number,
+      email,
+    } = this.state;
 
     return (
-      firstname &&
-      lastname &&
       email_regex.test(email) &&
-      phone &&
-      Number(value) > 0 &&
-      title &&
+      voucher_code &&
+      voucher_type &&
+      bank &&
+      account_number &&
       !proceeding
     );
   };
@@ -43,34 +58,41 @@ class Redeem_voucher extends React.Component {
   set_details = ({ firstname, lastname, email }) =>
     this.setState({ firstname, lastname, email });
 
-  payment_successful = () => {
-    let { title, value, firstname, lastname, email, phone, proceeding } =
+  proceed = async () => {
+    let { bank, account_number, email, voucher_code, voucher_type } =
       this.state;
 
-    if (proceeding) return;
-
-    this.setState({ proceeding: true });
-
-    let voucher = {
-      title,
-      value,
-      firstname,
-      lastname,
+    let details = {
+      bank: bank.code,
+      account_number,
       email,
-      phone,
+      voucher_code,
+      voucher_type,
       user: this.loggeduser._id,
     };
 
-    post_request("create_open_voucher", voucher)
-      .then((res) => {
-        this.setState({ proceeding: false, voucher_code: res.voucher_code });
-      })
-      .catch((e) => console.log(e));
+    let result = await post_request("can_redeem_voucher", {
+      user: details.user,
+      voucher_type: details.voucher_type,
+      voucher_code: details.voucher_code,
+    });
+
+    if (result && result.can_redeem) {
+      this.setState({ can_redeem: true });
+      result = await post_request("redeem_voucher", details);
+    }
+
+    this.setState({ message: result.message, done: result.redeemed });
   };
 
   cancel = () => {};
 
   set_voucher_type = (voucher_type) => this.setState({ voucher_type });
+
+  set_bank = ({ target }) =>
+    this.setState({
+      bank: this.state.banks.find((bank) => bank.id === target.value),
+    });
 
   render() {
     let { toggle } = this.props;
@@ -81,8 +103,9 @@ class Redeem_voucher extends React.Component {
       proceeding,
       account_number,
       email,
-      phone,
+      banks,
       voucher_type,
+      can_redeem,
     } = this.state;
 
     return (
@@ -94,7 +117,7 @@ class Redeem_voucher extends React.Component {
             return <Login action={this.set_details} no_redirect />;
 
           return (
-            <section>
+            <section style={{ paddingTop: 20, paddingBottom: 20 }}>
               <div className="container-fluid">
                 <div className="row justify-content-center">
                   <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
@@ -184,6 +207,36 @@ class Redeem_voucher extends React.Component {
 
                             <Form_divider text="Bank Account" />
 
+                            <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 form-group smalls">
+                              <label>Bank</label>
+                              {banks ? (
+                                banks.length ? (
+                                  <div className="simple-input">
+                                    <select
+                                      id="bank"
+                                      onChange={this.set_bank}
+                                      className="form-control"
+                                    >
+                                      <option value="">
+                                        -- Select your bank --
+                                      </option>
+                                      {banks.map((bank) => (
+                                        <option key={bank.id} value={bank.id}>
+                                          {to_title(
+                                            bank.name.replace(/_/g, " ")
+                                          )}
+                                        </option>
+                                      ))}
+                                    </select>
+                                  </div>
+                                ) : (
+                                  <Listempty text="Cannot get banks." />
+                                )
+                              ) : (
+                                <Loadindicator smalls />
+                              )}
+                            </div>
+
                             <Text_input
                               value={account_number}
                               title="account number"
@@ -198,7 +251,13 @@ class Redeem_voucher extends React.Component {
                             />
 
                             <Stretch_button
-                              title={`Proceed`}
+                              title={
+                                can_redeem
+                                  ? "Redeeming"
+                                  : proceeding
+                                  ? "Verifying voucher"
+                                  : `Proceed`
+                              }
                               loading={proceeding}
                               disabled={!this.is_set()}
                               action={() => this.proceed()}

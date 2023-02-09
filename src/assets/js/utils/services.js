@@ -1,9 +1,12 @@
 import { domain } from "./constants";
 
-const get_request = async (path) => {
+const get_request = async (path, header) => {
   if (path && path.startsWith("/")) path = path.slice(1);
   try {
-    let ftch = await fetch(`${domain}/${path}`);
+    let ftch = await fetch(
+      path.startsWith("http") ? path : `${domain}/${path}`,
+      header
+    );
     let res;
     try {
       res = await ftch.json();
@@ -46,18 +49,22 @@ const upload_file = async (file) => {
   }
 };
 
-const post_request = async (path, data) => {
+const post_request = async (path, data, header) => {
   if (path && path.startsWith("/")) path = path.slice(1);
   try {
-    let ftch = await fetch(`${domain}/${path}`, {
-      method: "POST",
-      // mode: "no-cors",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      body: data && JSON.stringify(data),
-    });
+    let ftch = await fetch(
+      path.startsWith("http") ? path : `${domain}/${path}`,
+      {
+        method: "POST",
+        // mode: "no-cors",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          ...header,
+        },
+        body: data && JSON.stringify(data),
+      }
+    );
 
     let res;
     try {
