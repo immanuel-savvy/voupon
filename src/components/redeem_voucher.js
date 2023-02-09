@@ -2,6 +2,7 @@ import React from "react";
 import { email_regex, to_title } from "../assets/js/utils/functions";
 import { get_request, post_request } from "../assets/js/utils/services";
 import { Loggeduser } from "../Contexts";
+import Alert_box from "./alert_box";
 import Checkbox from "./checkbox";
 import Form_divider from "./form_divider";
 import Listempty from "./listempty";
@@ -43,6 +44,7 @@ class Redeem_voucher extends React.Component {
       bank,
       account_number,
       email,
+      message,
     } = this.state;
 
     return (
@@ -51,6 +53,7 @@ class Redeem_voucher extends React.Component {
       voucher_type &&
       bank &&
       account_number &&
+      !message &&
       !proceeding
     );
   };
@@ -82,7 +85,7 @@ class Redeem_voucher extends React.Component {
       result = await post_request("redeem_voucher", details);
     }
 
-    this.setState({ message: result.message, done: result.redeemed });
+    this.setState({ message: result.message, redeemed: result.redeemed });
   };
 
   cancel = () => {};
@@ -91,7 +94,7 @@ class Redeem_voucher extends React.Component {
 
   set_bank = ({ target }) =>
     this.setState({
-      bank: this.state.banks.find((bank) => bank.id === target.value),
+      bank: this.state.banks.find((bank) => bank.id === Number(target.value)),
     });
 
   render() {
@@ -99,11 +102,13 @@ class Redeem_voucher extends React.Component {
     let {
       voucher_code,
       firstname,
+      message,
       lastname,
       proceeding,
       account_number,
       email,
       banks,
+      redeemed,
       voucher_type,
       can_redeem,
     } = this.state;
@@ -144,7 +149,7 @@ class Redeem_voucher extends React.Component {
                           </div>
                         </div>
 
-                        {voucher_code ? (
+                        {redeemed ? (
                           <Voucher_redeemed_details
                             toggle={toggle}
                             details={{
@@ -249,6 +254,8 @@ class Redeem_voucher extends React.Component {
                               type="number"
                               important
                             />
+
+                            {message ? <Alert_box message={message} /> : null}
 
                             <Stretch_button
                               title={
