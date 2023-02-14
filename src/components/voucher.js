@@ -7,6 +7,7 @@ import Dropdown_menu from "./dropdown_menu";
 import Modal from "./modal";
 import Redeem_voucher from "./redeem_voucher";
 import Text_btn from "./text_btn";
+import Transfer_voucher from "./transfer_voucher";
 
 class Voucher extends React.Component {
   constructor(props) {
@@ -32,9 +33,11 @@ class Voucher extends React.Component {
 
   redeem_voucher = () => this.redeem_voucher_?.toggle();
 
+  transfer_voucher = () => this.transfer_voucher_?.toggle();
+
   render() {
     let { vendor, redeemed } = this.state;
-    let { voucher, full, in_vendor } = this.props;
+    let { voucher, full, in_vendor, voucher_code } = this.props;
 
     let { logo, _id } = vendor || new Object();
 
@@ -98,7 +101,7 @@ class Voucher extends React.Component {
                                   title: "redeem",
                                   action: this.redeem_voucher,
                                 },
-                            { title: "transfer", action: this.transfer }
+                            { title: "transfer", action: this.transfer_voucher }
                           )
                         }
                       />
@@ -118,9 +121,21 @@ class Voucher extends React.Component {
                 }
               >
                 <Redeem_voucher
-                  voucher={voucher}
+                  voucher={{ ...voucher, voucher_code }}
                   on_redeem={this.on_redeem}
                   toggle={this.redeem_voucher}
+                />
+              </Modal>
+
+              <Modal
+                ref={(transfer_voucher_) =>
+                  (this.transfer_voucher_ = transfer_voucher_)
+                }
+              >
+                <Transfer_voucher
+                  voucher={{ ...voucher, voucher_code }}
+                  on_redeem={this.on_tranfer}
+                  toggle={this.transfer_voucher}
                 />
               </Modal>
             </div>
