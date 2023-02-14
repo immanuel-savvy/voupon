@@ -90,15 +90,20 @@ class User_vouchers extends React.Component {
                             voucher_type={tab}
                           />
 
-                          {tab === "open vouchers" ? (
-                            <div class="row justify-content-center">
-                              {open_vouchers ? (
-                                open_vouchers.length ? (
-                                  open_vouchers.map((voucher, index) =>
+                          <div class="row justify-content-center">
+                            {((vouchers) =>
+                              vouchers ? (
+                                vouchers.length ? (
+                                  vouchers.map((voucher, index) =>
                                     voucher.state === filter ||
                                     (!voucher.state && filter === "unused") ? (
                                       <Voucher
-                                        voucher={voucher.voucher}
+                                        voucher={{
+                                          ...voucher.voucher,
+                                          state: voucher.state,
+                                        }}
+                                        voucher_code={voucher.voucher_code}
+                                        vendor={voucher.vendor}
                                         key={index}
                                       />
                                     ) : null
@@ -108,28 +113,12 @@ class User_vouchers extends React.Component {
                                 )
                               ) : (
                                 <Loadindicator />
-                              )}
-                            </div>
-                          ) : tab === "offer vouchers" ? (
-                            <div class="row justify-content-center">
-                              {offer_vouchers ? (
-                                offer_vouchers.length ? (
-                                  offer_vouchers.map((voucher, index) => (
-                                    <Voucher
-                                      voucher={voucher.voucher}
-                                      voucher_code={voucher.voucher_code}
-                                      vendor={voucher.vendor}
-                                      key={index}
-                                    />
-                                  ))
-                                ) : (
-                                  <Listempty />
-                                )
-                              ) : (
-                                <Loadindicator />
-                              )}
-                            </div>
-                          ) : null}
+                              ))(
+                              tab === voucher_tabs[0]
+                                ? open_vouchers
+                                : offer_vouchers
+                            )}
+                          </div>
                         </>
                       </Tab>
                     ))}
