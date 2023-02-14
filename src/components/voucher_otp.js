@@ -9,7 +9,7 @@ class Voucher_otp extends React.Component {
   }
 
   render() {
-    let { toggle, redeeming, message, proceed } = this.props;
+    let { toggle, redeeming, clear_message, message, proceed } = this.props;
     let { code } = this.state;
 
     return (
@@ -40,10 +40,12 @@ class Voucher_otp extends React.Component {
                       class="form-control"
                       value={code}
                       onChange={({ target }) =>
-                        this.setState({
-                          code: target.value,
-                          message: "",
-                        })
+                        this.setState(
+                          {
+                            code: target.value,
+                          },
+                          clear_message
+                        )
                       }
                       placeholder="* * * * * *"
                     />

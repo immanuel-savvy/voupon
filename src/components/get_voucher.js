@@ -9,7 +9,8 @@ import { post_request } from "../assets/js/utils/services";
 import Login from "./login";
 import Voucher_purchase_details from "./voucher_purchase_details";
 
-const Paystack_public_key = "pk_test_bb18a2e51d82edaf36aa443679756267d6fef396";
+const Paystack_public_key = "pk_test_88c19524a2abc3ad156a72952316e0f77ca87f4e";
+const Paystack_private_key = "sk_test_8f53d8f0d9303a18a856d4aeba97603d0795fdcb";
 
 class Get_voucher extends React.Component {
   constructor(props) {
@@ -195,4 +196,4 @@ class Get_voucher extends React.Component {
 }
 
 export default Get_voucher;
-export { Paystack_public_key };
+export { Paystack_public_key, Paystack_private_key };

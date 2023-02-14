@@ -5,10 +5,10 @@ import { Loggeduser } from "../Contexts";
 import Alert_box from "./alert_box";
 import Checkbox from "./checkbox";
 import Form_divider from "./form_divider";
+import { Paystack_private_key } from "./get_voucher";
 import Listempty from "./listempty";
 import Loadindicator from "./loadindicator";
 import Login from "./login";
-import Modal from "./modal";
 import Stretch_button from "./stretch_button";
 import Text_input from "./text_input";
 import Voucher_otp from "./voucher_otp";
@@ -22,8 +22,6 @@ class Redeem_voucher extends React.Component {
 
     let { voucher } = this.props;
 
-    console.log(voucher);
-
     let voucher_code, email;
     if (voucher) {
       voucher_code = voucher.voucher_code;
@@ -33,7 +31,7 @@ class Redeem_voucher extends React.Component {
     this.state = {
       voucher_code,
       email,
-      voucher_type: voucher_types[voucher.vendor ? 1 : 0],
+      voucher_type: voucher_types[voucher && voucher.vendor ? 1 : 0],
     };
   }
 
@@ -45,7 +43,7 @@ class Redeem_voucher extends React.Component {
 
     let banks = await get_request("https://api.paystack.co/bank?currency=NGN", {
       headers: {
-        Authorization: `Bearer ${"sk_test_8f53d8f0d9303a18a856d4aeba97603d0795fdcb"}`,
+        Authorization: `Bearer ${Paystack_private_key}`,
       },
     });
 
@@ -91,7 +89,7 @@ class Redeem_voucher extends React.Component {
 
       this.setState({ requesting_otp: true });
       result = await post_request(`request_voucher_otp/${result.voucher}`);
-    }
+    } else this.setState({ message: result.message });
   };
 
   proceed = async (otp) => {
@@ -115,6 +113,9 @@ class Redeem_voucher extends React.Component {
     let result = await post_request("redeem_voucher", details);
     console.log(result);
 
+    if (result && !result.voucher)
+      return this.setState({ message: result.message, redeeming: false });
+
     on_redeem && on_redeem();
     this.setState(
       {
@@ -134,6 +135,8 @@ class Redeem_voucher extends React.Component {
     this.setState({
       bank: this.state.banks.find((bank) => bank.id === Number(target.value)),
     });
+
+  clear_message = () => this.setState({ message: "" });
 
   render() {
     let { toggle, voucher } = this.props;
@@ -204,6 +207,7 @@ class Redeem_voucher extends React.Component {
                             proceed={this.proceed}
                             voucher={voucher}
                             message={message}
+                            clear_message={this.clear_message}
                             redeeming={redeeming}
                           />
                         ) : (
@@ -216,6 +220,7 @@ class Redeem_voucher extends React.Component {
                                   return (
                                     <Checkbox
                                       type="radio"
+                                      disabled={!!voucher}
                                       title={to_title(
                                         voucher_type_.replace(/_/g, " ")
                                       )}
@@ -235,6 +240,7 @@ class Redeem_voucher extends React.Component {
                             <Text_input
                               value={voucher_code}
                               title="voucher code"
+                              disabled={!!voucher}
                               action={(voucher_code) =>
                                 this.setState({
                                   voucher_code,
@@ -247,6 +253,7 @@ class Redeem_voucher extends React.Component {
                             <Text_input
                               value={email}
                               title={`Authorised email`}
+                              disabled={!!voucher}
                               action={(email) =>
                                 this.setState({
                                   email,
@@ -325,9 +332,6 @@ class Redeem_voucher extends React.Component {
                   </div>
                 </div>
               </div>
-              {/* <Modal ref={(otp) => (this.otp = otp)}>
-                <Voucher_otp proceed={this.proceed} voucher={voucher} />
-              </Modal> */}
             </section>
           );
         }}

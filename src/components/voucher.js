@@ -1,5 +1,6 @@
 import React from "react";
-import { client_domain, domain } from "../assets/js/utils/constants";
+import { domain } from "../assets/js/utils/constants";
+import { to_title } from "../assets/js/utils/functions";
 import { get_request } from "../assets/js/utils/services";
 import { Loggeduser } from "../Contexts";
 import Dropdown_menu from "./dropdown_menu";
@@ -29,7 +30,7 @@ class Voucher extends React.Component {
     this.setState({ redeemed: true }, this.redeem_voucher);
   };
 
-  redeem_voucher = () => this.redeem_voucher_.toggle();
+  redeem_voucher = () => this.redeem_voucher_?.toggle();
 
   render() {
     let { vendor, redeemed } = this.state;
@@ -37,7 +38,10 @@ class Voucher extends React.Component {
 
     let { logo, _id } = vendor || new Object();
 
-    let { title, value, quantities, total_sales, description } = voucher;
+    let { title, value, quantities, state, total_sales, description } = voucher;
+
+    if (!state) state = "unused";
+    if (redeemed) state = "redeemed";
 
     return (
       <Loggeduser>
@@ -82,20 +86,29 @@ class Voucher extends React.Component {
                   </ul>
                 </div>
 
-                <div className="edu_cat_data">
-                  <div className="meta">
-                    <Dropdown_menu
-                      items={
-                        new Array(
-                          redeemed
-                            ? null
-                            : { title: "redeem", action: this.redeem_voucher },
-                          { title: "transfer", action: this.transfer }
-                        )
-                      }
-                    />
+                {state === "unused" ? (
+                  <div className="edu_cat_data">
+                    <div className="meta">
+                      <Dropdown_menu
+                        items={
+                          new Array(
+                            redeemed
+                              ? null
+                              : {
+                                  title: "redeem",
+                                  action: this.redeem_voucher,
+                                },
+                            { title: "transfer", action: this.transfer }
+                          )
+                        }
+                      />
+                    </div>
                   </div>
-                </div>
+                ) : (
+                  <div className="crs_cates cl_1">
+                    <span>{to_title(state)}</span>
+                  </div>
+                )}
               </div>
               <span>{description}</span>
 

@@ -9,6 +9,7 @@ const Checkbox = ({
   name,
   _id,
   action,
+  disabled,
   checked,
 }) => {
   return (
@@ -19,7 +20,7 @@ const Checkbox = ({
         name={name}
         type={type || "checkbox"}
         checked={checked}
-        onChange={() => action(_id)}
+        onChange={() => !disabled && action(_id)}
       />
       <label style={{ ...style }} for={_id} className="checkbox-custom-label">
         {no_capitalise ? title : to_title(title)}
