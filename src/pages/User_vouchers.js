@@ -45,6 +45,13 @@ class User_vouchers extends React.Component {
     this.setState({ open_vouchers, offer_vouchers });
   };
 
+  on_create_open_voucher = (voucher) => {
+    let { open_vouchers } = this.state;
+
+    open_vouchers = new Array(voucher, ...open_vouchers);
+    this.setState({ open_vouchers });
+  };
+
   toggle_create_voucher = () => this.create_voucher?.toggle();
 
   render() {
@@ -165,7 +172,10 @@ class User_vouchers extends React.Component {
               <Modal
                 ref={(create_voucher) => (this.create_voucher = create_voucher)}
               >
-                <Create_open_voucher toggle={this.toggle_create_voucher} />
+                <Create_open_voucher
+                  on_create={this.on_create_open_voucher}
+                  toggle={this.toggle_create_voucher}
+                />
               </Modal>
             </div>
           );

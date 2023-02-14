@@ -29,6 +29,7 @@ class Voucher_purchase_details extends React.Component {
           padding: 20,
           marginLeft: 20,
           marginRight: 20,
+          marginBottom: 20,
         }}
       >
         {copied ? (

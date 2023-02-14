@@ -1,5 +1,25 @@
 import React from "react";
 import Dropdown from "react-bootstrap/Dropdown";
+import { to_title } from "../assets/js/utils/functions";
+
+const Custom_toggle = React.forwardRef(({ children, onClick }, ref) => {
+  return (
+    <a
+      href=""
+      ref={ref}
+      onClick={(e) => {
+        e.preventDefault();
+        onClick(e);
+      }}
+    >
+      <img
+        src={require("../assets/img/ellipsis-vertical-solid.png")}
+        height={24}
+        width={24}
+      />
+    </a>
+  );
+});
 
 class Dropdown_menu extends React.Component {
   constructor(props) {
@@ -13,17 +33,17 @@ class Dropdown_menu extends React.Component {
 
     return (
       <Dropdown>
-        <Dropdown.Toggle>
-          {button || <i className="fa-solid fa-ellipsis-vertical"></i>}
-        </Dropdown.Toggle>
+        <Dropdown.Toggle as={button || Custom_toggle}>X</Dropdown.Toggle>
 
         <Dropdown.Menu>
           {items
-            ? items.map((item, index) => (
-                <Dropdown.Item key={index} onClick={item.action}>
-                  {item.title}
-                </Dropdown.Item>
-              ))
+            ? items.map((item, index) =>
+                item ? (
+                  <Dropdown.Item key={index} onClick={item.action}>
+                    {to_title(item.title)}
+                  </Dropdown.Item>
+                ) : null
+              )
             : null}
         </Dropdown.Menu>
       </Dropdown>

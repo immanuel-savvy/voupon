@@ -11,7 +11,8 @@ class Voucher extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { vendor: this.props.vendor };
+    let { vendor, voucher } = this.props;
+    this.state = { vendor, redeemed: voucher.redeemed };
   }
 
   componentDidMount = async () => {
@@ -24,10 +25,14 @@ class Voucher extends React.Component {
     }
   };
 
+  on_redeem = () => {
+    this.setState({ redeemed: true }, this.redeem_voucher);
+  };
+
   redeem_voucher = () => this.redeem_voucher_.toggle();
 
   render() {
-    let { vendor } = this.state;
+    let { vendor, redeemed } = this.state;
     let { voucher, full, in_vendor } = this.props;
 
     let { logo, _id } = vendor || new Object();
@@ -82,7 +87,9 @@ class Voucher extends React.Component {
                     <Dropdown_menu
                       items={
                         new Array(
-                          { title: "redeem", action: this.redeem_voucher },
+                          redeemed
+                            ? null
+                            : { title: "redeem", action: this.redeem_voucher },
                           { title: "transfer", action: this.transfer }
                         )
                       }
@@ -99,6 +106,7 @@ class Voucher extends React.Component {
               >
                 <Redeem_voucher
                   voucher={voucher}
+                  on_redeem={this.on_redeem}
                   toggle={this.redeem_voucher}
                 />
               </Modal>

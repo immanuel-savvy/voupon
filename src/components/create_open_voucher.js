@@ -43,6 +43,7 @@ class Create_open_voucher extends React.Component {
     this.setState({ firstname, lastname, email });
 
   payment_successful = () => {
+    let { on_create } = this.props;
     let { title, value, firstname, lastname, email, phone, updating } =
       this.state;
 
@@ -62,7 +63,10 @@ class Create_open_voucher extends React.Component {
 
     post_request("create_open_voucher", voucher)
       .then((res) => {
-        this.setState({ updating: false, voucher_code: res.voucher_code });
+        this.setState(
+          { updating: false, voucher_code: res.voucher_code },
+          () => on_create && on_create(res)
+        );
       })
       .catch((e) => console.log(e));
   };
@@ -100,7 +104,7 @@ class Create_open_voucher extends React.Component {
             return <Login action={this.set_details} no_redirect />;
 
           return (
-            <section>
+            <section style={{ paddingTop: 20 }}>
               <div className="container-fluid">
                 <div className="row justify-content-center">
                   <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">

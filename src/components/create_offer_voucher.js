@@ -48,7 +48,7 @@ class Create_offer_voucher extends React.Component {
     let { title, value, duration, quantities, description } = this.state;
 
     return (
-      <section>
+      <section style={{ paddingTop: 20 }}>
         <div className="container-fluid">
           <div className="row justify-content-center">
             <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">

@@ -8,8 +8,10 @@ import Form_divider from "./form_divider";
 import Listempty from "./listempty";
 import Loadindicator from "./loadindicator";
 import Login from "./login";
+import Modal from "./modal";
 import Stretch_button from "./stretch_button";
 import Text_input from "./text_input";
+import Voucher_otp from "./voucher_otp";
 import Voucher_redeemed_details from "./voucher_redeemed_details";
 
 const voucher_types = new Array("open voucher", "offer voucher");
@@ -19,6 +21,8 @@ class Redeem_voucher extends React.Component {
     super(props);
 
     let { voucher } = this.props;
+
+    console.log(voucher);
 
     let voucher_code, email;
     if (voucher) {
@@ -73,9 +77,29 @@ class Redeem_voucher extends React.Component {
   set_details = ({ firstname, lastname, email }) =>
     this.setState({ firstname, lastname, email });
 
-  proceed = async () => {
-    let { bank, account_number, email, voucher_code, voucher_type } =
+  proceed_to_otp = async () => {
+    let { voucher_code, voucher_type } = this.state;
+
+    let result = await post_request("can_redeem_voucher", {
+      user: this.loggeduser._id,
+      voucher_type,
+      voucher_code,
+    });
+
+    if (result && result.can_redeem) {
+      this.setState({ can_redeem: true, voucher: result.voucher });
+
+      this.setState({ requesting_otp: true });
+      result = await post_request(`request_voucher_otp/${result.voucher}`);
+    }
+  };
+
+  proceed = async (otp) => {
+    let { toggle, on_redeem } = this.props;
+    let { bank, account_number, email, voucher, voucher_code, voucher_type } =
       this.state;
+
+    this.setState({ redeeming: true });
 
     let details = {
       bank: bank.code,
@@ -84,20 +108,22 @@ class Redeem_voucher extends React.Component {
       voucher_code,
       voucher_type,
       user: this.loggeduser._id,
+      otp,
+      voucher,
     };
 
-    let result = await post_request("can_redeem_voucher", {
-      user: details.user,
-      voucher_type: details.voucher_type,
-      voucher_code: details.voucher_code,
-    });
+    let result = await post_request("redeem_voucher", details);
+    console.log(result);
 
-    if (result && result.can_redeem) {
-      this.setState({ can_redeem: true });
-      result = await post_request("redeem_voucher", details);
-    }
-
-    this.setState({ message: result.message, redeemed: result.redeemed });
+    on_redeem && on_redeem();
+    this.setState(
+      {
+        message: result.message,
+        redeemed: result.redeemed,
+        redeeming: false,
+      },
+      toggle
+    );
   };
 
   cancel = () => {};
@@ -110,7 +136,7 @@ class Redeem_voucher extends React.Component {
     });
 
   render() {
-    let { toggle } = this.props;
+    let { toggle, voucher } = this.props;
     let {
       voucher_code,
       firstname,
@@ -122,7 +148,9 @@ class Redeem_voucher extends React.Component {
       banks,
       redeemed,
       voucher_type,
+      requesting_otp,
       can_redeem,
+      redeeming,
     } = this.state;
 
     return (
@@ -170,6 +198,13 @@ class Redeem_voucher extends React.Component {
                               firstname,
                               lastname,
                             }}
+                          />
+                        ) : requesting_otp ? (
+                          <Voucher_otp
+                            proceed={this.proceed}
+                            voucher={voucher}
+                            message={message}
+                            redeeming={redeeming}
                           />
                         ) : (
                           <>
@@ -271,7 +306,9 @@ class Redeem_voucher extends React.Component {
 
                             <Stretch_button
                               title={
-                                can_redeem
+                                requesting_otp
+                                  ? "Requesting otp"
+                                  : can_redeem
                                   ? "Redeeming"
                                   : proceeding
                                   ? "Verifying voucher"
@@ -279,7 +316,7 @@ class Redeem_voucher extends React.Component {
                               }
                               loading={proceeding}
                               disabled={!this.is_set()}
-                              action={() => this.proceed()}
+                              action={() => this.proceed_to_otp()}
                             />
                           </>
                         )}
@@ -288,6 +325,9 @@ class Redeem_voucher extends React.Component {
                   </div>
                 </div>
               </div>
+              {/* <Modal ref={(otp) => (this.otp = otp)}>
+                <Voucher_otp proceed={this.proceed} voucher={voucher} />
+              </Modal> */}
             </section>
           );
         }}
