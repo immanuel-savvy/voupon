@@ -3,6 +3,7 @@ import Preview_image from "./preview_image";
 import Text_btn from "./text_btn";
 import Modal from "./modal";
 import Create_offer_voucher from "./create_offer_voucher";
+import Close_vendor_account from "./close_vendor_account";
 
 class Vendor_header extends React.Component {
   constructor(props) {
@@ -12,6 +13,8 @@ class Vendor_header extends React.Component {
   }
 
   toggle_create_offer_voucher = () => this.create_offer_voucher.toggle();
+
+  toggle_close_vendor_account = () => this.close_vendor_account.toggle();
 
   render() {
     let { vendor, loggeduser } = this.props;
@@ -67,6 +70,11 @@ class Vendor_header extends React.Component {
                 text="Create offer voucher"
                 action={this.toggle_create_offer_voucher}
               />
+              <Text_btn
+                style={{ color: "red" }}
+                text="Close vendor account"
+                action={this.toggle_close_vendor_account}
+              />
             </div>
           </div>
         </div>
@@ -79,6 +87,17 @@ class Vendor_header extends React.Component {
           <Create_offer_voucher
             vendor={vendor}
             toggle={this.toggle_create_offer_voucher}
+          />
+        </Modal>
+
+        <Modal
+          ref={(close_vendor_account) =>
+            (this.close_vendor_account = close_vendor_account)
+          }
+        >
+          <Close_vendor_account
+            vendor={vendor}
+            toggle={this.toggle_close_vendor_account}
           />
         </Modal>
       </div>

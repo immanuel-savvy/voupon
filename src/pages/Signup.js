@@ -40,6 +40,7 @@ class Signup extends React.Component {
     let res = await post_request("signup", user);
     if (!res._id) return this.setState({ message: res, loading: false });
 
+    delete user.password;
     user._id = res._id;
     user.created = res.created;
     this.reset_state();

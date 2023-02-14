@@ -199,7 +199,9 @@ class Custom_Nav extends React.Component {
                                   className="text-white"
                                 >
                                   {loggeduser
-                                    ? `${loggeduser.firstname} ${loggeduser.lastname}`
+                                    ? to_title(
+                                        `${loggeduser.firstname} ${loggeduser.lastname}`
+                                      )
                                     : "Get Started"}
                                 </Link>
                               </li>

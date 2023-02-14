@@ -18,7 +18,19 @@ class Redeem_voucher extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { voucher_type: voucher_types[0] };
+    let { voucher } = this.props;
+
+    let voucher_code, email;
+    if (voucher) {
+      voucher_code = voucher.voucher_code;
+      email = voucher.email;
+    }
+
+    this.state = {
+      voucher_code,
+      email,
+      voucher_type: voucher_types[voucher.vendor ? 1 : 0],
+    };
   }
 
   componentDidMount = async () => {

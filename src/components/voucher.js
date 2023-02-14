@@ -2,6 +2,9 @@ import React from "react";
 import { client_domain, domain } from "../assets/js/utils/constants";
 import { get_request } from "../assets/js/utils/services";
 import { Loggeduser } from "../Contexts";
+import Dropdown_menu from "./dropdown_menu";
+import Modal from "./modal";
+import Redeem_voucher from "./redeem_voucher";
 import Text_btn from "./text_btn";
 
 class Voucher extends React.Component {
@@ -20,6 +23,8 @@ class Voucher extends React.Component {
       this.setState({ vendor });
     }
   };
+
+  redeem_voucher = () => this.redeem_voucher_.toggle();
 
   render() {
     let { vendor } = this.state;
@@ -71,8 +76,32 @@ class Voucher extends React.Component {
                     </li>
                   </ul>
                 </div>
+
+                <div className="edu_cat_data">
+                  <div className="meta">
+                    <Dropdown_menu
+                      items={
+                        new Array(
+                          { title: "redeem", action: this.redeem_voucher },
+                          { title: "transfer", action: this.transfer }
+                        )
+                      }
+                    />
+                  </div>
+                </div>
               </div>
               <span>{description}</span>
+
+              <Modal
+                ref={(redeem_voucher_) =>
+                  (this.redeem_voucher_ = redeem_voucher_)
+                }
+              >
+                <Redeem_voucher
+                  voucher={voucher}
+                  toggle={this.redeem_voucher}
+                />
+              </Modal>
             </div>
           );
         }}
