@@ -9,8 +9,12 @@ class Voucher_otp extends React.Component {
   }
 
   render() {
-    let { toggle, redeeming, clear_message, message, proceed } = this.props;
+    let { toggle, redeeming, tranferring, clear_message, message, proceed } =
+      this.props;
     let { code } = this.state;
+
+    let title = redeeming ? "redeem" : "transfer";
+    redeeming = redeeming || tranferring;
 
     return (
       <div>
@@ -57,7 +61,7 @@ class Voucher_otp extends React.Component {
 
                 <div class="form-group">
                   <Stretch_button
-                    title={redeeming ? "redeeming" : "redeem"}
+                    title={redeeming ? `${title}ing` : title}
                     action={() => proceed && proceed(code)}
                     disabled={redeeming}
                   />

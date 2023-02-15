@@ -342,3 +342,4 @@ class Redeem_voucher extends React.Component {
 }
 
 export default Redeem_voucher;
+export { voucher_types };
