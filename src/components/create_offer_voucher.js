@@ -20,7 +20,7 @@ class Create_offer_voucher extends React.Component {
     let offer = {
       title,
       value,
-      quantities,
+      quantities: Number(quantities),
       description,
       duration: new Date(duration).getTime(),
       vendor: vendor._id,

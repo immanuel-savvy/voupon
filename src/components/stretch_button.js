@@ -1,4 +1,5 @@
 import React from "react";
+import Loadindicator from "./loadindicator";
 
 class Stretch_button extends React.Component {
   constructor(props) {
@@ -8,7 +9,9 @@ class Stretch_button extends React.Component {
   }
 
   render() {
-    let { title, action, disabled } = this.props;
+    let { title, action, loading, disabled } = this.props;
+
+    if (loading) disabled = loading;
 
     return (
       <button
@@ -22,6 +25,8 @@ class Stretch_button extends React.Component {
         style={{ textTransform: "capitalize" }}
       >
         {title}
+
+        {loading ? <Loadindicator small /> : null}
       </button>
     );
   }

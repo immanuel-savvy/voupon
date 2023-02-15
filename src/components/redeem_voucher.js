@@ -111,7 +111,6 @@ class Redeem_voucher extends React.Component {
     };
 
     let result = await post_request("redeem_voucher", details);
-    console.log(result);
 
     if (result && !result.voucher)
       return this.setState({ message: result.message, redeeming: false });
@@ -207,6 +206,10 @@ class Redeem_voucher extends React.Component {
                             proceed={this.proceed}
                             voucher={voucher}
                             message={message}
+                            email={email || this.loggeduser?.email}
+                            toggle={() =>
+                              this.setState({ requesting_otp: false })
+                            }
                             clear_message={this.clear_message}
                             redeeming={redeeming}
                           />

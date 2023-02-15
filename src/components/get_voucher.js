@@ -47,6 +47,7 @@ class Get_voucher extends React.Component {
       voucher: voucher._id,
       lastname,
       phone,
+      vendor: voucher.vendor._id || voucher.vendor,
     })
       .then((res) => {
         this.setState({ updating: false, voucher_code: res.voucher_code });
@@ -172,7 +173,6 @@ class Get_voucher extends React.Component {
                                 disabled={!this.is_set()}
                                 loading={updating}
                                 action={() => {
-                                  console.log("what?");
                                   initializePayment(
                                     this.payment_successful,
                                     this.cancel

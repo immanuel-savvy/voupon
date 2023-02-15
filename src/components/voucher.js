@@ -33,10 +33,13 @@ class Voucher extends React.Component {
 
   redeem_voucher = () => this.redeem_voucher_?.toggle();
 
+  on_tranfer = () => this.setState({ transferred: true });
+
   transfer_voucher = () => this.transfer_voucher_?.toggle();
 
   render() {
-    let { vendor, redeemed } = this.state;
+    let { vendor, redeemed, transferred } = this.state;
+
     let { voucher, full, in_vendor, voucher_code } = this.props;
 
     let { logo, _id } = vendor || new Object();
@@ -45,6 +48,7 @@ class Voucher extends React.Component {
 
     if (!state) state = "unused";
     if (redeemed) state = "redeemed";
+    if (transferred) state = "transferred";
 
     return (
       <Loggeduser>
@@ -89,18 +93,16 @@ class Voucher extends React.Component {
                   </ul>
                 </div>
 
-                {state === "unused" ? (
+                {full || in_vendor ? null : state === "unused" ? (
                   <div className="edu_cat_data">
                     <div className="meta">
                       <Dropdown_menu
                         items={
                           new Array(
-                            redeemed
-                              ? null
-                              : {
-                                  title: "redeem",
-                                  action: this.redeem_voucher,
-                                },
+                            {
+                              title: "redeem",
+                              action: this.redeem_voucher,
+                            },
                             { title: "transfer", action: this.transfer_voucher }
                           )
                         }
@@ -134,7 +136,7 @@ class Voucher extends React.Component {
               >
                 <Transfer_voucher
                   voucher={{ ...voucher, voucher_code }}
-                  on_redeem={this.on_tranfer}
+                  on_tranfer={this.on_tranfer}
                   toggle={this.transfer_voucher}
                 />
               </Modal>

@@ -25,6 +25,12 @@ class Transfer_voucher extends React.Component {
     };
   }
 
+  componentDidMount = () => {
+    let { email } = this.state;
+    if (!email && this.loggeduser)
+      this.setState({ email: this.loggeduser.email });
+  };
+
   is_set = () => {
     let { email, email2, voucher_code, message } = this.state;
 
@@ -82,7 +88,6 @@ class Transfer_voucher extends React.Component {
     };
 
     let result = await post_request("transfer_voucher", details);
-    console.log(result);
 
     if (result && !result.voucher)
       return this.setState({ message: result.message, transfering: false });
@@ -145,6 +150,7 @@ class Transfer_voucher extends React.Component {
                             proceed={this.proceed}
                             voucher={voucher}
                             message={message}
+                            email={email}
                             toggle={() =>
                               this.setState({ requesting_otp: false })
                             }

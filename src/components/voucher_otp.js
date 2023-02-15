@@ -9,16 +9,31 @@ class Voucher_otp extends React.Component {
   }
 
   render() {
-    let { toggle, redeeming, tranferring, clear_message, message, proceed } =
-      this.props;
+    let {
+      toggle,
+      redeeming,
+      tranferring,
+      email,
+      clear_message,
+      message,
+      proceed,
+    } = this.props;
     let { code } = this.state;
 
-    let title = redeeming ? "redeem" : "transfer";
+    let title = redeeming || !tranferring ? "redeem" : "transfer";
     redeeming = redeeming || tranferring;
 
     return (
       <div>
         <div class="modal-content overli" id="loginmodal">
+          <span
+            className="text-info"
+            style={{ marginTop: 10, textAlign: "center", fontSize: 16 }}
+          >
+            Voucher OTP has been sent to <br />
+            <b>{email || "test@mail.com"}</b>
+          </span>
+
           <div class="modal-header">
             <h5 class="modal-title">Enter Voucher OTP</h5>
             <button

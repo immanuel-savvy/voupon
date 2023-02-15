@@ -10,9 +10,13 @@ class Unverified_vendor extends React.Component {
     this.state = {};
   }
 
+  on_verify = () => this.setState({ verified: true });
+
   toggle_verification_details = () => this.verification_details.toggle();
 
   render() {
+    if (this.state.verified) return;
+
     let { vendor } = this.props;
     let { name, logo, description, director, email, address } = vendor;
     let { firstname, lastname, email: director_email } = director;
@@ -53,6 +57,7 @@ class Unverified_vendor extends React.Component {
           <Vendor_verification_details
             toggle={this.toggle_verification_details}
             vendor={vendor}
+            on_verify={this.on_verify}
           />
         </Modal>
       </div>

@@ -66,15 +66,19 @@ class Vendor_header extends React.Component {
                 </div>
               </div>
 
-              <Text_btn
-                text="Create offer voucher"
-                action={this.toggle_create_offer_voucher}
-              />
-              <Text_btn
-                style={{ color: "red" }}
-                text="Close vendor account"
-                action={this.toggle_close_vendor_account}
-              />
+              {vendor.verified ? (
+                <>
+                  <Text_btn
+                    text="Create offer voucher"
+                    action={this.toggle_create_offer_voucher}
+                  />
+                  <Text_btn
+                    style={{ color: "red" }}
+                    text="Close vendor account"
+                    action={this.toggle_close_vendor_account}
+                  />
+                </>
+              ) : null}
             </div>
           </div>
         </div>

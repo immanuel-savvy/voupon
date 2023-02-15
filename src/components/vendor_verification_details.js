@@ -1,6 +1,7 @@
 import React from "react";
 import { domain } from "../assets/js/utils/constants";
 import { post_request } from "../assets/js/utils/services";
+import Alert_box from "./alert_box";
 import Form_divider from "./form_divider";
 import Preview_image from "./preview_image";
 import Stretch_button from "./stretch_button";
@@ -17,14 +18,23 @@ class Vendor_verification_details extends React.Component {
   url = (file) => window.open(`${domain}/files/${file}`);
 
   verify = async () => {
+    let { loading } = this.state;
+    if (loading) return;
+
+    this.setState({ loading: true });
     let { vendor, toggle, on_verify } = this.props;
 
     let res = await post_request(`verify_vendor/${vendor._id}`);
+
+    if (res && res.message)
+      return this.setState({ message: res.message, loading: false });
+
     if (res.verified) on_verify && on_verify(vendor._id);
     else toggle && toggle();
   };
 
   render() {
+    let { loading, message } = this.state;
     let { vendor, toggle } = this.props;
     let {
       name,
@@ -97,7 +107,9 @@ class Vendor_verification_details extends React.Component {
 
               <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                 <div className="form-group">
-                  <label>{id_type || "Proof of Identity"}</label>
+                  <label style={{ textTransform: "capitalize" }}>
+                    {(id_type || "Proof of Identity").replace(/_/g, " ")}
+                  </label>
                   <br />
                   <Text_btn text={ID} action={() => this.url(ID)} />
                 </div>
@@ -113,7 +125,13 @@ class Vendor_verification_details extends React.Component {
                 </div>
               </div>
 
-              <Stretch_button title="verify" action={this.verify} />
+              {message ? <Alert_box message={message} /> : null}
+
+              <Stretch_button
+                title={"verify"}
+                loading={loading}
+                action={this.verify}
+              />
               <div style={{ marginBottom: 24 }} />
             </div>
           </div>

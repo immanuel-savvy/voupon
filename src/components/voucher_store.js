@@ -22,7 +22,10 @@ class Voucher_store extends React.Component {
         <div class="cates_crs_wrip">
           <div class="crs_trios">
             <div class="crs_cate_icon">
-              <img style={{ maxHeight: 40 }} src={`${domain}/images/${logo}`} />
+              <img
+                style={{ maxHeight: 40, maxWidth: 100 }}
+                src={`${domain}/images/${logo}`}
+              />
             </div>
             <div onClick={this.toggle_get_voucher} class="crs_cate_link">
               <a href="#">Purchase</a>

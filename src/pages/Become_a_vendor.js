@@ -149,16 +149,16 @@ class Become_a_vendor extends handle_file_upload {
 
     let res = await post_request("request_to_become_a_vendor", documents);
     if (res._id) {
-      this.setState({ details: res }, this.toggle_success_modal);
+      this.setState({ details: res });
 
       this.loggeduser.vendor = res._id;
       this.loggeduser.vendor_status = "pending";
-      this.set_loggeduser(this.loggeduser);
+      this.set_loggeduser(this.loggeduser, () =>
+        this.setState({ loading: false }, () =>
+          window.location.assign(`${client_domain}/vendor`)
+        )
+      );
     } else this.setState({ message: res.message });
-
-    this.setState({ loading: false }, () =>
-      window.location.assign(`${client_domain}/vendor`)
-    );
   };
 
   toggle_success_modal = () => this.success_modal.toggle();
@@ -466,16 +466,6 @@ class Become_a_vendor extends handle_file_upload {
               )}
 
               <Footer />
-
-              <Modal
-                ref={(success_modal) => (this.success_modal = success_modal)}
-              >
-                <Become_a_vender_request
-                  details={details}
-                  no_drop_on_backdrop
-                  toggle={this.toggle_success_modal}
-                />
-              </Modal>
             </div>
           );
         }}
