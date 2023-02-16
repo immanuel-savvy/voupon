@@ -23,23 +23,15 @@ class Vendor extends React.Component {
 
   render() {
     let { vendor } = this.props;
-    let {
-      name,
-      verified,
-      logo,
-      description,
-      director,
-      category,
-      email,
-      address,
-    } = vendor;
+    let { name, verified, logo, description, category, email, _id, address } =
+      vendor;
 
     return (
       <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
         <div class="crs_trt_grid">
           <div class="crs_trt_thumb circle">
             <Link
-              to="/vendor"
+              to={`/vendor?${_id}`}
               onClick={this.save_vendor}
               class="crs_trt_thum_link"
             >
@@ -52,7 +44,7 @@ class Vendor extends React.Component {
             </div>
             <div class="instructor_title">
               <h4>
-                <Link to="/vendor" onClick={this.save_vendor}>
+                <Link to={`/vendor?${_id}`} onClick={this.save_vendor}>
                   {name}
                 </Link>
               </h4>
@@ -64,7 +56,7 @@ class Vendor extends React.Component {
           <div class="crs_trt_footer">
             {verified ? (
               <div class="crs_trt_ent">
-                <Link to="/vendor" onClick={this.save_vendor}>
+                <Link to={`/vendor?${_id}`} onClick={this.save_vendor}>
                   <Text_btn text="View vendor" />
                 </Link>
               </div>

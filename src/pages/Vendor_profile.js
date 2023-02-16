@@ -27,8 +27,8 @@ class Vendor_profile extends React.Component {
 
   componentDidMount = async () => {
     let vendor = window.sessionStorage.getItem("vendor");
-    let vendor_id = window.location.href.split("?")[1].trim();
-    if (!(vendor_id && vendor_id.startsWith("vendors~")))
+    let vendor_id = window.location.href.split("?")[1];
+    if (!(vendor_id && vendor_id.trim().startsWith("vendors~")))
       vendor_id = this.loggeduser?.vendor;
 
     if (vendor) vendor = JSON.parse(vendor);

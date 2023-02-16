@@ -1,6 +1,6 @@
 import React from "react";
 import { domain } from "../assets/js/utils/constants";
-import { to_title } from "../assets/js/utils/functions";
+import { commalise_figures, to_title } from "../assets/js/utils/functions";
 import { get_request } from "../assets/js/utils/services";
 import { Loggeduser } from "../Contexts";
 import Dropdown_menu from "./dropdown_menu";
@@ -37,6 +37,8 @@ class Voucher extends React.Component {
 
   transfer_voucher = () => this.transfer_voucher_?.toggle();
 
+  remove_voucher = () => {};
+
   render() {
     let { vendor, redeemed, transferred } = this.state;
 
@@ -70,14 +72,14 @@ class Voucher extends React.Component {
                     <a href="#">{title}</a>
                     {in_vendor && loggeduser && loggeduser.vendor === _id ? (
                       <div>
-                        <Text_btn text="Remove" />
+                        <Text_btn text="Remove" action={this.remove_voucher} />
                       </div>
                     ) : null}
                   </h4>
                   <ul className="meta">
                     <li style={{ fontWeight: "bold" }} className="video">
                       <span>&#8358;</span>
-                      {value}
+                      {commalise_figures(Number(value))}
                     </li>
 
                     {in_vendor ? (

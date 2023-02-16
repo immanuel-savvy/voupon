@@ -20,6 +20,15 @@ const means_of_id = new Array(
   "voters_card"
 );
 
+const categories = new Array(
+  "Digital service",
+  "Education",
+  "Entertainment",
+  "Fashion and beauty",
+  "Cooperate service",
+  "Artisan service"
+).map((cat) => new Object({ _id: cat, title: cat }));
+
 class Become_a_vendor extends handle_file_upload {
   constructor(props) {
     super(props);
@@ -45,10 +54,17 @@ class Become_a_vendor extends handle_file_upload {
     let loggeduser = window.sessionStorage.getItem("loggeduser");
 
     if (loggeduser) {
+      loggeduser = JSON.parse(loggeduser);
+
+      if (loggeduser.vendor) {
+        return window.location.assign(
+          `${client_domain}/vendor?${loggeduser.vendor}`
+        );
+      }
+
       this.setState({ render: true }, () => {
         if (!this.loggeduser) {
           try {
-            loggeduser = JSON.parse(loggeduser);
             this.login(loggeduser);
             this.set_director(loggeduser);
           } catch (e) {}
@@ -60,14 +76,7 @@ class Become_a_vendor extends handle_file_upload {
     }
 
     this.setState({
-      categories: new Array(
-        "Digital service",
-        "Education",
-        "Entertainment",
-        "Fashion and beauty",
-        "Cooperate service",
-        "Artisan service"
-      ).map((cat) => new Object({ _id: cat, title: cat })),
+      categories,
     });
   };
 
@@ -583,3 +592,4 @@ class Become_a_vendor extends handle_file_upload {
 }
 
 export default Become_a_vendor;
+export { categories };
