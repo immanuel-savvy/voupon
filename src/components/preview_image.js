@@ -52,8 +52,8 @@ class Preview_image extends React.Component {
           ) : (
             <Blurhash
               hash={image_hash}
-              height={height || 210}
-              width={width || 600}
+              height={height || 21}
+              width={width || 60}
               className={class_name || "img-fluid rounded"}
               punch={1}
               onClick={onclick}

@@ -114,6 +114,30 @@ const _id = (prefix) => {
   return `${prefix}~${random_value}~${Date.now()}`;
 };
 
+const commalise_figures = (figure) => {
+  if (typeof figure !== "number") {
+    return figure;
+  }
+
+  if (figure >= 1e21) return figure.toLocaleString("fullwide");
+
+  figure = figure.toString();
+  if (figure.length <= 3) return figure;
+
+  let ff = "",
+    i;
+  for (i = 0; i < figure.length; i += 3)
+    ff = `${figure.slice(figure.length - i - 3, figure.length - i)},${ff}`;
+
+  if (i < figure.length) ff = `${figure.slice(0, i)}${ff}`;
+  else if (i > figure.length) {
+    ff = `${figure.slice(0, figure.length % 3)}${ff}`;
+  }
+  if (ff.startsWith(",")) ff = ff.slice(1);
+
+  return ff.slice(0, -1);
+};
+
 export {
   _id,
   to_title,
@@ -125,4 +149,5 @@ export {
   next_quarter,
   shuffle_array,
   countdown,
+  commalise_figures,
 };

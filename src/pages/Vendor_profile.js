@@ -28,7 +28,9 @@ class Vendor_profile extends React.Component {
   componentDidMount = async () => {
     if (!this.loggeduser) return window.history.go(-1);
 
-    let vendor = await get_request(`vendor/${this.loggeduser.vendor}`);
+    let vendor = window.sessionStorage.getItem("vendor");
+    if (vendor) vendor = JSON.parse(vendor);
+    vendor = vendor || (await get_request(`vendor/${this.loggeduser.vendor}`));
 
     if (!vendor || (vendor && !vendor._id))
       return window.location.assign(client_domain);
@@ -63,23 +65,27 @@ class Vendor_profile extends React.Component {
                             id="uncontrolled-tab-example"
                             className="mb-3"
                           >
-                            {vendor_tabs.map((tab) => (
-                              <Tab
-                                eventKey={tab}
-                                title={to_title(tab)}
-                                key={tab}
-                              >
-                                {tab === "vouchers" ? (
-                                  <Vendor_vouchers vendor={vendor} />
-                                ) : tab === "coupons" ? (
-                                  <Vendor_coupons vendor={vendor} />
-                                ) : tab === "tickets" ? (
-                                  <Vendor_tickets vendor={vendor} />
-                                ) : tab === "settings" ? (
-                                  <Vendor_settings vendor={vendor} />
-                                ) : null}
-                              </Tab>
-                            ))}
+                            {vendor_tabs.map((tab) =>
+                              tab === vendor_tabs[3] &&
+                              (!loggeduser ||
+                                vendor.user !== loggeduser?._id) ? null : (
+                                <Tab
+                                  eventKey={tab}
+                                  title={to_title(tab)}
+                                  key={tab}
+                                >
+                                  {tab === "vouchers" ? (
+                                    <Vendor_vouchers vendor={vendor} />
+                                  ) : tab === "coupons" ? (
+                                    <Vendor_coupons vendor={vendor} />
+                                  ) : tab === "tickets" ? (
+                                    <Vendor_tickets vendor={vendor} />
+                                  ) : tab === "settings" ? (
+                                    <Vendor_settings vendor={vendor} />
+                                  ) : null}
+                                </Tab>
+                              )
+                            )}
                           </Tabs>
                         ) : (
                           <div style={{ textAlign: "center" }}>

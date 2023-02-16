@@ -58,6 +58,17 @@ class Become_a_vendor extends handle_file_upload {
       window.sessionStorage.setItem("redirect", window.location.href);
       window.location.assign(`${client_domain}/login`);
     }
+
+    this.setState({
+      categories: new Array(
+        "Digital service",
+        "Education",
+        "Entertainment",
+        "Fashion and beauty",
+        "Cooperate service",
+        "Artisan service"
+      ).map((cat) => new Object({ _id: cat, title: cat })),
+    });
   };
 
   is_set = () => {
@@ -65,6 +76,7 @@ class Become_a_vendor extends handle_file_upload {
       director,
       attest,
       rc_number,
+      category,
       name,
       email,
       address,
@@ -83,6 +95,7 @@ class Become_a_vendor extends handle_file_upload {
       !address ||
       !ID_type ||
       !logo ||
+      !category ||
       description ||
       !cac ||
       !attest
@@ -105,6 +118,8 @@ class Become_a_vendor extends handle_file_upload {
     return true;
   };
 
+  set_category = ({ target }) => this.setState({ category: target.value });
+
   set_ID_type = (means) =>
     this.setState({
       ID_type: means,
@@ -121,9 +136,11 @@ class Become_a_vendor extends handle_file_upload {
       ID_type,
       logo,
       cac,
+      category,
       description,
       cac_filename,
       logo_filename,
+      website,
     } = this.state;
     if (loading) return;
 
@@ -137,9 +154,11 @@ class Become_a_vendor extends handle_file_upload {
       rc_number,
       name,
       email,
+      category,
       address,
       description,
       logo,
+      website,
       cac,
       user: this.loggeduser._id,
       id_type: ID_type,
@@ -182,8 +201,9 @@ class Become_a_vendor extends handle_file_upload {
       rc_number,
       description,
       logo_oversize,
+      website,
       cac_oversize,
-      details,
+      categories,
     } = this.state;
 
     let ID_filename = this.state[`${ID_type}_filename`];
@@ -297,6 +317,54 @@ class Become_a_vendor extends handle_file_upload {
                                   }
                                   important
                                 />
+
+                                <Text_input
+                                  value={website}
+                                  title="brand website"
+                                  placeholder="https://www.brand.com"
+                                  action={(website) =>
+                                    this.setState({
+                                      website,
+                                      message: "",
+                                    })
+                                  }
+                                />
+
+                                <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 form-group smalls">
+                                  <label>Category</label>
+                                  {categories ? (
+                                    categories.length ? (
+                                      <div className="simple-input">
+                                        <select
+                                          id="category"
+                                          onChange={this.set_category}
+                                          className="form-control"
+                                        >
+                                          <option value="">
+                                            -- Select your brand category --
+                                          </option>
+                                          {categories.map((category) => (
+                                            <option
+                                              key={category._id}
+                                              value={category._id}
+                                            >
+                                              {to_title(
+                                                category.title.replace(
+                                                  /_/g,
+                                                  " "
+                                                )
+                                              )}
+                                            </option>
+                                          ))}
+                                        </select>
+                                      </div>
+                                    ) : (
+                                      <Listempty text="Cannot get categories." />
+                                    )
+                                  ) : (
+                                    <Loadindicator smalls />
+                                  )}
+                                </div>
 
                                 <File_input
                                   title="logo"

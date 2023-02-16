@@ -45,6 +45,12 @@ class Adminstrator extends React.Component {
       this.setState({ current_nav: nav_title }, scroll_to_top);
 
     emitter.listen("dash_nav_click", this.dash_nav_click);
+
+    let logged_admin = window.sessionStorage.getItem("logged_admin");
+    if (logged_admin) {
+      logged_admin = JSON.parse(logged_admin);
+      this.log_admin(logged_admin);
+    }
   };
 
   componentWillUnmount = () => {
@@ -67,6 +73,8 @@ class Adminstrator extends React.Component {
     return (
       <Logged_admin.Consumer>
         {({ admin_logged, log_admin }) => {
+          this.log_admin = log_admin;
+
           return admin_logged ? (
             <div id="main-wrapper">
               <Nav page="dashboard" />

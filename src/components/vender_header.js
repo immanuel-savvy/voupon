@@ -18,10 +18,11 @@ class Vendor_header extends React.Component {
 
   render() {
     let { vendor, loggeduser } = this.props;
-    if (!loggeduser || !vendor) return;
+    if (!vendor) return;
 
-    let { logo, name, logo_hash, offer_vouchers } = vendor;
-    let { firstname, lastname } = loggeduser;
+    let { logo, name, logo_hash, offer_vouchers, user, director } = vendor;
+    let { firstname, lastname } = director;
+    let { _id } = loggeduser || new Object();
 
     return (
       <div className="ed_detail_head">
@@ -66,7 +67,7 @@ class Vendor_header extends React.Component {
                 </div>
               </div>
 
-              {vendor.verified ? (
+              {vendor.verified && user === _id ? (
                 <>
                   <Text_btn
                     text="Create offer voucher"

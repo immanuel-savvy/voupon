@@ -34,6 +34,7 @@ let navs = new Array(
 
 let subnavs = new Object({
   vouchers: new Array(
+    "vouchers",
     "my_vouchers",
     "create_voucher",
     "redeem_voucher",
@@ -49,6 +50,8 @@ class Custom_Nav extends React.Component {
   }
 
   my_vouchers = () => window.location.assign(`${client_domain}/user_vouchers`);
+
+  vouchers = () => window.location.assign(`${client_domain}/vouchers`);
 
   create_voucher = () => this.create_voucher_?.toggle();
 
@@ -81,8 +84,8 @@ class Custom_Nav extends React.Component {
               <div
                 className="header"
                 style={{
-                  backgroundColor: "#000",
-                  color: "#fff",
+                  backgroundColor: "#fff",
+                  color: "#000",
                   position: "fixed",
                   width: "100vw",
                 }}
@@ -92,13 +95,13 @@ class Custom_Nav extends React.Component {
                     id="navigation"
                     className="navigation navigation-landscape"
                   >
-                    <Navbar dark expand="lg">
+                    <Navbar expand="lg">
                       <NavbarBrand href="/" className="nav-brand">
                         {/* <img src="assets/img/logo.png" className="logo" alt="" /> */}
-                        <h2 className="text-light">Voupon</h2>
+                        <h2 className="text-dark">Voupon</h2>
                       </NavbarBrand>
                       <NavbarToggler
-                        style={{ color: "#fff" }}
+                        style={{ color: "#000" }}
                         onClick={this.toggle}
                       />
 
@@ -150,7 +153,7 @@ class Custom_Nav extends React.Component {
                                     )
                                   }
                                 >
-                                  <span style={{ color: "#fff" }}>
+                                  <span style={{ color: "#000" }}>
                                     {to_title(nav.replace(/_/g, " "))}
                                   </span>
                                 </DropdownToggle>
@@ -184,7 +187,7 @@ class Custom_Nav extends React.Component {
                                   className="alio_green"
                                   data-toggle="modal"
                                   data-target="#login"
-                                  style={{ color: "#fff", marginRight: 20 }}
+                                  style={{ color: "#000", marginRight: 20 }}
                                 >
                                   <i className="fas fa-sign-in-alt mr-1"></i>
                                   <span className="dn-lg">
@@ -216,7 +219,7 @@ class Custom_Nav extends React.Component {
                                     style={{ textDecorationColor: "none" }}
                                     to={`/${nav.replace(/ /g, "_")}`}
                                   >
-                                    <span style={{ color: "#fff" }}>
+                                    <span style={{ color: "#000" }}>
                                       {to_title(nav.replace(/_/g, " "))}
                                     </span>
                                   </Link>

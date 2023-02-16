@@ -1,5 +1,6 @@
 import React from "react";
-import { post_request } from "../assets/js/utils/services";
+import { get_request, post_request } from "../assets/js/utils/services";
+import Explore_more from "../components/explore_more";
 import Loadindicator from "../components/loadindicator";
 import Voucher_store from "../components/voucher_store";
 
@@ -11,13 +12,13 @@ class Featured_vouchers extends React.Component {
   }
 
   componentDidMount = async () => {
-    let vouchers = await post_request("get_offer_vouchers/10");
+    let { vouchers, vendors } = await get_request("get_offer_vouchers/10");
 
-    this.setState({ vouchers });
+    this.setState({ vouchers, vendors });
   };
 
   render() {
-    let { vouchers } = this.state;
+    let { vouchers, vendors } = this.state;
     if (vouchers && !vouchers.length) return;
 
     return (
@@ -27,12 +28,10 @@ class Featured_vouchers extends React.Component {
             <div class="col-lg-7 col-md-8">
               <div class="sec-heading center">
                 <h2>
-                  explore Featured <span class="theme-cl">Cources</span>
+                  explore Offer <span class="theme-cl">Vouchers</span>
                 </h2>
                 <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                  Ut enim ad minim veniam.
+                  Get vouchers by your favorite vendors at discounted prices
                 </p>
               </div>
             </div>
@@ -40,12 +39,21 @@ class Featured_vouchers extends React.Component {
           <div class="row justify-content-center">
             {vouchers ? (
               vouchers.map((voucher) => (
-                <Voucher_store voucher={voucher} vendor={voucher.vendor} />
+                <Voucher_store
+                  voucher={voucher}
+                  vendor={
+                    voucher.vendor?._id
+                      ? voucher.vendor
+                      : vendors[voucher.vendor]
+                  }
+                />
               ))
             ) : (
               <Loadindicator />
             )}
           </div>
+
+          <Explore_more to="vouchers" />
         </div>
       </section>
     );

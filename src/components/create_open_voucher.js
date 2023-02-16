@@ -127,7 +127,7 @@ class Create_open_voucher extends React.Component {
 
                         <div className="rcs_log_124">
                           <div className="Lpo09">
-                            <h4>Create Voucher</h4>
+                            <h4>Open Voucher</h4>
                           </div>
                         </div>
 

@@ -1,5 +1,6 @@
 import React from "react";
 import { domain } from "../assets/js/utils/constants";
+import { commalise_figures } from "../assets/js/utils/functions";
 import Get_voucher from "./get_voucher";
 import Modal from "./modal";
 
@@ -33,7 +34,7 @@ class Voucher_store extends React.Component {
           </div>
           <div class="crs_capt_cat">
             <h4>{title}</h4>
-            <p>&#8358; {value}</p>
+            <p>&#8358; {commalise_figures(Number(value))}</p>
 
             <span>{address}</span>
 

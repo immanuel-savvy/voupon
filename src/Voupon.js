@@ -1,4 +1,5 @@
 import React from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
 import "./assets/css/styles.css";
 import "./assets/css/custom.css";
 import { Loggeduser, Logged_admin, Nav_context } from "./Contexts";

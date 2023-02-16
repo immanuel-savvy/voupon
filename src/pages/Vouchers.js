@@ -44,12 +44,12 @@ class Vouchers extends React.Component {
                   <h2>
                     Your favorite vouchers <span class="theme-cl"></span>
                   </h2>
-                  <p>Find vouchers to your favorite vouchers here. </p>
+                  <p>Find vouchers to your favorite vendors here. </p>
                   <p>
                     or{" "}
                     <Text_btn
                       action={this.toggle_create_voucher}
-                      text="Create Voucher"
+                      text="Create Open Voucher"
                       style={{ fontSize: 18, fontWeight: "bold" }}
                     />
                   </p>
