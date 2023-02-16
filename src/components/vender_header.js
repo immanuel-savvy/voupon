@@ -4,6 +4,7 @@ import Text_btn from "./text_btn";
 import Modal from "./modal";
 import Create_offer_voucher from "./create_offer_voucher";
 import Close_vendor_account from "./close_vendor_account";
+import Small_btn from "./small_btn";
 
 class Vendor_header extends React.Component {
   constructor(props) {
@@ -69,13 +70,13 @@ class Vendor_header extends React.Component {
 
               {vendor.verified && user === _id ? (
                 <>
-                  <Text_btn
-                    text="Create offer voucher"
+                  <Small_btn
+                    title="Create offer voucher"
                     action={this.toggle_create_offer_voucher}
                   />
-                  <Text_btn
-                    style={{ color: "red" }}
-                    text="Close vendor account"
+                  <Small_btn
+                    variant="danger"
+                    title="Close vendor account"
                     action={this.toggle_close_vendor_account}
                   />
                 </>

@@ -5,6 +5,7 @@ import Featured_vouchers from "../sections/featured_vouchers";
 import Footer from "../sections/footer";
 import Hero_banner from "../sections/hero_banner";
 import Nav from "../sections/nav";
+import Our_vendors from "../sections/our_vendors";
 
 class Home extends React.Component {
   constructor(props) {
@@ -79,6 +80,7 @@ class Home extends React.Component {
             <Loadindicator />
           )}
 
+          <Our_vendors />
           <Featured_vouchers />
         </div>
         <Footer />

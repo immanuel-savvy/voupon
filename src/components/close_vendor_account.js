@@ -41,11 +41,13 @@ class Close_vendor_account extends React.Component {
           this.set_loggeduser = set_loggeduser;
 
           return (
-            <div>
+            <div className="m-5">
               <Text_btn icon="fa-window-close" action={toggle} />
               <h1>{name}</h1>
 
-              <span>Are you sure you want to close vendor profile?</span>
+              <span className="mb-3">
+                Are you sure you want to close vendor profile?
+              </span>
 
               <Stretch_button title="proceed" action={this.proceed} />
             </div>

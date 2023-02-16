@@ -22,7 +22,7 @@ class Featured_vouchers extends React.Component {
     if (vouchers && !vouchers.length) return;
 
     return (
-      <section>
+      <section className="gray">
         <div class="container">
           <div class="row justify-content-center">
             <div class="col-lg-7 col-md-8">

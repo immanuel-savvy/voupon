@@ -44,7 +44,7 @@ class Vendor_vouchers extends React.Component {
               <h2>
                 Offer <span class="theme-cl">Vouchers</span>
               </h2>
-              <p>Vouchers created by you.</p>
+              <p>Vouchers that are service specific.</p>
             </div>
           </div>
         </div>

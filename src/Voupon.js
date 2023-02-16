@@ -88,8 +88,6 @@ class Voupon extends React.Component {
       let red = window.sessionStorage.getItem("redirect");
 
       window.sessionStorage.removeItem("redirect");
-      // if (red && red.endsWith("become_a_vendor") && user.vendor)
-      //   red = `${client_domain}/vendor`;
       window.location.assign(red || client_domain);
     });
 
