@@ -1,5 +1,7 @@
 import React from "react";
+import { Carousel } from "react-bootstrap";
 import Loadindicator from "../components/loadindicator";
+import Featured_vouchers from "../sections/featured_vouchers";
 import Footer from "../sections/footer";
 import Hero_banner from "../sections/hero_banner";
 import Nav from "../sections/nav";
@@ -8,7 +10,7 @@ class Home extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = { index: 0 };
   }
   componentDidMount = () => {
     let heros = new Array(
@@ -60,10 +62,24 @@ class Home extends React.Component {
         <Nav page="" />
         <div className="body">
           {heros ? (
-            heros.map((hero, index) => <Hero_banner hero={hero} key={index} />)
+            <div
+              style={{
+                backgroundImage: `url(${require("../assets/img/hero1.png")})`,
+              }}
+            >
+              <Carousel fade nextLabel="" prevLabel="" indicators={false}>
+                {heros.map((hero, index) => (
+                  <Carousel.Item>
+                    <Hero_banner hero={hero} key={index} />
+                  </Carousel.Item>
+                ))}
+              </Carousel>
+            </div>
           ) : (
             <Loadindicator />
           )}
+
+          <Featured_vouchers />
         </div>
         <Footer />
       </div>

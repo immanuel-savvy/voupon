@@ -16,8 +16,9 @@ class Hero_banner extends React.Component {
         className="hero_banner image-cover image_bottom h4_bg"
         style={{
           backgroundImage: `url(${bg})`,
-          minHeight: "100vh",
+          height: "75vh",
           backgroundColor: "black",
+          width: "100%",
         }}
         data-overlay={`${overlay || 5}`}
       >

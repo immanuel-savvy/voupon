@@ -195,7 +195,7 @@ class Custom_Nav extends React.Component {
                             ) : nav === "signup" ? (
                               <li className="add-listing btn  theme-bg">
                                 <Link
-                                  to={loggeduser ? "/profile" : "/signup"}
+                                  to={loggeduser ? "/dashboard" : "/signup"}
                                   className="text-white"
                                 >
                                   {loggeduser

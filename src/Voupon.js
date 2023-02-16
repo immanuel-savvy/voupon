@@ -20,6 +20,7 @@ import Verify_email from "./pages/Verify_email";
 import { client_domain } from "./assets/js/utils/constants";
 import Vendor_profile from "./pages/Vendor_profile";
 import User_vouchers from "./pages/User_vouchers";
+import Dashboard from "./pages/dashboard";
 
 const emitter = new Emitter();
 
@@ -120,6 +121,7 @@ class Voupon extends React.Component {
                 <Route path="tickets" element={<Tickets />} />
                 <Route path="gift_cards" element={<Giftcards />} />
                 <Route path="coupons" element={<Coupons />} />
+                <Route path="dashboard" element={<Dashboard />} />
                 <Route path="vendor" element={<Vendor_profile />} />
                 <Route path="verify_email" element={<Verify_email />} />
                 <Route path="login" element={<Login />} />

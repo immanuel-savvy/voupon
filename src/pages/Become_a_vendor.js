@@ -2,13 +2,11 @@ import React from "react";
 import { client_domain } from "../assets/js/utils/constants";
 import { email_regex, to_title } from "../assets/js/utils/functions";
 import { post_request } from "../assets/js/utils/services";
-import Become_a_vender_request from "../components/become_a_vender_request";
 import Checkbox from "../components/checkbox";
 import File_input from "../components/file_input";
 import Form_divider from "../components/form_divider";
 import handle_file_upload from "../components/handle_file_upload";
 import Loadindicator from "../components/loadindicator";
-import Modal from "../components/modal";
 import Padder from "../components/padder";
 import Text_input from "../components/text_input";
 import { Loggeduser } from "../Contexts";
@@ -34,8 +32,6 @@ class Become_a_vendor extends handle_file_upload {
   set_director = (loggeduser) => {
     loggeduser = loggeduser || this.loggeduser;
 
-    // if (loggeduser.vendor) window.location.assign(`${client_domain}/vendor`);
-    // else
     this.setState({
       director: {
         email: loggeduser.email,
@@ -76,6 +72,8 @@ class Become_a_vendor extends handle_file_upload {
       description,
       logo,
       cac,
+      cac_oversize,
+      logo_oversize,
     } = this.state;
 
     if (
@@ -97,8 +95,12 @@ class Become_a_vendor extends handle_file_upload {
       !email_regex.test(director.email)
     )
       return;
+
     let ID = this.state[ID_type];
     if (!ID) return;
+
+    if (cac_oversize || logo_oversize || this.state[`${ID_type}_oversize`])
+      return;
 
     return true;
   };
@@ -163,6 +165,8 @@ class Become_a_vendor extends handle_file_upload {
 
   toggle_success_modal = () => this.success_modal.toggle();
 
+  logo_maxsize = 3 * 1024 ** 2;
+
   render() {
     let {
       render,
@@ -177,6 +181,8 @@ class Become_a_vendor extends handle_file_upload {
       loading,
       rc_number,
       description,
+      logo_oversize,
+      cac_oversize,
       details,
     } = this.state;
 
@@ -268,13 +274,15 @@ class Become_a_vendor extends handle_file_upload {
 
                                 <Text_input
                                   value={description}
-                                  title="description"
+                                  title="about your brand"
+                                  placeholder="Write here..."
                                   action={(description) =>
                                     this.setState({
                                       description,
                                       message: "",
                                     })
                                   }
+                                  error_message="Tell us about your brand"
                                   important
                                 />
 
@@ -292,9 +300,19 @@ class Become_a_vendor extends handle_file_upload {
 
                                 <File_input
                                   title="logo"
-                                  action={(e) => this.handle_file(e, "logo")}
+                                  action={(e) =>
+                                    this.handle_file(
+                                      e,
+                                      "logo",
+                                      this.logo_maxsize
+                                    )
+                                  }
                                   important
                                   accept="image/*"
+                                  info="Type: Image, Maxsize: 3MB"
+                                  error_message={
+                                    logo_oversize ? "Too large" : ""
+                                  }
                                   filename={logo_filename}
                                 />
                                 <hr />
@@ -380,10 +398,22 @@ class Become_a_vendor extends handle_file_upload {
                                 {ID_type ? (
                                   <File_input
                                     title={to_title(ID_type.replace(/_/g, " "))}
-                                    action={(e) => this.handle_file(e, ID_type)}
+                                    action={(e) =>
+                                      this.handle_file(
+                                        e,
+                                        ID_type,
+                                        this.logo_maxsize
+                                      )
+                                    }
                                     filename={ID_filename}
                                     important
                                     accept=".doc,.pdf,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                                    info="Type: PDF, Maxsize: 3MB"
+                                    error_message={
+                                      this.state[`${ID_type}_oversize`]
+                                        ? "Too large"
+                                        : ""
+                                    }
                                   />
                                 ) : null}
 
@@ -406,10 +436,20 @@ class Become_a_vendor extends handle_file_upload {
                                 </div>
                                 <File_input
                                   title="Certification of Incorporation"
-                                  action={(e) => this.handle_file(e, "cac")}
+                                  action={(e) =>
+                                    this.handle_file(
+                                      e,
+                                      "cac",
+                                      this.logo_maxsize
+                                    )
+                                  }
                                   filename={cac_filename}
                                   important
                                   accept=".doc,.pdf,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                                  info="Type: PDF, Maxsize: 3MB"
+                                  error_message={
+                                    cac_oversize ? "Too large" : ""
+                                  }
                                 />
 
                                 <Text_input

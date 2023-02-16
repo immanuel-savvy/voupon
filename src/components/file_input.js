@@ -9,7 +9,7 @@ class File_input extends React.Component {
   }
 
   render() {
-    let { title, filename, important, error_message, accept, action } =
+    let { title, filename, info, important, error_message, accept, action } =
       this.props;
 
     return (
@@ -32,8 +32,20 @@ class File_input extends React.Component {
             </label>
           </div>
 
-          {important && !filename ? (
-            <span style={{ marginBottom: 10 }} className="text-danger">
+          {info && !filename ? (
+            <>
+              <span style={{ marginBottom: 10 }} className="text-info">
+                <i onMouseOver={() => {}} className="fa fa-info"></i> {info}
+              </span>
+              <br />
+            </>
+          ) : null}
+
+          {(important && !filename) || error_message ? (
+            <span
+              style={{ marginBottom: 10, marginTop: info ? 0 : 5 }}
+              className="text-danger"
+            >
               * {error_message || to_title(title)}
             </span>
           ) : null}
