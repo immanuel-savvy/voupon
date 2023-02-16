@@ -27,7 +27,7 @@ let navs = new Array(
   "coupons",
   "tickets",
   "gift cards",
-  "become a vendor",
+  "vendors",
   "login",
   "signup"
 );
@@ -40,6 +40,7 @@ let subnavs = new Object({
     "redeem_voucher",
     "verify_voucher"
   ),
+  vendors: new Array("become_a_vendor", "all_vendors"),
 });
 
 class Custom_Nav extends React.Component {
@@ -52,6 +53,14 @@ class Custom_Nav extends React.Component {
   my_vouchers = () => window.location.assign(`${client_domain}/user_vouchers`);
 
   vouchers = () => window.location.assign(`${client_domain}/vouchers`);
+
+  all_vendors = () => window.location.assign(`${client_domain}/vendors`);
+
+  become_a_vendor = () =>
+    window.location.assign(`${client_domain}/become_a_vendor`);
+
+  vendor_profile = () =>
+    window.location.assign(`${client_domain}/vendor?${this.loggeduser.vendor}`);
 
   create_voucher = () => this.create_voucher_?.toggle();
 
@@ -79,6 +88,8 @@ class Custom_Nav extends React.Component {
     return (
       <Loggeduser.Consumer>
         {({ loggeduser, logout }) => {
+          this.loggeduser = loggeduser;
+
           return (
             <div style={{}}>
               <div
@@ -112,17 +123,15 @@ class Custom_Nav extends React.Component {
                           style={{ alignItems: "center" }}
                         >
                           {navs.map((nav, index) => {
-                            if (
-                              nav === "become a vendor" &&
-                              loggeduser &&
-                              loggeduser.vendor
-                            )
-                              nav = "vendor";
-
                             let sub = subnavs[nav];
+                            if (sub && sub.length) sub = new Array(...sub);
                             if (nav === "vouchers") {
                               if (!loggeduser)
                                 sub = sub.filter((s) => s !== "my_vouchers");
+                            } else if (nav === "vendors") {
+                              if (loggeduser && loggeduser.vendor) {
+                                sub[0] = "vendor_profile";
+                              }
                             }
                             return sub && sub.length ? (
                               <UncontrolledDropdown key={index} nav inNavbar>
@@ -162,18 +171,29 @@ class Custom_Nav extends React.Component {
                                     className="nav-dropdown nav-submenu"
                                     end
                                   >
-                                    {sub.map((subnav) => (
-                                      <li
-                                        style={{ cursor: "pointer" }}
-                                        key={index}
-                                      >
-                                        <a
-                                          onClick={this.subnav_actions(subnav)}
+                                    {sub.map((subnav) => {
+                                      if (
+                                        subnav === "become_a_vendor" &&
+                                        this.loggeduser?.vendor
+                                      )
+                                        subnav = "vendor_profile";
+                                      return (
+                                        <li
+                                          style={{ cursor: "pointer" }}
+                                          key={index}
                                         >
-                                          {to_title(subnav.replace(/_/g, " "))}
-                                        </a>
-                                      </li>
-                                    ))}
+                                          <a
+                                            onClick={this.subnav_actions(
+                                              subnav
+                                            )}
+                                          >
+                                            {to_title(
+                                              subnav.replace(/_/g, " ")
+                                            )}
+                                          </a>
+                                        </li>
+                                      );
+                                    })}
                                   </DropdownMenu>
                                 ) : null}
                               </UncontrolledDropdown>

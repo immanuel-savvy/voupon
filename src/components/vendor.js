@@ -5,6 +5,7 @@ import Text_btn from "./text_btn";
 import Modal from "./modal";
 import Vendor_verification_details from "./vendor_verification_details";
 import { client_domain } from "../assets/js/utils/constants";
+import { scroll_to_top } from "./explore_more";
 
 class Vendor extends React.Component {
   constructor(props) {
@@ -15,8 +16,10 @@ class Vendor extends React.Component {
 
   toggle_verification_details = () => this.verification_details.toggle();
 
-  save_vendor = () =>
+  save_vendor = () => {
     window.sessionStorage.setItem("vendor", JSON.stringify(this.props.vendor));
+    scroll_to_top();
+  };
 
   render() {
     let { vendor } = this.props;
@@ -30,7 +33,6 @@ class Vendor extends React.Component {
       email,
       address,
     } = vendor;
-    let { firstname, lastname, email: director_email } = director;
 
     return (
       <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">

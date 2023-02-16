@@ -26,11 +26,13 @@ class Vendor_profile extends React.Component {
   }
 
   componentDidMount = async () => {
-    if (!this.loggeduser) return window.history.go(-1);
-
     let vendor = window.sessionStorage.getItem("vendor");
+    let vendor_id = window.location.href.split("?")[1].trim();
+    if (!(vendor_id && vendor_id.startsWith("vendors~")))
+      vendor_id = this.loggeduser?.vendor;
+
     if (vendor) vendor = JSON.parse(vendor);
-    vendor = vendor || (await get_request(`vendor/${this.loggeduser.vendor}`));
+    vendor = vendor_id && (await get_request(`vendor/${vendor_id}`));
 
     if (!vendor || (vendor && !vendor._id))
       return window.location.assign(client_domain);
