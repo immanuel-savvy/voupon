@@ -1,7 +1,7 @@
 import React from "react";
 import { domain } from "../assets/js/utils/constants";
 import { commalise_figures, to_title } from "../assets/js/utils/functions";
-import { get_request } from "../assets/js/utils/services";
+import { get_request, post_request } from "../assets/js/utils/services";
 import { Loggeduser } from "../Contexts";
 import Dropdown_menu from "./dropdown_menu";
 import Modal from "./modal";
@@ -37,10 +37,22 @@ class Voucher extends React.Component {
 
   transfer_voucher = () => this.transfer_voucher_?.toggle();
 
-  remove_voucher = () => {};
+  close_offer = async () => {
+    if (!window.confirm("Are you sure to close voucher?")) return;
+
+    let { voucher } = this.props;
+    let { vendor } = this.state;
+
+    let res = await post_request("close_voucher", {
+      voucher: voucher._id,
+      vendor: vendor._id,
+    });
+
+    if (res && res.voucher) this.setState({ closed: true });
+  };
 
   render() {
-    let { vendor, redeemed, transferred } = this.state;
+    let { vendor, redeemed, closed, transferred } = this.state;
 
     let { voucher, full, in_vendor, voucher_code } = this.props;
 
@@ -51,6 +63,7 @@ class Voucher extends React.Component {
     if (!state) state = "unused";
     if (redeemed) state = "redeemed";
     if (transferred) state = "transferred";
+    if (closed) state = "closed";
 
     return (
       <Loggeduser>
@@ -69,12 +82,39 @@ class Voucher extends React.Component {
                 </div>
                 <div className="edu_cat_data">
                   <h4 className="title">
-                    <a href="#">{title}</a>
-                    {in_vendor && loggeduser && loggeduser.vendor === _id ? (
-                      <div>
-                        <Text_btn text="Remove" action={this.remove_voucher} />
-                      </div>
-                    ) : null}
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <a href="#">{title}</a>
+                      {state === "closed" ? (
+                        <div className="crs_cates cl_1">
+                          <span>{to_title(state)}</span>
+                        </div>
+                      ) : in_vendor &&
+                        loggeduser &&
+                        loggeduser.vendor === _id ? (
+                        <Dropdown_menu
+                          items={
+                            new Array(
+                              {
+                                title: "update offer",
+                                action: this.update_offer,
+                              },
+                              state === "closed"
+                                ? null
+                                : {
+                                    title: "close offer",
+                                    action: this.close_offer,
+                                  }
+                            )
+                          }
+                        />
+                      ) : null}
+                    </div>
                   </h4>
                   <ul className="meta">
                     <li style={{ fontWeight: "bold" }} className="video">

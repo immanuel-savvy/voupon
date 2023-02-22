@@ -28,7 +28,7 @@ class Hero_banner extends React.Component {
               <h1 className="banner_title mb-4 text-center">{main_text}</h1>
               <p
                 className="font-lg mx-auto text-center mb-4"
-                style={{ width: "60%" }}
+                style={{ width: "60%", fontSize: 20 }}
               >
                 {sub_text}
               </p>

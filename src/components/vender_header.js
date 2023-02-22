@@ -5,6 +5,8 @@ import Modal from "./modal";
 import Create_offer_voucher from "./create_offer_voucher";
 import Close_vendor_account from "./close_vendor_account";
 import Small_btn from "./small_btn";
+import Dropdown_menu from "./dropdown_menu";
+import Wallet from "./wallet";
 
 class Vendor_header extends React.Component {
   constructor(props) {
@@ -66,9 +68,32 @@ class Vendor_header extends React.Component {
                 <div className="dlkio_last">
                   <div className="ed_view_link"></div>
                 </div>
+
+                <Wallet vendor={vendor} />
+
+                <Dropdown_menu
+                  items={
+                    new Array(
+                      {
+                        title: "Create offer voucher",
+                        action: this.toggle_create_offer_voucher,
+                      },
+                      {
+                        title: "Create coupon",
+                        action: this.toggle_create_coupon,
+                      },
+                      {
+                        title: "close vendor account",
+                        style: { backgroundColor: "#d9534f", color: "#fff" },
+                        action: this.toggle_close_vendor_account,
+                      }
+                    )
+                  }
+                  style={{ alignSelf: "flex-start", marginTop: 24 }}
+                />
               </div>
 
-              {vendor.verified && user === _id ? (
+              {/* {vendor.verified && user === _id ? (
                 <>
                   <Small_btn
                     title="Create offer voucher"
@@ -80,7 +105,7 @@ class Vendor_header extends React.Component {
                     action={this.toggle_close_vendor_account}
                   />
                 </>
-              ) : null}
+              ) : null} */}
             </div>
           </div>
         </div>

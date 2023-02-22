@@ -29,17 +29,21 @@ class Dropdown_menu extends React.Component {
   }
 
   render() {
-    let { button, items } = this.props;
+    let { button, items, style } = this.props;
 
     return (
-      <Dropdown>
+      <Dropdown style={{ ...style }}>
         <Dropdown.Toggle as={button || Custom_toggle}>X</Dropdown.Toggle>
 
         <Dropdown.Menu>
           {items
             ? items.map((item, index) =>
                 item ? (
-                  <Dropdown.Item key={index} onClick={item.action}>
+                  <Dropdown.Item
+                    key={index}
+                    style={{ ...item.style }}
+                    onClick={item.action}
+                  >
                     {to_title(item.title)}
                   </Dropdown.Item>
                 ) : null

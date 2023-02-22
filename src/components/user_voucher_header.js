@@ -1,5 +1,7 @@
 import React from "react";
+import { to_title } from "../assets/js/utils/functions";
 import Dropdown_menu from "./dropdown_menu";
+import Small_btn from "./small_btn";
 import Text_btn from "./text_btn";
 
 const User_voucher_header = ({
@@ -7,6 +9,7 @@ const User_voucher_header = ({
   voucher_type,
   voucher_filters,
   toggle_create_voucher,
+  side_buttons,
 }) => {
   return (
     <div class="row">
@@ -21,6 +24,24 @@ const User_voucher_header = ({
 
             <div class="col-lg-8 col-md-7 col-sm-12 col-sm-6">
               <div class="dlks_152">
+                <div class="lmk_485">
+                  <ul class="shorting_grid">
+                    {side_buttons && side_buttons.length
+                      ? side_buttons.map((btn) => (
+                          <li class="list-inline-item">
+                            <Small_btn
+                              style={{
+                                textTransform: "capitalize",
+                              }}
+                              title={btn.title}
+                              action={btn.action}
+                            />
+                          </li>
+                        ))
+                      : null}
+                  </ul>
+                </div>
+
                 <div class="shorting-right mr-2">
                   <label>Filter By:</label>
                   <Dropdown_menu
@@ -48,7 +69,9 @@ const User_voucher_header = ({
                             aria-haspopup="true"
                             aria-expanded="false"
                           >
-                            <span class="selection">Unused</span>
+                            <span class="selection">
+                              {to_title(voucher_filters[0])}
+                            </span>
                           </a>
                         </div>
                       );

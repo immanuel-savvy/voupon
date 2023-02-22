@@ -6493,7 +6493,7 @@ a.filter_links {
 .shorting-right {
   display: flex;
   align-items: center;
-  justify-content: end;
+  justify-content: flex-end;
 }
 .btn.btn-filter {
   height: 40px;

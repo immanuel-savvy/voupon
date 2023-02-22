@@ -18,12 +18,20 @@ class Vendors extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      limit: 15,
+      page: 1,
+    };
   }
 
+  fetch_vendors = async (param = "all") => {
+    this.setState({ fetching: true });
+    let vendors = await get_request(`vendors/${param}`);
+    this.setState({ vendors, fetching: false });
+  };
+
   componentDidMount = async () => {
-    let vendors = await get_request("vendors/all");
-    this.setState({ vendors });
+    await this.fetch_vendors();
   };
 
   handle_user_vendor = () => {
@@ -36,8 +44,15 @@ class Vendors extends React.Component {
     );
   };
 
+  set_category = async (filter) => {
+    this.setState({ filter });
+    this.toggle_drop();
+
+    await this.fetch_vendors(filter.title);
+  };
+
   render() {
-    let { vendors } = this.state;
+    let { vendors, filter } = this.state;
 
     return (
       <Loggeduser.Consumer>
@@ -95,6 +110,7 @@ class Vendors extends React.Component {
                                           onClick={(e) => {
                                             e.preventDefault();
                                             onClick(e);
+                                            this.toggle_drop = onClick;
                                           }}
                                         >
                                           <a
@@ -104,7 +120,11 @@ class Vendors extends React.Component {
                                             aria-haspopup="true"
                                             aria-expanded="false"
                                           >
-                                            <span class="selection">All</span>
+                                            <span class="selection">
+                                              {to_title(
+                                                filter && filter.title
+                                              ) || "All"}
+                                            </span>
                                           </a>
                                         </div>
                                       );
