@@ -53,7 +53,7 @@ class Create_open_voucher extends React.Component {
 
     let voucher = {
       title,
-      value,
+      value: Number(value),
       firstname,
       lastname,
       email,

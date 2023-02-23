@@ -1,4 +1,5 @@
 import React from "react";
+import CopyToClipboard from "react-copy-to-clipboard";
 import { domain } from "../assets/js/utils/constants";
 import { commalise_figures, to_title } from "../assets/js/utils/functions";
 import { get_request, post_request } from "../assets/js/utils/services";
@@ -8,6 +9,7 @@ import Modal from "./modal";
 import Redeem_voucher from "./redeem_voucher";
 import Text_btn from "./text_btn";
 import Transfer_voucher from "./transfer_voucher";
+import Use_voucher from "./use_voucher";
 
 class Voucher extends React.Component {
   constructor(props) {
@@ -37,6 +39,8 @@ class Voucher extends React.Component {
 
   transfer_voucher = () => this.transfer_voucher_?.toggle();
 
+  use_voucher = () => this.use_voucher_?.toggle();
+
   close_offer = async () => {
     if (!window.confirm("Are you sure to close voucher?")) return;
 
@@ -51,14 +55,29 @@ class Voucher extends React.Component {
     if (res && res.voucher) this.setState({ closed: true });
   };
 
+  copy_alert = () => {
+    clearTimeout(this.clear_copy);
+    this.setState({ copied: true });
+
+    this.clear_copy = setTimeout(() => this.setState({ copied: false }), 3000);
+  };
+
   render() {
-    let { vendor, redeemed, closed, transferred } = this.state;
+    let { vendor, redeemed, closed, transferred, copied } = this.state;
 
     let { voucher, full, in_vendor, voucher_code } = this.props;
 
     let { logo, _id } = vendor || new Object();
 
-    let { title, value, quantities, state, total_sales, description } = voucher;
+    let {
+      title,
+      value,
+      quantities,
+      state,
+      total_sales,
+      _id: voucher_id,
+      description,
+    } = voucher;
 
     if (!state) state = "unused";
     if (redeemed) state = "redeemed";
@@ -117,6 +136,23 @@ class Voucher extends React.Component {
                     </div>
                   </h4>
                   <ul className="meta">
+                    {voucher_id.startsWith("offer_voucher") ? null : (
+                      <li className="video">
+                        {copied ? (
+                          <Text_btn icon="fa-check" />
+                        ) : (
+                          <CopyToClipboard
+                            text={voucher_code}
+                            onCopy={this.copy_alert}
+                          >
+                            <Text_btn
+                              text={voucher_code}
+                              icon={copied ? "fa-check" : "fa-copy"}
+                            />
+                          </CopyToClipboard>
+                        )}
+                      </li>
+                    )}
                     <li style={{ fontWeight: "bold" }} className="video">
                       <span>&#8358;</span>
                       {commalise_figures(Number(value))}
@@ -145,7 +181,13 @@ class Voucher extends React.Component {
                               title: "redeem",
                               action: this.redeem_voucher,
                             },
-                            { title: "transfer", action: this.transfer_voucher }
+                            {
+                              title: "transfer",
+                              action: this.transfer_voucher,
+                            },
+                            !voucher.vendor
+                              ? null
+                              : { title: "use", action: this.use_voucher }
                           )
                         }
                       />
@@ -157,7 +199,6 @@ class Voucher extends React.Component {
                   </div>
                 )}
               </div>
-              <span>{description}</span>
 
               <Modal
                 ref={(redeem_voucher_) =>
@@ -180,6 +221,15 @@ class Voucher extends React.Component {
                   voucher={{ ...voucher, voucher_code }}
                   on_tranfer={this.on_tranfer}
                   toggle={this.transfer_voucher}
+                />
+              </Modal>
+
+              <Modal ref={(use_voucher_) => (this.use_voucher_ = use_voucher_)}>
+                <Use_voucher
+                  voucher={{ ...voucher, voucher_code }}
+                  vendor={vendor}
+                  on_use={this.on_use}
+                  toggle={this.use_voucher}
                 />
               </Modal>
             </div>

@@ -64,7 +64,7 @@ class Voucher_purchase_details extends React.Component {
           </b>
         </p>
 
-        <p>Please do ensure to keep it save!</p>
+        <p>Please do ensure to keep it safe!</p>
       </div>
     );
   }

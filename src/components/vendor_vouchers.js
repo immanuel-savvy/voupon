@@ -5,6 +5,9 @@ import Listempty from "./listempty";
 import Voucher from "./voucher";
 import { emitter } from "./../Voupon";
 import User_voucher_header from "./user_voucher_header";
+import Modal from "./modal";
+import Create_offer_voucher from "./create_offer_voucher";
+import Use_voucher from "./use_voucher";
 
 class Vendor_vouchers extends React.Component {
   constructor(props) {
@@ -37,9 +40,13 @@ class Vendor_vouchers extends React.Component {
     emitter.remove_listener("new_offer_voucher", this.new_offer_voucher);
   };
 
+  toggle_create_voucher = () => this.create_offer?.toggle();
+
+  toggle_use_voucher = () => this.use_voucher?.toggle();
+
   render() {
     let { vendor } = this.props;
-    let { offer_vouchers, filter } = this.state;
+    let { offer_vouchers, filter, use_voucher } = this.state;
 
     return (
       <div className="container">
@@ -56,7 +63,6 @@ class Vendor_vouchers extends React.Component {
         <User_voucher_header
           voucher_filters={this.voucher_states}
           set_voucher_filter={(filter) => this.setState({ filter })}
-          toggle_create_voucher={this.toggle_create_voucher}
           voucher_type={"offer voucher"}
           side_buttons={
             new Array(
@@ -64,7 +70,7 @@ class Vendor_vouchers extends React.Component {
                 title: "create offer voucher",
                 action: this.toggle_create_voucher,
               },
-              { title: "use voucher", action: this.use_voucher }
+              { title: "use voucher", action: this.toggle_use_voucher }
             )
           }
         />
@@ -89,6 +95,21 @@ class Vendor_vouchers extends React.Component {
             <Loadindicator />
           )}
         </div>
+
+        <Modal ref={(create_offer) => (this.create_offer = create_offer)}>
+          <Create_offer_voucher
+            toggle={this.toggle_create_voucher}
+            vendor={vendor}
+          />
+        </Modal>
+
+        <Modal ref={(use_voucher) => (this.use_voucher = use_voucher)}>
+          <Use_voucher
+            toggle={this.toggle_use_voucher}
+            voucher={use_voucher}
+            vendor={vendor}
+          />
+        </Modal>
       </div>
     );
   }

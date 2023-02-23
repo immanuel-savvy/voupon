@@ -51,8 +51,8 @@ class Dashboard_nav_menu extends React.Component {
       emitter.emit("dash_nav_click", subtitle)
     );
 
-  render_nav = ({ title, icon, subnav }, index) => {
-    let { current_nav, current_slide_index } = this.state;
+  render_nav = ({ title, subnav }, index) => {
+    let { current_slide_index } = this.state;
 
     return subnav ? (
       <Accordion.Item eventKey={`${index}`}>

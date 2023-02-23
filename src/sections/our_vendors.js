@@ -13,7 +13,6 @@ class Our_vendors extends React.Component {
 
   componentDidMount = async () => {
     let vendors = await get_request("vendors/10");
-    vendors = [...vendors, ...vendors, ...vendors, ...vendors];
     this.setState({ vendors });
   };
 
@@ -23,12 +22,12 @@ class Our_vendors extends React.Component {
 
     return (
       <section>
-        <div class="container">
-          <div class="row justify-content-center">
-            <div class="col-lg-7 col-md-8">
-              <div class="sec-heading center">
+        <div className="container">
+          <div className="row justify-content-center">
+            <div className="col-lg-7 col-md-8">
+              <div className="sec-heading center">
                 <h2>
-                  explore <span class="theme-cl">Vendors</span>
+                  explore <span className="theme-cl">Vendors</span>
                 </h2>
                 <p>
                   In dolore sint duis in est et. Exercitation do ex proident
@@ -37,7 +36,7 @@ class Our_vendors extends React.Component {
               </div>
             </div>
           </div>
-          <div class="row ">
+          <div className="row">
             <div
               style={{
                 overflow: "scroll",
@@ -45,12 +44,18 @@ class Our_vendors extends React.Component {
                 display: "flex",
                 paddingTop: 30,
                 paddingBottom: 30,
+                width: "100%",
               }}
             >
               {vendors ? (
                 vendors.map((vendor) => <Vendor vendor={vendor} />)
               ) : (
-                <Loadindicator />
+                <div
+                  style={{ width: "100%" }}
+                  className="justify-content-center"
+                >
+                  <Loadindicator />
+                </div>
               )}
             </div>
           </div>

@@ -6549,6 +6549,7 @@ a.filter_links {
 }
 .nav-tabs .nav-link {
   background: #eff3f7;
+  color: #03b97c;
   border: 1px solid #edeff5;
   border-radius: 4px;
   cursor: pointer;

@@ -63,10 +63,16 @@ class Transfer_voucher extends React.Component {
     });
 
     if (result && result.can_redeem) {
-      this.setState({ can_redeem: true, voucher: result.voucher });
+      this.setState({ can_redeem: true, voucher: result.owner_voucher });
 
       this.setState({ requesting_otp: true });
-      result = await post_request(`request_voucher_otp/${result.voucher}`);
+      result = await post_request(`request_voucher_otp`, {
+        user: result.user,
+        voucher_code: result.voucher_code,
+        voucher: result.owner_voucher,
+        voucher_type: result.voucher_type,
+        email: result.email,
+      });
     } else this.setState({ message: result.message });
   };
 

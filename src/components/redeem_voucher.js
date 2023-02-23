@@ -84,11 +84,22 @@ class Redeem_voucher extends React.Component {
       voucher_code,
     });
 
+    console.log(result);
     if (result && result.can_redeem) {
-      this.setState({ can_redeem: true, voucher: result.voucher });
+      this.setState({
+        can_redeem: true,
+        voucher: result.owner_voucher,
+        requesting_otp: true,
+      });
 
-      this.setState({ requesting_otp: true });
-      result = await post_request(`request_voucher_otp/${result.voucher}`);
+      result = await post_request(`request_voucher_otp`, {
+        user: result.user,
+        voucher_code: result.voucher_code,
+        voucher: result.owner_voucher,
+        voucher_type: result.voucher_type,
+        email: result.email,
+      });
+      console.log(result);
     } else this.setState({ message: result.message });
   };
 
@@ -340,7 +351,6 @@ class Redeem_voucher extends React.Component {
         }}
       </Loggeduser.Consumer>
     );
-    return;
   }
 }
 

@@ -7,6 +7,7 @@ import Checkbox from "./checkbox";
 import Login from "./login";
 import { voucher_types } from "./redeem_voucher";
 import Stretch_button from "./stretch_button";
+import Text_btn from "./text_btn";
 import Text_input from "./text_input";
 import Voucher_verified_details from "./voucher_verified_details";
 
@@ -34,7 +35,8 @@ class Verify_voucher extends React.Component {
       voucher_type,
     });
 
-    if (result && result.state) this.setState({ verified: true, result });
+    if (result && result.state)
+      this.setState({ verified: true, voucher: result.voucher, result });
     else
       this.setState({
         message:
@@ -43,9 +45,18 @@ class Verify_voucher extends React.Component {
   };
 
   render() {
-    let { toggle, voucher } = this.props;
-    let { voucher_code, message, voucher_type, verifying, email, verified } =
-      this.state;
+    let { voucher, toggle } = this.props;
+    let {
+      voucher_code,
+      voucher: voucher_,
+      message,
+      voucher_type,
+      verifying,
+      email,
+      verified,
+    } = this.state;
+
+    voucher = voucher_ || voucher;
 
     return (
       <Loggeduser.Consumer>
@@ -79,13 +90,28 @@ class Verify_voucher extends React.Component {
 
                         <div className="rcs_log_124">
                           <div className="Lpo09">
-                            <h4>Redeem Voucher</h4>
+                            <h4>Verify Voucher</h4>
+                          </div>
+
+                          <div
+                            style={{
+                              width: "100%",
+                              display: "flex",
+                              justifyContent: "flex-end",
+                            }}
+                          >
+                            <Text_btn
+                              action={toggle}
+                              icon="fa-window-close"
+                              style={{ paddingRight: 15 }}
+                            />
                           </div>
                         </div>
 
                         {verified ? (
                           <Voucher_verified_details
-                            toggle={toggle}
+                            toggle={() => this.setState({ verified: false })}
+                            voucher={voucher}
                             details={{
                               voucher_code,
                               email,
@@ -101,7 +127,7 @@ class Verify_voucher extends React.Component {
                                   return (
                                     <Checkbox
                                       type="radio"
-                                      disabled={!!voucher}
+                                      disabled={!!this.props.voucher}
                                       title={to_title(
                                         voucher_type_.replace(/_/g, " ")
                                       )}
@@ -121,7 +147,7 @@ class Verify_voucher extends React.Component {
                             <Text_input
                               value={voucher_code}
                               title="voucher code"
-                              disabled={!!voucher}
+                              disabled={!!this.props.voucher}
                               action={(voucher_code) =>
                                 this.setState({
                                   voucher_code,
@@ -134,7 +160,7 @@ class Verify_voucher extends React.Component {
                             <Text_input
                               value={email}
                               title="Email"
-                              disabled={!!voucher}
+                              disabled={!!this.props.voucher}
                               action={(email) =>
                                 this.setState({
                                   email,

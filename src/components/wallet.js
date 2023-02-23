@@ -27,7 +27,7 @@ class Wallet extends React.Component {
         <div class="dashboard_stats_wrap">
           <div class="rounded-circle p-4 p-sm-4 d-inline-flex align-items-center justify-content-center bg-primary mb-2">
             <div class="position-absolute text-white h5 mb-0">
-              <i class="fas fa-video"></i>
+              <i class="fas fa-dollar"></i>
             </div>
           </div>
           <div class="dashboard_stats_wrap_content">
