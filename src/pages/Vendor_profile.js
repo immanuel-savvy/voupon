@@ -15,8 +15,15 @@ import Vendor_tickets from "../components/vendor_ticket";
 import Vendor_settings from "../components/vendor_settings";
 import { client_domain } from "../assets/js/utils/constants";
 import Text_btn from "../components/text_btn";
+import Transactions from "../components/transactions";
 
-const vendor_tabs = new Array("vouchers", "coupons", "tickets", "settings");
+const vendor_tabs = new Array(
+  "vouchers",
+  "coupons",
+  "tickets",
+  "transactions",
+  "settings"
+);
 
 class Vendor_profile extends React.Component {
   constructor(props) {
@@ -84,7 +91,9 @@ class Vendor_profile extends React.Component {
                                     <Vendor_tickets vendor={vendor} />
                                   ) : tab === "settings" ? (
                                     <Vendor_settings vendor={vendor} />
-                                  ) : null}
+                                  ) : (
+                                    <Transactions wallet={vendor.wallet} />
+                                  )}
                                 </Tab>
                               )
                             )}

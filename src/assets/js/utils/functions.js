@@ -42,6 +42,15 @@ const date_string = (timestamp) => {
   )} ${date.getFullYear()}`;
 };
 
+const time_string = (timestamp) => {
+  let date = new Date(timestamp);
+
+  return `${date.getHours().toString().padStart(2, "0")}:${date
+    .getMinutes()
+    .toString()
+    .padStart(2, "0")}`;
+};
+
 const generate_random_string = (len, combination) => {
   let string = "";
   combination = combinations[combination] || combinations["num"];
@@ -146,6 +155,7 @@ export {
   email_regex,
   phone_regex,
   date_string,
+  time_string,
   next_quarter,
   shuffle_array,
   countdown,

@@ -20,7 +20,7 @@ class Transactions extends React.Component {
 
     let transactions = await post_request("transactions", {
       user: user && user._id,
-      wallet: wallet && wallet._id,
+      wallet: wallet,
       limit,
       skip: limit * (page - 1),
     });
