@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Text_btn from "../components/text_btn";
 
 class Breadcrumb_banner extends React.Component {
   constructor(props) {

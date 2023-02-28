@@ -1,7 +1,9 @@
 import React from "react";
 import { client_domain } from "../assets/js/utils/constants";
-import Dash_header from "../components/dash_header";
+import { to_title } from "../assets/js/utils/functions";
+import Dash_header, { panels } from "../components/dash_header";
 import Padder from "../components/padder";
+import Transactions from "../components/transactions";
 import { Loggeduser } from "../Contexts";
 import Footer from "../sections/footer";
 import Custom_Nav from "../sections/nav";
@@ -11,14 +13,18 @@ class Dashboard extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = { panel: panels[0] };
   }
 
   componentDidMount = () => {
     if (!this.loggeduser) window.location.assign(client_domain);
   };
 
+  set_panel = (panel) => this.setState({ panel });
+
   render() {
+    let { panel } = this.state;
+
     return (
       <Loggeduser.Consumer>
         {({ loggeduser }) => {
@@ -36,7 +42,10 @@ class Dashboard extends React.Component {
                   <div className="row">
                     <div className="col-lg-3 col-md-3">
                       <div className="dashboard-navbar">
-                        <Dash_header user={loggeduser} />
+                        <Dash_header
+                          user={loggeduser}
+                          set_panel={this.set_panel}
+                        />
                       </div>
                     </div>
                     <div className="col-lg-9 col-md-9 col-sm-12">
@@ -48,14 +57,22 @@ class Dashboard extends React.Component {
                                 className="breadcrumb-item active"
                                 aria-current="page"
                               >
-                                My Vouchers
+                                {to_title(panel)}
                               </li>
                             </ol>
                           </nav>
                         </div>
                       </div>
 
-                      <User_vouchers style={{ padding: 0 }} />
+                      {panel === panels[0] ? (
+                        <User_vouchers style={{ padding: 0 }} />
+                      ) : panel === panels[1] ? (
+                        <></>
+                      ) : panel === panels[2] ? (
+                        <></>
+                      ) : (
+                        <Transactions user={loggeduser} />
+                      )}
                     </div>
                   </div>
                 </div>

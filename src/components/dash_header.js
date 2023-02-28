@@ -1,6 +1,8 @@
 import React from "react";
 import { to_title } from "../assets/js/utils/functions";
 
+const panels = new Array("vouchers", "coupons", "tickets", "transactions");
+
 class Dash_header extends React.Component {
   constructor(props) {
     super(props);
@@ -9,38 +11,32 @@ class Dash_header extends React.Component {
   }
 
   render() {
-    let { user } = this.props;
+    let { user, set_panel } = this.props;
     let { firstname, lastname, email } = user;
 
     return (
       <div className="d-user-avater">
         <img
-          src="https://via.placeholder.com/500x500"
+          src={require("../assets/img/user_image_placeholder.png")}
           className="img-fluid avater"
           alt=""
         />
         <h4>{to_title(`${firstname} ${lastname}`)}</h4>
         <span>User</span>
         <div className="elso_syu89"></div>
-        <div className="elso_syu77">
-          <div className="one_third cursor-pointer">
-            <div className="one_45ic text-warning bg-light-warning">
-              <i className="fas fa-star"></i>
+        <div className="elso_syu77 mx-5">
+          {panels.map((panel) => (
+            <div
+              onClick={() => set_panel(panel)}
+              key={panel}
+              className="one_third cursor-pointer"
+            >
+              <div className="one_45ic text-info bg-light-info">
+                <i className="fas fa-star"></i>
+              </div>
+              <span>{to_title(panel)}</span>
             </div>
-            <span>Vouchers</span>
-          </div>
-          <div className="one_third cursor-pointer">
-            <div className="one_45ic text-success bg-light-success">
-              <i className="fas fa-star"></i>
-            </div>
-            <span>Coupons</span>
-          </div>
-          <div className="one_third cursor-pointer">
-            <div className="one_45ic text-purple bg-light-purple">
-              <i className="fas fa-star"></i>
-            </div>
-            <span>Tickets</span>
-          </div>
+          ))}
         </div>
       </div>
     );
@@ -48,3 +44,4 @@ class Dash_header extends React.Component {
 }
 
 export default Dash_header;
+export { panels };

@@ -28,12 +28,19 @@ class Vendor_header extends React.Component {
     let { _id } = loggeduser || new Object();
 
     return (
-      <div className="ed_detail_head">
+      <div
+        className="ed_detail_head bg-cover mb-5"
+        style={{
+          backgroundImage: `url(${require("../assets/img/vouchers1.png")})`,
+          backgroundRepeat: "no-repeat",
+        }}
+        data-overlay="8"
+      >
         <div className="container">
           <div className="row align-items-center mb-5">
             <div className="col-lg-3 col-md-12 col-sm-12">
               <div className="authi_125">
-                <div className="authi_125_thumb">
+                <div className="authi_125_thumb bg-light p-2">
                   <Preview_image
                     image={
                       logo ||
@@ -54,10 +61,10 @@ class Vendor_header extends React.Component {
                     </div>
                   )}
                   <div className="ed_header_caption">
-                    <h4 className="ed_title">{`${firstname} ${lastname}`}</h4>
-                    <h2 className="ed_title">{`${name}`}</h2>
+                    <h4 className="ed_title text-light">{`${firstname} ${lastname}`}</h4>
+                    <h2 className="ed_title text-light">{`${name}`}</h2>
                     <ul>
-                      <li>
+                      <li className="text-light">
                         <i className="ti-calendar"></i>
                         {`${offer_vouchers || 0} Offer vouchers`}
                       </li>
