@@ -14,20 +14,20 @@ class Footer extends React.Component {
   render() {
     return (
       <footer
-        class="dark-footer skin-dark-footer style-2"
+        className="dark-footer skin-dark-footer style-2"
         style={{ backgroundColor: "#000" }}
       >
-        <div class="footer-middle">
-          <div class="container">
-            <div class="row">
-              <div class="col-lg-5 col-md-5">
-                <div class="footer_widget">
+        <div className="footer-middle">
+          <div className="container">
+            <div className="row">
+              <div className="col-lg-5 col-md-5">
+                <div className="footer_widget">
                   <Link to="/">
-                    {/* <img src="assets/img/logo-light.png" class="img-footer small mb-2" alt="" /> */}
+                    {/* <img src="assets/img/logo-light.png" className="img-footer small mb-2" alt="" /> */}
                     <h2 className="text-light">Voupon</h2>
                   </Link>
 
-                  <h6 class="extream text-light mb-3">Nigeria</h6>
+                  <h6 className="extream text-light mb-3">Nigeria</h6>
                   <p className="text-light">
                     18, Afolabi Aina Street, Allen Avenue, <br />
                     Ikeja, Lagos state.
@@ -35,14 +35,18 @@ class Footer extends React.Component {
                 </div>
               </div>
 
-              <div class="col-lg-6 col-md-7 ml-auto">
-                <div class="row">
-                  <div class="col-lg-4 col-md-4">
-                    <div class="footer_widget">
-                      <h4 class="widget_title">Useful Links</h4>
-                      <ul class="footer-menu">
+              <div className="col-lg-6 col-md-7 ml-auto">
+                <div className="row">
+                  <div className="col-lg-4 col-md-4">
+                    <div className="footer_widget">
+                      <h4 className="widget_title">Useful Links</h4>
+                      <ul className="footer-menu">
                         {navs.map((nav) => (
-                          <li className={`text-light`} onClick={scroll_to_top}>
+                          <li
+                            className={`text-light`}
+                            key={nav}
+                            onClick={scroll_to_top}
+                          >
                             <Link to={`/${nav.replace(/ /g, "")}`}>
                               {nav || "home"}
                             </Link>
@@ -52,10 +56,10 @@ class Footer extends React.Component {
                     </div>
                   </div>
 
-                  <div class="col-lg-4 col-md-4">
-                    <div class="footer_widget">
-                      <h4 class="widget_title">Company</h4>
-                      <ul class="footer-menu">
+                  <div className="col-lg-4 col-md-4">
+                    <div className="footer_widget">
+                      <h4 className="widget_title">Company</h4>
+                      <ul className="footer-menu">
                         <li>
                           <Link to={`/about`}>About</Link>
                         </li>
@@ -74,11 +78,11 @@ class Footer extends React.Component {
           </div>
         </div>
 
-        <div class="footer-bottom" style={{ backgroundColor: "#000" }}>
-          <div class="container">
-            <div class="row align-items-center">
-              <div class="col-lg-12 col-md-12 text-center">
-                <p class="mb-0">
+        <div className="footer-bottom" style={{ backgroundColor: "#000" }}>
+          <div className="container">
+            <div className="row align-items-center">
+              <div className="col-lg-12 col-md-12 text-center">
+                <p className="mb-0">
                   © {new Date().getFullYear()} Voupon. All rights reserved.
                 </p>
               </div>

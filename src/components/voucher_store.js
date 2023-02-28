@@ -15,24 +15,24 @@ class Voucher_store extends React.Component {
 
   render() {
     let { vendor, voucher } = this.props;
-    let { title, value, description, total_sales } = voucher;
+    let { title, value, total_sales } = voucher;
     let { logo, address } = vendor;
 
     return (
-      <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6">
-        <div class="cates_crs_wrip">
-          <div class="crs_trios">
-            <div class="crs_cate_icon">
+      <div className="col-xl-3 col-lg-4 col-md-4 col-sm-6">
+        <div className="cates_crs_wrip">
+          <div className="crs_trios">
+            <div className="crs_cate_icon">
               <img
                 style={{ maxHeight: 40, maxWidth: 100 }}
                 src={`${domain}/images/${logo}`}
               />
             </div>
-            <div onClick={this.toggle_get_voucher} class="crs_cate_link">
+            <div onClick={this.toggle_get_voucher} className="crs_cate_link">
               <a href="#">Purchase</a>
             </div>
           </div>
-          <div class="crs_capt_cat">
+          <div className="crs_capt_cat">
             <h4>{title}</h4>
             <p>&#8358; {commalise_figures(Number(value))}</p>
 

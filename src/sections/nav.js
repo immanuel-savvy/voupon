@@ -171,7 +171,7 @@ class Custom_Nav extends React.Component {
                                     className="nav-dropdown nav-submenu"
                                     end
                                   >
-                                    {sub.map((subnav) => {
+                                    {sub.map((subnav, index) => {
                                       if (
                                         subnav === "become_a_vendor" &&
                                         this.loggeduser?.vendor
@@ -198,7 +198,7 @@ class Custom_Nav extends React.Component {
                                 ) : null}
                               </UncontrolledDropdown>
                             ) : nav === "login" ? (
-                              <li>
+                              <li key={index}>
                                 <a
                                   href="#"
                                   onClick={
@@ -216,7 +216,10 @@ class Custom_Nav extends React.Component {
                                 </a>
                               </li>
                             ) : nav === "signup" ? (
-                              <li className="add-listing btn  theme-bg">
+                              <li
+                                key={index}
+                                className="add-listing btn  theme-bg"
+                              >
                                 <Link
                                   to={loggeduser ? "/dashboard" : "/signup"}
                                   className="text-white"
@@ -229,7 +232,7 @@ class Custom_Nav extends React.Component {
                                 </Link>
                               </li>
                             ) : (
-                              <NavItem>
+                              <NavItem key={index}>
                                 <NavLink
                                   style={{
                                     backgroundColor: "transparent",

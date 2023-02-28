@@ -29,7 +29,7 @@ class Modal extends React.Component {
       <Modal_
         size={size}
         scrollable
-        stat
+        static={no_drop_on_backdrop}
         show={show}
         centered={centered}
         backdrop={no_drop_on_backdrop ? "static" : backdrop}

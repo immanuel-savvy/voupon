@@ -36,13 +36,13 @@ class Vouchers extends React.Component {
         <Padder />
         <Breadcrumb_banner page="vouchers" />
 
-        <section class="min">
-          <div class="container">
-            <div class="row justify-content-center">
-              <div class="col-lg-7 col-md-8">
-                <div class="sec-heading center">
+        <section className="min">
+          <div className="container">
+            <div className="row justify-content-center">
+              <div className="col-lg-7 col-md-8">
+                <div className="sec-heading center">
                   <h2>
-                    Your favorite vouchers <span class="theme-cl"></span>
+                    Your favorite vouchers <span className="theme-cl"></span>
                   </h2>
                   <p>Find vouchers to your favorite vendors here. </p>
                   <p>
@@ -57,7 +57,7 @@ class Vouchers extends React.Component {
               </div>
             </div>
 
-            <div class="row justify-content-center">
+            <div className="row justify-content-center">
               {vouchers ? (
                 vouchers.length ? (
                   vouchers.map((voucher, index) => (
