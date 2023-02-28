@@ -64,10 +64,10 @@ class Vendor_header extends React.Component {
                     <h4 className="ed_title text-light">{`${firstname} ${lastname}`}</h4>
                     <h2 className="ed_title text-light">{`${name}`}</h2>
                     <ul>
-                      <li className="text-light">
+                      {/* <li className="text-light">
                         <i className="ti-calendar"></i>
                         {`${offer_vouchers || 0} Offer vouchers`}
-                      </li>
+                      </li> */}
                     </ul>
                   </div>
                   <div className="ed_header_short"></div>
