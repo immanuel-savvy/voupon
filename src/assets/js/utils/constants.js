@@ -2,7 +2,9 @@ const DEV = false;
 
 const hostname = DEV ? "http://localhost" : "https://voupon.udaralinksapp.com";
 
-const client_domain = DEV ? `${hostname}:3000` : `https://voupon.netlify.app/`;
+const client_domain = DEV
+  ? `${hostname}:3000`
+  : `https://voupon.neovacityafrica.com`;
 
 const domain = DEV ? `${hostname}:1448` : `https://voupon.udaralinksapp.com`;
 
