@@ -1,5 +1,5 @@
 import React from "react";
-import { get_request, post_request } from "../assets/js/utils/services";
+import { get_request } from "../assets/js/utils/services";
 import Explore_more from "../components/explore_more";
 import Loadindicator from "../components/loadindicator";
 import Voucher_store from "../components/voucher_store";

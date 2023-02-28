@@ -45,7 +45,7 @@ class User_vouchers extends React.Component {
 
   toggle_create_voucher = () => this.create_voucher?.toggle();
 
-  voucher_states = new Array("unused", "redeemed");
+  voucher_states = new Array("unused", "used", "redeemed");
 
   render() {
     let { style } = this.props;

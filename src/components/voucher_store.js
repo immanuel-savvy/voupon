@@ -37,8 +37,8 @@ class Voucher_store extends React.Component {
             <p>&#8358; {commalise_figures(Number(value))}</p>
 
             <span>{address}</span>
-
-            <span>{description}</span>
+            {/* <br />
+            <span>{description}</span> */}
           </div>
 
           {total_sales ? <div>Total sold: {total_sales}</div> : null}

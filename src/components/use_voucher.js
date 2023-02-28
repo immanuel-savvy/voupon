@@ -33,17 +33,15 @@ class Use_voucher extends React.Component {
   is_set = () => {
     let { email, voucher_code, voucher_type, value } = this.state;
 
-    return (
-      email_regex.test(email) &&
-      voucher_code &&
-      voucher_type &&
-      Number(value > 0)
-    );
+    if (Number(value) <= 0 && voucher_type === voucher_types[0]) return false;
+
+    return email_regex.test(email) && voucher_code && voucher_type;
   };
 
   set_voucher_type = (voucher_type) => this.setState({ voucher_type });
 
   proceed_to_otp = async () => {
+    let { vendor } = this.props;
     let { voucher_code, user, email, value, voucher_type } = this.state;
 
     let result = await post_request("can_redeem_voucher", {
@@ -52,12 +50,17 @@ class Use_voucher extends React.Component {
       voucher_type,
       voucher_code,
       amount: Number(value),
+      vendor: vendor._id,
     });
 
     console.log(result);
 
     if (result && result.can_redeem) {
-      this.setState({ can_redeem: true, voucher: result.owner_voucher });
+      this.setState({
+        can_redeem: true,
+        user: result.user,
+        voucher: result.owner_voucher,
+      });
 
       this.setState({ requesting_otp: true });
       result = await post_request(`request_voucher_otp`, {
@@ -71,22 +74,65 @@ class Use_voucher extends React.Component {
   };
 
   proceed = async () => {
-    let { toggle, vendor, voucher, on_use } = this.props;
+    let { toggle, vendor, on_use } = this.props;
+    let { proceeding, value, user, voucher } = this.state;
+    if (proceeding) return;
+
+    this.setState({ proceeding: true });
+
+    let details = {
+      vendor: vendor._id,
+      voucher,
+      user,
+      value,
+    };
+    console.log(details);
+
+    let result = await post_request("use_voucher", details);
+
+    if (result && result.success) {
+      this.setState({
+        use_successful: true,
+        user: result.user,
+        voucher: result.voucher,
+        vendor: result.vendor,
+      });
+      on_use && on_use(result.value);
+    } else
+      this.setState({
+        message:
+          (result && result.message) || "Cannot use voucher at the moment.",
+      });
+  };
+
+  reset_state = () => {
+    this.setState({
+      voucher: null,
+      user: null,
+      value: null,
+      voucher_code: null,
+      voucher_type: null,
+      requesting_otp: false,
+      use_successful: null,
+      message: "",
+      email: "",
+    });
   };
 
   render() {
     let { voucher } = this.props;
     let {
-      firstname,
       proceeding,
       message,
       using,
-      lastname,
       email,
       voucher_code,
       voucher_type,
-      redeemed,
+      user,
+      voucher: used_voucher,
+      vendor,
       value,
+      use_successful,
       requesting_otp,
     } = this.state;
 
@@ -118,14 +164,14 @@ class Use_voucher extends React.Component {
                     </div>
                   </div>
 
-                  {redeemed ? (
+                  {use_successful ? (
                     <Voucher_used_details
-                      toggle={toggle}
+                      toggle={this.reset_state}
                       details={{
-                        voucher_code,
-                        email,
-                        firstname,
-                        lastname,
+                        user,
+                        voucher: used_voucher,
+                        vendor,
+                        value,
                       }}
                     />
                   ) : requesting_otp ? (

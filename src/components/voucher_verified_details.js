@@ -13,9 +13,8 @@ class Voucher_verified_details extends React.Component {
   render() {
     let { copied } = this.state;
     let { voucher, toggle } = this.props;
-    let { user, state, voucher_code, voucher: voucher_ } = voucher;
-    let { value } = voucher_;
-    let { firstname, email, lastname } = user;
+    let { user, state, voucher_code } = voucher;
+    let { firstname, lastname } = user;
 
     return (
       <div

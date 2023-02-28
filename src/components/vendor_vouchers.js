@@ -40,6 +40,8 @@ class Vendor_vouchers extends React.Component {
     emitter.remove_listener("new_offer_voucher", this.new_offer_voucher);
   };
 
+  on_use_voucher = () => {};
+
   toggle_create_voucher = () => this.create_offer?.toggle();
 
   toggle_use_voucher = () => this.use_voucher?.toggle();

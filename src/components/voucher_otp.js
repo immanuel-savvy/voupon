@@ -17,10 +17,15 @@ class Voucher_otp extends React.Component {
       clear_message,
       message,
       proceed,
+      proceed_title,
     } = this.props;
     let { code } = this.state;
 
-    let title = redeeming || !tranferring ? "redeem" : "transfer";
+    let title = proceed_title
+      ? proceed_title
+      : redeeming || !tranferring
+      ? "redeem"
+      : "transfer";
     redeeming = redeeming || tranferring;
 
     return (
@@ -30,7 +35,7 @@ class Voucher_otp extends React.Component {
             className="text-info"
             style={{ marginTop: 10, textAlign: "center", fontSize: 16 }}
           >
-            Voucher OTP has been sent to <br />
+            One-Time Password has been sent to <br />
             <b>{email || "test@mail.com"}</b>
           </span>
 
