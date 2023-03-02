@@ -63,7 +63,7 @@ class Verify_email extends React.Component {
                         <div className="crs_log_wrap">
                           <div className="crs_log__thumb">
                             <img
-                              src="../Assets/img/forgot_pass_bg2.jpg"
+                              src={require("../assets/img/forgot_pass_bg2.jpg")}
                               className="img-fluid"
                               alt=""
                             />
@@ -90,12 +90,13 @@ class Verify_email extends React.Component {
                               ) : null}
 
                               <div className="form-group">
-                                <label>Enter Email</label>
+                                <label>Email Address</label>
                                 <input
                                   type="email"
                                   className="form-control"
                                   placeholder="you@mail.com"
                                   value={email}
+                                  disabled
                                   onChange={({ target }) =>
                                     this.setState({
                                       email: target.value,

@@ -76,16 +76,29 @@ class Voucher extends React.Component {
       state,
       total_sales,
       _id: voucher_id,
-      description,
+      duration,
     } = voucher;
 
+    if (duration && duration < Date.now()) state = "outlived";
     if (!state) state = "unused";
     if (redeemed) state = "redeemed";
     if (transferred) state = "transferred";
     if (closed) state = "closed";
 
+    let voucher_btns = new Array(
+      {
+        title: "redeem",
+        action: this.redeem_voucher,
+      },
+      {
+        title: "transfer",
+        action: this.transfer_voucher,
+      },
+      !voucher.vendor ? null : { title: "use", action: this.use_voucher }
+    );
+
     return (
-      <Loggeduser>
+      <Loggeduser.Consumer>
         {({ loggeduser }) => {
           return (
             <div className={full ? "" : "col-lg-4 col-md-4 col-sm-6"}>
@@ -108,9 +121,9 @@ class Voucher extends React.Component {
                         justifyContent: "space-between",
                       }}
                     >
-                      <a href="#">{title}</a>
+                      <a href="#">{title}</a>{" "}
                       {state === "closed" ? (
-                        <div className="crs_cates cl_1">
+                        <div className="ml-2 crs_cates cl_1">
                           <span>{to_title(state)}</span>
                         </div>
                       ) : in_vendor &&
@@ -169,31 +182,28 @@ class Voucher extends React.Component {
                       {quantities}
                     </li>
                   </ul>
+
+                  {full || in_vendor ? null : state === "unused" ? (
+                    <span className="mt-2">
+                      {voucher_btns.map(
+                        (v) =>
+                          v && (
+                            <Text_btn
+                              text={to_title(v.title)}
+                              action={v.action}
+                            />
+                          )
+                      )}
+                    </span>
+                  ) : null}
                 </div>
 
-                {full || in_vendor ? null : state === "unused" ? (
-                  <div className="edu_cat_data">
-                    <div className="meta">
-                      <Dropdown_menu
-                        items={
-                          new Array(
-                            {
-                              title: "redeem",
-                              action: this.redeem_voucher,
-                            },
-                            {
-                              title: "transfer",
-                              action: this.transfer_voucher,
-                            },
-                            !voucher.vendor
-                              ? null
-                              : { title: "use", action: this.use_voucher }
-                          )
-                        }
-                      />
-                    </div>
+                {state === "outlived" ? (
+                  <div className="ml-2 crs_cates cl_1">
+                    <span>{to_title(state)}</span>
                   </div>
-                ) : (
+                ) : null}
+                {full || in_vendor ? null : state === "unused" ? null : (
                   <div className="crs_cates cl_1">
                     <span>{to_title(state)}</span>
                   </div>
@@ -235,7 +245,7 @@ class Voucher extends React.Component {
             </div>
           );
         }}
-      </Loggeduser>
+      </Loggeduser.Consumer>
     );
   }
 }

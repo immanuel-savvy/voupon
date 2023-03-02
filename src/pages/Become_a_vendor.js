@@ -105,7 +105,7 @@ class Become_a_vendor extends handle_file_upload {
       !ID_type ||
       !logo ||
       !category ||
-      description ||
+      !description ||
       !cac ||
       !attest
     )

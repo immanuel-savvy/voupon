@@ -24,7 +24,7 @@ class Footer extends React.Component {
                 <div className="footer_widget">
                   <Link to="/">
                     {/* <img src="assets/img/logo-light.png" className="img-footer small mb-2" alt="" /> */}
-                    <h2 className="text-light">Voupon</h2>
+                    <h2 className="text-light">Voucher Africa</h2>
                   </Link>
 
                   <h6 className="extream text-light mb-3">Nigeria</h6>

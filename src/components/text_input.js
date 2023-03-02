@@ -18,6 +18,7 @@ class Text_input extends React.Component {
       placeholder,
       action,
       important,
+      info,
     } = this.props;
 
     if (!value && disabled) return null;
@@ -37,6 +38,12 @@ class Text_input extends React.Component {
             value={value}
             onChange={({ target }) => action && action(target.value)}
           />
+          {info ? (
+            <span style={{ marginBottom: 10 }} className="text-info">
+              * {info}
+              <br />
+            </span>
+          ) : null}
           {important && !value ? (
             <span style={{ marginBottom: 10 }} className="text-danger">
               * {error_message || to_title(title)}

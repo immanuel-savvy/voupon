@@ -1,10 +1,8 @@
 import React from "react";
 import Preview_image from "./preview_image";
-import Text_btn from "./text_btn";
 import Modal from "./modal";
 import Create_offer_voucher from "./create_offer_voucher";
 import Close_vendor_account from "./close_vendor_account";
-import Small_btn from "./small_btn";
 import Dropdown_menu from "./dropdown_menu";
 import Wallet from "./wallet";
 
@@ -23,9 +21,8 @@ class Vendor_header extends React.Component {
     let { vendor, loggeduser } = this.props;
     if (!vendor) return;
 
-    let { logo, name, logo_hash, offer_vouchers, user, director } = vendor;
+    let { logo, name, logo_hash, director } = vendor;
     let { firstname, lastname } = director;
-    let { _id } = loggeduser || new Object();
 
     return (
       <div

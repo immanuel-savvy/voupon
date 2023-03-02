@@ -53,8 +53,6 @@ class Use_voucher extends React.Component {
       vendor: vendor._id,
     });
 
-    console.log(result);
-
     if (result && result.can_redeem) {
       this.setState({
         can_redeem: true,
@@ -74,7 +72,7 @@ class Use_voucher extends React.Component {
   };
 
   proceed = async () => {
-    let { toggle, vendor, on_use } = this.props;
+    let { vendor, on_use } = this.props;
     let { proceeding, value, user, voucher } = this.state;
     if (proceeding) return;
 
@@ -86,7 +84,6 @@ class Use_voucher extends React.Component {
       user,
       value,
     };
-    console.log(details);
 
     let result = await post_request("use_voucher", details);
 

@@ -20,6 +20,7 @@ import { to_title } from "../assets/js/utils/functions";
 import Redeem_voucher from "../components/redeem_voucher";
 import Verify_voucher from "../components/verify_voucher";
 import Create_open_voucher from "../components/create_open_voucher";
+import Create_coupon from "../components/create_coupon";
 
 let navs = new Array(
   "",
@@ -41,6 +42,7 @@ let subnavs = new Object({
     "verify_voucher"
   ),
   vendors: new Array("become_a_vendor", "all_vendors"),
+  coupons: new Array("coupons", "create_coupon", "verify_coupon"),
 });
 
 class Custom_Nav extends React.Component {
@@ -61,6 +63,10 @@ class Custom_Nav extends React.Component {
 
   vendor_profile = () =>
     window.location.assign(`${client_domain}/vendor?${this.loggeduser.vendor}`);
+
+  coupons = () => window.location.assign(`${client_domain}/coupons`);
+
+  create_coupon = () => this.create_coupon_?.toggle();
 
   create_voucher = () => this.create_voucher_?.toggle();
 
@@ -91,7 +97,7 @@ class Custom_Nav extends React.Component {
           this.loggeduser = loggeduser;
 
           return (
-            <div style={{}}>
+            <div>
               <div
                 className="header"
                 style={{
@@ -109,7 +115,7 @@ class Custom_Nav extends React.Component {
                     <Navbar expand="lg">
                       <NavbarBrand href="/" className="nav-brand">
                         {/* <img src="assets/img/logo.png" className="logo" alt="" /> */}
-                        <h2 className="text-dark">Voupon</h2>
+                        <h2 className="text-dark">Voucher Africa</h2>
                       </NavbarBrand>
                       <NavbarToggler
                         style={{ color: "#000" }}
@@ -131,6 +137,11 @@ class Custom_Nav extends React.Component {
                             } else if (nav === "vendors") {
                               if (loggeduser && loggeduser.vendor) {
                                 sub[0] = "vendor_profile";
+                              }
+                            }
+                            if (nav === "coupons") {
+                              if (!loggeduser?.vendor) {
+                                sub = sub.filter((s) => s !== "create_coupon");
                               }
                             }
                             return sub && sub.length ? (
@@ -283,6 +294,15 @@ class Custom_Nav extends React.Component {
                 }
               >
                 <Create_open_voucher toggle={this.create_voucher} />
+              </Modal>
+
+              <Modal
+                ref={(create_coupon_) => (this.create_coupon_ = create_coupon_)}
+              >
+                <Create_coupon
+                  vendor={loggeduser?.vendor}
+                  toggle={this.create_coupon}
+                />
               </Modal>
             </div>
           );
