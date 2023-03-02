@@ -42,42 +42,50 @@ const User_voucher_header = ({
                   </ul>
                 </div>
 
-                <div class="shorting-right mr-2">
-                  <label>Filter By:</label>
-                  <Dropdown_menu
-                    items={voucher_filters.map(
-                      (filter) =>
-                        new Object({
-                          title: filter,
-                          action: () => set_voucher_filter(filter),
+                {voucher_filters && voucher_filters.length ? (
+                  <div class="shorting-right mr-2">
+                    <label>Filter By:</label>
+                    <Dropdown_menu
+                      items={
+                        voucher_filters &&
+                        voucher_filters.map(
+                          (filter) =>
+                            new Object({
+                              title: filter,
+                              action: () => set_voucher_filter(filter),
+                            })
+                        )
+                      }
+                      button={
+                        voucher_filters &&
+                        React.forwardRef(({ onClick }, ref) => {
+                          return (
+                            <div
+                              class="dropdown show"
+                              ref={ref}
+                              onClick={(e) => {
+                                e.preventDefault();
+                                onClick(e);
+                              }}
+                            >
+                              <a
+                                class="btn btn-filter dropdown-toggle"
+                                href="#"
+                                data-toggle="dropdown"
+                                aria-haspopup="true"
+                                aria-expanded="false"
+                              >
+                                <span class="selection">
+                                  {to_title(voucher_filters[0])}
+                                </span>
+                              </a>
+                            </div>
+                          );
                         })
-                    )}
-                    button={React.forwardRef(({ onClick }, ref) => {
-                      return (
-                        <div
-                          class="dropdown show"
-                          ref={ref}
-                          onClick={(e) => {
-                            e.preventDefault();
-                            onClick(e);
-                          }}
-                        >
-                          <a
-                            class="btn btn-filter dropdown-toggle"
-                            href="#"
-                            data-toggle="dropdown"
-                            aria-haspopup="true"
-                            aria-expanded="false"
-                          >
-                            <span class="selection">
-                              {to_title(voucher_filters[0])}
-                            </span>
-                          </a>
-                        </div>
-                      );
-                    })}
-                  />
-                </div>
+                      }
+                    />
+                  </div>
+                ) : null}
                 <div class="lmk_485">
                   <ul class="shorting_grid">
                     {toggle_create_voucher ? (

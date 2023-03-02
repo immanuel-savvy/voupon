@@ -158,10 +158,12 @@ class Voucher extends React.Component {
                             text={voucher_code}
                             onCopy={this.copy_alert}
                           >
-                            <Text_btn
-                              text={voucher_code}
-                              icon={copied ? "fa-check" : "fa-copy"}
-                            />
+                            <span>
+                              <Text_btn
+                                text={voucher_code}
+                                icon={copied ? "fa-check" : "fa-copy"}
+                              />
+                            </span>
                           </CopyToClipboard>
                         )}
                       </li>

@@ -17,7 +17,7 @@ class Coupon_created_details extends React.Component {
 
   render() {
     let { copied } = this.state;
-    let { coupon, toggle } = this.props;
+    let { coupon, toggle, verified } = this.props;
     let { coupon_code, value, title } = coupon;
 
     return (
@@ -44,7 +44,7 @@ class Coupon_created_details extends React.Component {
             style={{ textTransform: "capitalize", fontWeight: "bold" }}
             className="text-success"
           >
-            Coupon created Successfully
+            Coupon {verified ? "verified" : "created"} Successfully
           </span>
 
           <span

@@ -1,11 +1,14 @@
 import React from "react";
+import { email_regex, to_title } from "../assets/js/utils/functions";
 import { post_request } from "../assets/js/utils/services";
 import { Loggeduser } from "../Contexts";
 import Alert_box from "./alert_box";
+import Checkbox from "./checkbox";
 import Coupon_created_details from "./coupon_created_details";
 import Stretch_button from "./stretch_button";
 import Text_btn from "./text_btn";
 import Text_input from "./text_input";
+import { coupon_types } from "./vendor_coupons";
 
 class Verify_coupon extends React.Component {
   constructor(props) {
@@ -15,16 +18,21 @@ class Verify_coupon extends React.Component {
   }
 
   is_set = () => {
-    let { coupon_code } = this.state;
+    let { coupon_code, email, type } = this.state;
 
-    return coupon_code;
+    if (type === coupon_types[1])
+      return coupon_code && email_regex.test(email) && type;
+
+    return type && coupon_code;
   };
 
   verify = async () => {
-    let { coupon_code } = this.state;
+    let { coupon_code, email, type } = this.state;
 
     let result = await post_request("verify_coupon", {
       coupon_code,
+      email,
+      type,
     });
 
     if (result && result.coupon)
@@ -43,6 +51,8 @@ class Verify_coupon extends React.Component {
       coupon: coupon_,
       message,
       verifying,
+      email,
+      type,
       verified,
     } = this.state;
 
@@ -99,11 +109,48 @@ class Verify_coupon extends React.Component {
                           <Coupon_created_details
                             toggle={() => this.setState({ verified: false })}
                             coupon={coupon}
+                            verified
                           />
                         ) : (
                           <>
+                            <div className="col-xl-6 col-lg-12 col-md-12 col-sm-12">
+                              <div className="form-group">
+                                <label>Coupon Type</label>
+
+                                {coupon_types.map((coupon_type_) => {
+                                  return (
+                                    <Checkbox
+                                      type="radio"
+                                      title={to_title(
+                                        coupon_type_.replace(/_/g, " ")
+                                      )}
+                                      key={coupon_type_}
+                                      _id={coupon_type_}
+                                      checked={coupon_type_ === type}
+                                      action={(type) => this.setState({ type })}
+                                      name="coupon_type"
+                                    />
+                                  );
+                                })}
+                              </div>
+                            </div>
+
+                            {type === coupon_types[1] ? (
+                              <Text_input
+                                value={email}
+                                title="Email"
+                                action={(email) =>
+                                  this.setState({
+                                    email,
+                                    message: "",
+                                  })
+                                }
+                                important
+                              />
+                            ) : null}
+
                             <Text_input
-                              value={coupon_code}
+                              value={(coupon_code || "").toUpperCase()}
                               title="coupon code"
                               disabled={!!this.props.coupon}
                               action={(coupon_code) =>

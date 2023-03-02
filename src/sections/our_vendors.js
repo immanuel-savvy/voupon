@@ -36,17 +36,8 @@ class Our_vendors extends React.Component {
               </div>
             </div>
           </div>
-          <div className="row">
-            <div
-              style={{
-                overflow: "scroll",
-                flexDirection: "row",
-                display: "flex",
-                paddingTop: 30,
-                paddingBottom: 30,
-                width: "100%",
-              }}
-            >
+          <div className="row justify-content-center">
+            <>
               {vendors ? (
                 vendors.map((vendor) => <Vendor vendor={vendor} />)
               ) : (
@@ -57,7 +48,7 @@ class Our_vendors extends React.Component {
                   <Loadindicator />
                 </div>
               )}
-            </div>
+            </>
           </div>
 
           <Explore_more to="vendors" />

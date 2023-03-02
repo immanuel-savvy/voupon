@@ -21,6 +21,7 @@ import Redeem_voucher from "../components/redeem_voucher";
 import Verify_voucher from "../components/verify_voucher";
 import Create_open_voucher from "../components/create_open_voucher";
 import Create_coupon from "../components/create_coupon";
+import Verify_coupon from "../components/verify_coupon";
 
 let navs = new Array(
   "",
@@ -72,6 +73,8 @@ class Custom_Nav extends React.Component {
 
   verify_voucher = () => this.verify_voucher_?.toggle();
 
+  verify_coupon = () => this.verify_coupon_?.toggle();
+
   redeem_voucher = () => this.redeem_voucher_?.toggle();
 
   toggle = () =>
@@ -89,7 +92,6 @@ class Custom_Nav extends React.Component {
 
   render() {
     let { current_nav } = this.state;
-    let { page } = this.props;
 
     return (
       <Loggeduser.Consumer>
@@ -286,6 +288,12 @@ class Custom_Nav extends React.Component {
                 }
               >
                 <Verify_voucher toggle={this.verify_voucher} />
+              </Modal>
+
+              <Modal
+                ref={(verify_coupon_) => (this.verify_coupon_ = verify_coupon_)}
+              >
+                <Verify_coupon toggle={this.verify_coupon} />
               </Modal>
 
               <Modal

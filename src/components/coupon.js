@@ -41,7 +41,7 @@ class Coupon extends React.Component {
   render() {
     let { copied } = this.state;
 
-    let { coupon, vendor: vendor_, in_vendor, full } = this.props;
+    let { coupon, in_user, vendor: vendor_, in_vendor, full } = this.props;
     let {
       vendor,
       title,
@@ -112,7 +112,7 @@ class Coupon extends React.Component {
                   <ul className="meta">
                     {coupon_id.startsWith("offer_voucher") ? null : (
                       <li className="video">
-                        {type === "premium" ? (
+                        {type === "premium" && !in_user ? (
                           <Text_btn text="Premium" />
                         ) : copied ? (
                           <Text_btn icon="fa-check" />
@@ -160,12 +160,14 @@ class Coupon extends React.Component {
                       </li>
                     ) : null}
 
-                    <Text_btn
-                      text={
-                        type === "open" ? "Copy coupon code" : "Obtain coupon"
-                      }
-                      action={this.handle_coupon}
-                    />
+                    {in_user ? null : (
+                      <Text_btn
+                        text={
+                          type === "open" ? "Copy coupon code" : "Obtain coupon"
+                        }
+                        action={this.handle_coupon}
+                      />
+                    )}
                   </ul>
                 </div>
 

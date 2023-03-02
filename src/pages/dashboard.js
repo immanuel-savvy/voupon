@@ -7,6 +7,7 @@ import Transactions from "../components/transactions";
 import { Loggeduser } from "../Contexts";
 import Footer from "../sections/footer";
 import Custom_Nav from "../sections/nav";
+import User_coupons from "../sections/user_coupons";
 import User_vouchers from "../sections/user_vouchers";
 
 class Dashboard extends React.Component {
@@ -67,7 +68,7 @@ class Dashboard extends React.Component {
                       {panel === panels[0] ? (
                         <User_vouchers style={{ padding: 0 }} />
                       ) : panel === panels[1] ? (
-                        <></>
+                        <User_coupons />
                       ) : panel === panels[2] ? (
                         <></>
                       ) : (
