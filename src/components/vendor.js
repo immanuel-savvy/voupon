@@ -35,7 +35,7 @@ class Vendor extends React.Component {
               onClick={this.save_vendor}
               class="crs_trt_thum_link"
             >
-              <Preview_image image={logo} />
+              <Preview_image style={{ height: 60 }} image={logo} />
             </Link>
           </div>
           <div class="crs_trt_caption">
@@ -49,8 +49,8 @@ class Vendor extends React.Component {
                 </Link>
               </h4>
             </div>
-            <p style={{ fontStyle: "italic" }}>{email}</p>
-            <p>{description}</p>
+            {/* <p style={{ fontStyle: "italic" }}>{email}</p> */}
+            {/* <p>{description}</p> */}
             <p>{address}</p>
           </div>
           <div class="crs_trt_footer">

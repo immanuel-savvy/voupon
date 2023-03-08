@@ -2,6 +2,7 @@ import React from "react";
 import { get_request } from "../assets/js/utils/services";
 import Explore_more from "../components/explore_more";
 import Loadindicator from "../components/loadindicator";
+import Offer_voucher from "../components/offer_voucher";
 import Voucher_store from "../components/voucher_store";
 
 class Featured_vouchers extends React.Component {
@@ -22,7 +23,7 @@ class Featured_vouchers extends React.Component {
     if (vouchers && !vouchers.length) return;
 
     return (
-      <section className="gray">
+      <section className="">
         <div class="container">
           <div class="row justify-content-center">
             <div class="col-lg-7 col-md-8">
@@ -39,7 +40,7 @@ class Featured_vouchers extends React.Component {
           <div class="row justify-content-center">
             {vouchers ? (
               vouchers.map((voucher) => (
-                <Voucher_store
+                <Offer_voucher
                   voucher={voucher}
                   vendor={
                     voucher.vendor?._id

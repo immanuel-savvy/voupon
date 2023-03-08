@@ -1,12 +1,14 @@
 const DEV = true;
 
-const hostname = DEV ? "http://localhost" : "https://voupon.udaralinksapp.com";
+const hostname = DEV
+  ? `http://${"localhost"}`
+  : "https://voupon.udaralinksapp.com";
 
 const client_domain = DEV
   ? `${hostname}:3000`
   : `https://voupon.neovacityafrica.com`;
 
-const domain = DEV ? `${hostname}:1448` : `https://voupon.udaralinksapp.com`;
+const domain = DEV ? `${hostname}:1449` : `https://voupon.udaralinksapp.com`;
 
 const default_admin = "adminstrators~123voupon~1234567890123";
 

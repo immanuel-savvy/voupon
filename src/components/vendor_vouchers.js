@@ -8,6 +8,9 @@ import User_voucher_header from "./user_voucher_header";
 import Modal from "./modal";
 import Create_offer_voucher from "./create_offer_voucher";
 import Use_voucher from "./use_voucher";
+import Offer_voucher from "./offer_voucher";
+import { client_domain } from "../assets/js/utils/constants";
+import { save_to_session } from "../sections/footer";
 
 class Vendor_vouchers extends React.Component {
   constructor(props) {
@@ -70,7 +73,12 @@ class Vendor_vouchers extends React.Component {
             new Array(
               {
                 title: "create offer voucher",
-                action: this.toggle_create_voucher,
+                action: () => {
+                  window.location.assign(
+                    `${client_domain}/create_offer_voucher`
+                  );
+                  save_to_session("vendor", vendor);
+                },
               },
               { title: "use voucher", action: this.toggle_use_voucher }
             )
@@ -82,7 +90,7 @@ class Vendor_vouchers extends React.Component {
               offer_vouchers.map((voucher) =>
                 voucher.state === filter ||
                 (!voucher.state && filter === "running") ? (
-                  <Voucher
+                  <Offer_voucher
                     in_vendor
                     vendor={vendor}
                     voucher={voucher}
@@ -97,13 +105,6 @@ class Vendor_vouchers extends React.Component {
             <Loadindicator />
           )}
         </div>
-
-        <Modal ref={(create_offer) => (this.create_offer = create_offer)}>
-          <Create_offer_voucher
-            toggle={this.toggle_create_voucher}
-            vendor={vendor}
-          />
-        </Modal>
 
         <Modal ref={(use_voucher) => (this.use_voucher = use_voucher)}>
           <Use_voucher

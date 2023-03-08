@@ -86,11 +86,6 @@ class Wallet extends React.Component {
             &nbsp;&nbsp;&nbsp;&nbsp;
             <div class="dashboard_stats_wrap_content text-light">
               <h6 className="text-light">NGN 0.00</h6>
-              <span>Coupons</span>
-            </div>
-            &nbsp;&nbsp;&nbsp;&nbsp;
-            <div class="dashboard_stats_wrap_content text-light">
-              <h6 className="text-light">NGN 0.00</h6>
               <span>Tickets</span>
             </div>
             &nbsp;&nbsp;&nbsp;&nbsp;

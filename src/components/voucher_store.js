@@ -1,6 +1,6 @@
 import React from "react";
 import { domain } from "../assets/js/utils/constants";
-import { commalise_figures } from "../assets/js/utils/functions";
+import { commalise_figures, to_title } from "../assets/js/utils/functions";
 import Get_voucher from "./get_voucher";
 import Modal from "./modal";
 
@@ -36,12 +36,12 @@ class Voucher_store extends React.Component {
             <h4>{title}</h4>
             <p>&#8358; {commalise_figures(Number(value))}</p>
 
-            <span>{address}</span>
+            <span>{to_title(address)}</span>
             {/* <br />
             <span>{description}</span> */}
           </div>
 
-          {total_sales ? <div>Total sold: {total_sales}</div> : null}
+          <div>Total sold: {total_sales || 0}</div>
         </div>
 
         <Modal ref={(get_voucher) => (this.get_voucher = get_voucher)}>

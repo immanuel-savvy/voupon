@@ -4,6 +4,7 @@ import Create_open_voucher from "../components/create_open_voucher";
 import Listempty from "../components/listempty";
 import Loadindicator from "../components/loadindicator";
 import Modal from "../components/modal";
+import Offer_voucher from "../components/offer_voucher";
 import Padder from "../components/padder";
 import Text_btn from "../components/text_btn";
 import Voucher_store from "../components/voucher_store";
@@ -61,7 +62,7 @@ class Vouchers extends React.Component {
               {vouchers ? (
                 vouchers.length ? (
                   vouchers.map((voucher, index) => (
-                    <Voucher_store
+                    <Offer_voucher
                       vendor={vendors[voucher.vendor]}
                       voucher={voucher}
                       key={index}

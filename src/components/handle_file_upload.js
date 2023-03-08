@@ -7,7 +7,7 @@ class Handle_file_upload extends React.Component {
     this.state = {};
   }
 
-  handle_file = ({ target }, prefix, maxsize) => {
+  handle_file = ({ target }, prefix, maxsize, cb) => {
     let file = target.files[0];
     let reader = new FileReader();
     reader.readAsDataURL(file);
@@ -29,14 +29,17 @@ class Handle_file_upload extends React.Component {
     this.setState({ [prop_loading]: true });
 
     reader.onloadend = async (e) =>
-      this.setState({
-        file,
-        [prop]: reader.result,
-        [prop_filename]: file.name,
-        [prop_loading]: false,
-        [prop_size]: file.size,
-        [prop_oversize]: file.size > maxsize,
-      });
+      this.setState(
+        {
+          file,
+          [prop]: reader.result,
+          [prop_filename]: file.name,
+          [prop_loading]: false,
+          [prop_size]: file.size,
+          [prop_oversize]: file.size > maxsize,
+        },
+        cb
+      );
   };
 }
 

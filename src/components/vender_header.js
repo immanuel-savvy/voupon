@@ -20,8 +20,9 @@ class Vendor_header extends React.Component {
   render() {
     let { vendor, loggeduser } = this.props;
     if (!vendor) return;
+    loggeduser = loggeduser || new Object();
 
-    let { logo, name, logo_hash, director } = vendor;
+    let { logo, name, logo_hash, director, verified } = vendor;
     let { firstname, lastname } = director;
 
     return (
@@ -37,8 +38,15 @@ class Vendor_header extends React.Component {
           <div className="row align-items-center mb-5">
             <div className="col-lg-3 col-md-12 col-sm-12">
               <div className="authi_125">
-                <div className="authi_125_thumb bg-light p-2">
+                <div className="authi_125_thumb p-2">
                   <Preview_image
+                    style={{
+                      maxHeight: 150,
+                      borderWidth: 4,
+                      borderColor: "#fff",
+                      borderStyle: "solid",
+                      borderRadius: 10,
+                    }}
                     image={
                       logo ||
                       require("../assets/img/user_image_placeholder.png")
@@ -54,7 +62,7 @@ class Vendor_header extends React.Component {
                 <div className="ed_detail_wrap">
                   {vendor.verified ? null : (
                     <div className="crs_cates cl_1">
-                      <span>Pending Approval</span>
+                      <span style={{ color: "#fff" }}>Pending Approval</span>
                     </div>
                   )}
                   <div className="ed_header_caption">
@@ -73,7 +81,11 @@ class Vendor_header extends React.Component {
                   <div className="ed_view_link"></div>
                 </div>
 
-                <Wallet vendor={vendor} />
+                {verified &&
+                loggeduser.vendor &&
+                loggeduser.vendor === vendor._id ? (
+                  <Wallet vendor={vendor} />
+                ) : null}
 
                 <Dropdown_menu
                   items={

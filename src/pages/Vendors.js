@@ -6,6 +6,7 @@ import Dropdown_menu from "../components/dropdown_menu";
 import Listempty from "../components/listempty";
 import Loadindicator from "../components/loadindicator";
 import Padder from "../components/padder";
+import Section_header from "../components/section_headers";
 import Text_btn from "../components/text_btn";
 import Vendor from "../components/vendor";
 import { Loggeduser } from "../Contexts";
@@ -68,16 +69,10 @@ class Vendors extends React.Component {
 
               <section class="min gray">
                 <div class="container">
-                  <div class="row justify-content-center">
-                    <div class="col-lg-7 col-md-8">
-                      <div class="sec-heading center">
-                        <h2>
-                          Vendors <span class="theme-cl"></span>
-                        </h2>
-                        <p>Find your favorite vendors here. </p>
-                      </div>
-                    </div>
-                  </div>
+                  <Section_header
+                    title="Vendors"
+                    description="Find your favorite vendors here. "
+                  />
 
                   <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12">

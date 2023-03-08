@@ -3,6 +3,7 @@ import { emitter } from "./../Voupon";
 import { post_request } from "../assets/js/utils/services";
 import Stretch_button from "./stretch_button";
 import Text_input from "./text_input";
+import { commalise_figures } from "../assets/js/utils/functions";
 
 class Create_offer_voucher extends React.Component {
   constructor(props) {
@@ -82,7 +83,7 @@ class Create_offer_voucher extends React.Component {
                   />
 
                   <Text_input
-                    value={value}
+                    value={commalise_figures(value)}
                     title={`offer value ${"(Naira)"}`}
                     action={(value) =>
                       this.setState({

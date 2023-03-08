@@ -38,7 +38,7 @@ class Preview_image extends React.Component {
           }
           onLoad={() => this.setState({ image_loaded: true })}
           beforeLoad={() => this.setState({ image_load_started: true })}
-          className={class_name || "img-fluid rounded"}
+          className={class_name || "img-fluid round"}
           onClick={onclick}
           style={{
             height: image_loaded ? height || null : 0,

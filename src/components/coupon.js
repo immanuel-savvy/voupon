@@ -92,18 +92,10 @@ class Coupon extends React.Component {
                         loggeduser.vendor === _id ? (
                         <Dropdown_menu
                           items={
-                            new Array(
-                              {
-                                title: "update offer",
-                                action: this.update_offer,
-                              },
-                              state === "closed"
-                                ? null
-                                : {
-                                    title: "close offer",
-                                    action: this.close_offer,
-                                  }
-                            )
+                            new Array({
+                              title: "update coupon",
+                              action: this.update_coupon,
+                            })
                           }
                         />
                       ) : null}
@@ -140,23 +132,27 @@ class Coupon extends React.Component {
                     {in_vendor ? (
                       <li className="video">
                         <span>Total Usage:</span>
-                        {total_usage || 0}
+                        <b> {total_usage || 0}</b>
                       </li>
                     ) : null}
-                    <li className="video">
-                      <span>Quantities:</span>
-                      {quantities}
-                    </li>
+                    {in_user ? null : (
+                      <li className="video">
+                        <span>Quantities:</span>
+                        <b> {quantities}</b>
+                      </li>
+                    )}
                     {in_vendor && type === "premium" ? (
                       <li className="video">
                         <span>Total Obtained:</span>
-                        {obtained}
+                        <b> {obtained}</b>
                       </li>
                     ) : null}
                     {duration ? (
                       <li className="video">
                         <span>Valid till:</span>&nbsp;
-                        {`${time_string(duration)}, ${date_string(duration)}`}
+                        <b>{` ${time_string(duration)}, ${date_string(
+                          duration
+                        )}`}</b>
                       </li>
                     ) : null}
 

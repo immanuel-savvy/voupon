@@ -6,20 +6,20 @@ const scroll_to_top = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
 const Explore_more = ({ to }) => {
   return (
-    <Link to={`/${to}`} onClick={scroll_to_top}>
-      <div class="row justify-content-center">
-        <div class="col-lg-7 col-md-8 mt-2">
-          <div class="text-center">
+    <div className="row justify-content-center">
+      <div className="col-lg-7 col-md-8 mt-2">
+        <div className="text-center">
+          <Link to={`/${to}`} onClick={scroll_to_top}>
             <a
               href="grid-layout-with-sidebar.html"
-              class="btn btn-md theme-bg-light theme-cl"
+              className="btn btn-md theme-bg-light theme-cl"
             >
               Explore More {to_title(to)}
             </a>
-          </div>
+          </Link>
         </div>
       </div>
-    </Link>
+    </div>
   );
 };
 

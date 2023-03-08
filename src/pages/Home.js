@@ -1,6 +1,7 @@
 import React from "react";
 import { Carousel } from "react-bootstrap";
 import Loadindicator from "../components/loadindicator";
+import Featured_coupons from "../sections/featured_coupons";
 import Featured_vouchers from "../sections/featured_vouchers";
 import Footer from "../sections/footer";
 import Hero_banner from "../sections/hero_banner";
@@ -80,8 +81,10 @@ class Home extends React.Component {
             <Loadindicator />
           )}
 
-          <Our_vendors />
           <Featured_vouchers />
+          <Featured_coupons />
+
+          <Our_vendors />
         </div>
         <Footer />
       </div>

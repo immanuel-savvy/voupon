@@ -4,7 +4,7 @@ import Loadindicator from "../components/loadindicator";
 import Padder from "../components/padder";
 import Vendor_header from "../components/vender_header";
 import { Loggeduser } from "../Contexts";
-import Footer from "../sections/footer";
+import Footer, { get_session } from "../sections/footer";
 import Nav from "../sections/nav";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
@@ -33,16 +33,10 @@ class Vendor_profile extends React.Component {
   }
 
   componentDidMount = async () => {
-    let vendor = window.sessionStorage.getItem("vendor");
-    let vendor_id = window.location.href.split("?")[1];
-    if (!(vendor_id && vendor_id.trim().startsWith("vendors~")))
-      vendor_id = this.loggeduser?.vendor;
+    let vendor = get_session("vendor");
 
-    if (vendor) vendor = JSON.parse(vendor);
-    vendor = vendor_id && (await get_request(`vendor/${vendor_id}`));
+    console.log(vendor);
 
-    if (!vendor || (vendor && !vendor._id))
-      return window.location.assign(client_domain);
     this.setState({ vendor });
   };
 

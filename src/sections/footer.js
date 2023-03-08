@@ -4,6 +4,19 @@ import { navs } from "./nav";
 
 const scroll_to_top = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
+const save_to_session = (key, value) =>
+  window.sessionStorage.setItem(key, JSON.stringify(value));
+
+const get_session = (key) => {
+  let value = window.sessionStorage.getItem(key);
+
+  try {
+    value = JSON.parse(value);
+  } catch (e) {}
+
+  return value;
+};
+
 class Footer extends React.Component {
   constructor(props) {
     super(props);
@@ -95,4 +108,4 @@ class Footer extends React.Component {
 }
 
 export default Footer;
-export { scroll_to_top };
+export { scroll_to_top, save_to_session, get_session };
