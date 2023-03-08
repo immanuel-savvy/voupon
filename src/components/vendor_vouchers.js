@@ -11,6 +11,7 @@ import Use_voucher from "./use_voucher";
 import Offer_voucher from "./offer_voucher";
 import { client_domain } from "../assets/js/utils/constants";
 import { save_to_session } from "../sections/footer";
+import { Loggeduser } from "../Contexts";
 
 class Vendor_vouchers extends React.Component {
   constructor(props) {
@@ -50,7 +51,7 @@ class Vendor_vouchers extends React.Component {
   toggle_use_voucher = () => this.use_voucher?.toggle();
 
   render() {
-    let { vendor } = this.props;
+    let { vendor, loggeduser } = this.props;
     let { offer_vouchers, filter, use_voucher } = this.state;
 
     return (
@@ -65,25 +66,27 @@ class Vendor_vouchers extends React.Component {
             </div>
           </div>
         </div>
-        <User_voucher_header
-          voucher_filters={this.voucher_states}
-          set_voucher_filter={(filter) => this.setState({ filter })}
-          voucher_type={"offer voucher"}
-          side_buttons={
-            new Array(
-              {
-                title: "create offer voucher",
-                action: () => {
-                  window.location.assign(
-                    `${client_domain}/create_offer_voucher`
-                  );
-                  save_to_session("vendor", vendor);
+        {vendor._id === loggeduser?.vendor ? (
+          <User_voucher_header
+            voucher_filters={this.voucher_states}
+            set_voucher_filter={(filter) => this.setState({ filter })}
+            voucher_type={"offer voucher"}
+            side_buttons={
+              new Array(
+                {
+                  title: "create offer voucher",
+                  action: () => {
+                    window.location.assign(
+                      `${client_domain}/create_offer_voucher`
+                    );
+                    save_to_session("vendor", vendor);
+                  },
                 },
-              },
-              { title: "use voucher", action: this.toggle_use_voucher }
-            )
-          }
-        />
+                { title: "use voucher", action: this.toggle_use_voucher }
+              )
+            }
+          />
+        ) : null}
         <div className="row align-items-center">
           {offer_vouchers ? (
             offer_vouchers.length ? (
@@ -105,7 +108,6 @@ class Vendor_vouchers extends React.Component {
             <Loadindicator />
           )}
         </div>
-
         <Modal ref={(use_voucher) => (this.use_voucher = use_voucher)}>
           <Use_voucher
             toggle={this.toggle_use_voucher}

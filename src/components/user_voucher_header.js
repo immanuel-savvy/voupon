@@ -27,17 +27,19 @@ const User_voucher_header = ({
                 <div class="lmk_485">
                   <ul class="shorting_grid">
                     {side_buttons && side_buttons.length
-                      ? side_buttons.map((btn) => (
-                          <li class="list-inline-item">
-                            <Small_btn
-                              style={{
-                                textTransform: "capitalize",
-                              }}
-                              title={btn.title}
-                              action={btn.action}
-                            />
-                          </li>
-                        ))
+                      ? side_buttons.map((btn) =>
+                          btn ? (
+                            <li class="list-inline-item">
+                              <Small_btn
+                                style={{
+                                  textTransform: "capitalize",
+                                }}
+                                title={btn.title}
+                                action={btn.action}
+                              />
+                            </li>
+                          ) : null
+                        )
                       : null}
                   </ul>
                 </div>
