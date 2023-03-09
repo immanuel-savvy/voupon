@@ -30,6 +30,7 @@ let navs = new Array(
   "tickets",
   "gift cards",
   "vendors",
+  "developer",
   "login",
   "signup"
 );

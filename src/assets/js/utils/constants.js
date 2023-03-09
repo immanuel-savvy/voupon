@@ -8,6 +8,10 @@ const client_domain = DEV
   ? `${hostname}:3000`
   : `https://voupon.neovacityafrica.com`;
 
+const developer_domain = DEV
+  ? `${hostname}:3001`
+  : `voupon_dev.neovacityafrica.com`;
+
 const domain = DEV ? `${hostname}:1449` : `https://voupon.udaralinksapp.com`;
 
 const default_admin = "adminstrators~123voupon~1234567890123";
@@ -59,4 +63,5 @@ export {
   DEV,
   dow_index,
   dow_index_inverse,
+  developer_domain,
 };

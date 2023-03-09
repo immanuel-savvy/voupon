@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { developer_domain } from "../assets/js/utils/constants";
 import { navs } from "./nav";
 
 const scroll_to_top = () => window.scrollTo({ top: 0, behavior: "smooth" });
@@ -80,7 +81,9 @@ class Footer extends React.Component {
                           <Link to={`/contact`}>Contact</Link>
                         </li>
                         <li>
-                          <Link to="/login">Login</Link>
+                          <a href={developer_domain} target="_blank">
+                            Developer
+                          </a>
                         </li>
                       </ul>
                     </div>

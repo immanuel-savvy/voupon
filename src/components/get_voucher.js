@@ -34,7 +34,7 @@ class Get_voucher extends React.Component {
   };
 
   payment_successful = () => {
-    let { voucher } = this.props;
+    let { voucher, on_purchase } = this.props;
     let { email, firstname, lastname, phone, updating } = this.state;
     if (updating) return;
 
@@ -50,6 +50,7 @@ class Get_voucher extends React.Component {
       vendor: voucher.vendor._id || voucher.vendor,
     })
       .then((res) => {
+        res.voucher_code && on_purchase && on_purchase(res.voucher_code);
         this.setState({ updating: false, voucher_code: res.voucher_code });
       })
       .catch((e) => console.log(e));

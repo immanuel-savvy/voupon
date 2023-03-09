@@ -6,6 +6,7 @@ import Create_open_voucher from "../components/create_open_voucher";
 import Listempty from "../components/listempty";
 import Loadindicator from "../components/loadindicator";
 import Modal from "../components/modal";
+import Offer_voucher from "../components/offer_voucher";
 import User_voucher_header from "../components/user_voucher_header";
 import Voucher from "../components/voucher";
 import { Loggeduser } from "../Contexts";
@@ -85,15 +86,27 @@ class User_vouchers extends React.Component {
                                 vouchers.map((voucher, index) =>
                                   voucher.state === filter ||
                                   (!voucher.state && filter === "unused") ? (
-                                    <Voucher
-                                      voucher={{
-                                        ...voucher.voucher,
-                                        state: voucher.state,
-                                      }}
-                                      voucher_code={voucher.voucher_code}
-                                      vendor={voucher.vendor}
-                                      key={index}
-                                    />
+                                    voucher?._id.startsWith("user") ? (
+                                      <Offer_voucher
+                                        voucher={{
+                                          ...voucher.voucher,
+                                          state: voucher.state,
+                                        }}
+                                        voucher_code={voucher.voucher_code}
+                                        vendor={voucher.voucher.vendor}
+                                        key={index}
+                                      />
+                                    ) : (
+                                      <Voucher
+                                        voucher={{
+                                          ...voucher.voucher,
+                                          state: voucher.state,
+                                        }}
+                                        voucher_code={voucher.voucher_code}
+                                        vendor={voucher.vendor}
+                                        key={index}
+                                      />
+                                    )
                                   ) : null
                                 )
                               ) : (

@@ -6,8 +6,8 @@ import Loadindicator from "../components/loadindicator";
 import Modal from "../components/modal";
 import Offer_voucher from "../components/offer_voucher";
 import Padder from "../components/padder";
-import Text_btn from "../components/text_btn";
-import Voucher_store from "../components/voucher_store";
+import Vouchers_header from "../components/vouchers_header";
+import Vouchers_sidebar from "../components/vouchers_sidebar";
 import Breadcrumb_banner from "../sections/breadcrumb_banner";
 import Footer from "../sections/footer";
 import Nav from "../sections/nav";
@@ -16,19 +16,25 @@ class Vouchers extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      limit: 15,
+      page: 1,
+    };
   }
 
   componentDidMount = async () => {
-    let { vouchers, vendors } = await get_request("get_offer_vouchers/all");
+    let { limit } = this.state;
+    let { vouchers, vendors, total } = await get_request(
+      `get_offer_vouchers/${limit}`
+    );
 
-    this.setState({ vouchers, vendors });
+    this.setState({ vouchers, vendors, total });
   };
 
   toggle_create_voucher = () => this.create_voucher?.toggle();
 
   render() {
-    let { vouchers, vendors } = this.state;
+    let { vouchers, vendors, total, page, limit } = this.state;
 
     return (
       <div>
@@ -37,43 +43,38 @@ class Vouchers extends React.Component {
         <Padder />
         <Breadcrumb_banner page="vouchers" />
 
-        <section className="min">
+        <section className="gray">
           <div className="container">
-            <div className="row justify-content-center">
-              <div className="col-lg-7 col-md-8">
-                <div className="sec-heading center">
-                  <h2>
-                    Your favorite vouchers <span className="theme-cl"></span>
-                  </h2>
-                  <p>Find vouchers to your favorite vendors here. </p>
-                  <p>
-                    or{" "}
-                    <Text_btn
-                      action={this.toggle_create_voucher}
-                      text="Create Open Voucher"
-                      style={{ fontSize: 18, fontWeight: "bold" }}
-                    />
-                  </p>
+            <div className="row">
+              <Vouchers_sidebar />
+
+              <div class="col-xl-8 col-lg-8 col-md-12 col-sm-12">
+                <Vouchers_header
+                  length={vouchers && vouchers.length}
+                  total={total}
+                  page={page}
+                  limit={limit}
+                />
+
+                <div class="row justify-content-center">
+                  {vouchers ? (
+                    vouchers.length ? (
+                      vouchers.map((voucher, index) => (
+                        <Offer_voucher
+                          vendor={vendors[voucher.vendor]}
+                          voucher={voucher}
+                          in_vouchers
+                          key={index}
+                        />
+                      ))
+                    ) : (
+                      <Listempty />
+                    )
+                  ) : (
+                    <Loadindicator />
+                  )}
                 </div>
               </div>
-            </div>
-
-            <div className="row justify-content-center">
-              {vouchers ? (
-                vouchers.length ? (
-                  vouchers.map((voucher, index) => (
-                    <Offer_voucher
-                      vendor={vendors[voucher.vendor]}
-                      voucher={voucher}
-                      key={index}
-                    />
-                  ))
-                ) : (
-                  <Listempty />
-                )
-              ) : (
-                <Loadindicator />
-              )}
             </div>
           </div>
         </section>

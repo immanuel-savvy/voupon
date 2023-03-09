@@ -13,7 +13,7 @@ import Vendor_vouchers from "../components/vendor_vouchers";
 import Vendor_coupons from "../components/vendor_coupons";
 import Vendor_tickets from "../components/vendor_ticket";
 import Vendor_settings from "../components/vendor_settings";
-import { client_domain } from "../assets/js/utils/constants";
+import { client_domain, organisation_name } from "../assets/js/utils/constants";
 import Text_btn from "../components/text_btn";
 import Transactions from "../components/transactions";
 
@@ -35,7 +35,7 @@ class Vendor_profile extends React.Component {
   componentDidMount = async () => {
     let vendor = get_session("vendor");
 
-    console.log(vendor);
+    if (vendor) document.title = `${vendor.name} | ${organisation_name}`;
 
     this.setState({ vendor });
   };
