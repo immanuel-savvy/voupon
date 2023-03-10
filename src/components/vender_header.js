@@ -5,6 +5,24 @@ import Create_offer_voucher from "./create_offer_voucher";
 import Close_vendor_account from "./close_vendor_account";
 import Dropdown_menu from "./dropdown_menu";
 import Wallet from "./wallet";
+import Text_btn from "./text_btn";
+import CopyToClipboard from "react-copy-to-clipboard";
+
+const parse_vendor_id = (vendor_id) => {
+  vendor_id = vendor_id.split("~");
+  vendor_id.splice(0, 1);
+  vendor_id.unshift(vendor_id[1].slice(5));
+  vendor_id[2] = vendor_id[2].slice(0, 5);
+
+  return vendor_id.join("$");
+};
+
+const reset_vendor_id = (vendor_id) => {
+  vendor_id = vendor_id.split("$");
+  vendor_id = ["vendors", vendor_id[1], `${vendor_id[2]}${vendor_id[0]}`];
+
+  return vendor_id.join("~");
+};
 
 class Vendor_header extends React.Component {
   constructor(props) {
@@ -22,7 +40,7 @@ class Vendor_header extends React.Component {
     if (!vendor) return;
     loggeduser = loggeduser || new Object();
 
-    let { logo, name, logo_hash, director, verified } = vendor;
+    let { logo, name, logo_hash, director, verified, _id } = vendor;
     let { firstname, lastname } = director;
 
     return (
@@ -55,6 +73,16 @@ class Vendor_header extends React.Component {
                   />
                 </div>
               </div>
+
+              <span className="ml-2">
+                <span className="text-light">Your vendor ID:</span>
+                <br />
+                <CopyToClipboard text={parse_vendor_id(_id)}>
+                  <span>
+                    <Text_btn text={parse_vendor_id(_id)} icon="fa-copy" />
+                  </span>
+                </CopyToClipboard>
+              </span>
             </div>
 
             <div className="col-lg-9 col-md-12 col-sm-12">

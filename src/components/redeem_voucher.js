@@ -83,7 +83,6 @@ class Redeem_voucher extends React.Component {
       voucher_type,
       voucher_code,
     });
-   console.log(result);
     if (result && result.can_redeem) {
       this.setState({
         can_redeem: true,

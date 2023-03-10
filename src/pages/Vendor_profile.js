@@ -32,12 +32,29 @@ class Vendor_profile extends React.Component {
     this.state = { active_tab: vendor_tabs[0] };
   }
 
+  get_vendor = async (vendor) => {
+    let vendor_id = window.location.href.split("?");
+    if (vendor_id[1]) {
+      if (
+        !vendor ||
+        (vendor_id[1].split("~").length === 3 && vendor._id !== vendor_id[1])
+      )
+        vendor = await get_request(`vendor/${vendor_id[1]}`);
+    }
+
+    this.setState({ vendor });
+  };
+
   componentDidMount = async () => {
     let vendor = get_session("vendor");
 
-    if (vendor) document.title = `${vendor.name} | ${organisation_name}`;
+    if (vendor) {
+      document.title = `${vendor.name} | ${organisation_name}`;
 
-    this.setState({ vendor });
+      await this.get_vendor(vendor);
+    } else {
+      await this.get_vendor(vendor);
+    }
   };
 
   render() {
@@ -53,7 +70,7 @@ class Vendor_profile extends React.Component {
               <Nav page="vendor" />
               <Padder />
 
-              {typeof vendor !== "object" ? (
+              {!vendor || typeof vendor !== "object" ? (
                 <Loadindicator contained />
               ) : (
                 <>
