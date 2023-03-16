@@ -18,10 +18,24 @@ class Voucher_header extends React.Component {
     window.location.assign(`${client_domain}/vendor?${vendor._id}`);
   };
 
+  parse_duration = (duration) => {
+    let hours = Math.floor(duration / 60);
+    let minutes = duration - hours * 60;
+
+    let str = "";
+    if (hours) str += `${hours} Hours `;
+    str += `${minutes} Mins`;
+
+    return str;
+  };
+
   render() {
-    let { vendor, voucher } = this.props;
+    let { vendor, event, voucher } = this.props;
+    if (!voucher) voucher = event;
     let { name, logo, logo_hash, category } = vendor;
-    let { title, total_sales } = voucher;
+    let { title, total_sales, _id, duration } = voucher;
+
+    let is_event = _id.startsWith("event");
 
     return (
       <div className="ed_detail_head">
@@ -38,13 +52,14 @@ class Voucher_header extends React.Component {
                     <h2 className="ed_title">{title}</h2>
                   </div>
                   <div className="d-flex align-items-center mt-4">
-                    <div className="rounded-circle d-flex align-items-center justify-content-center">
+                    <div className="rounded-circle d-flex align-items-center justify-content-center cursor-pointer">
                       <Preview_image
                         image={logo}
                         action={this.handle_vendor}
                         image_hash={logo_hash}
                         class_name="img img-fluid circle"
                         height={70}
+                        width={70}
                       />
                     </div>
                     <div className="ml-2 ml-md-3">
@@ -70,12 +85,13 @@ class Voucher_header extends React.Component {
                 </li>
                 <li className="col-lg-6 col-md-6 col-sm-6 pt-2 pb-2">
                   <i className="fas fa-clock mr-1 text-success"></i>
-                  <span>4 Hour 47 min</span>
+                  <span>{this.parse_duration(duration)}</span>
                 </li>
                 <li className="col-lg-6 col-md-6 col-sm-6 pt-2 pb-2">
                   <i className="fas fa-user mr-1 text-info"></i>
                   <span>
-                    {total_sales || gen_random_int(500, 100)} Purchased
+                    {total_sales || gen_random_int(500, 100)}{" "}
+                    {is_event ? "Tickets Sold" : "Purchased"}
                   </span>
                 </li>
               </ul>

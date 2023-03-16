@@ -14,6 +14,7 @@ class Home extends React.Component {
 
     this.state = { index: 0 };
   }
+
   componentDidMount = () => {
     let heros = new Array(
       {
@@ -43,14 +44,14 @@ class Home extends React.Component {
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore.",
         bg: require("../assets/img/coupons1.jpg"),
         overlay: 9,
-      },
-      {
-        main_text: "Gift cards",
-        sub_text:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore.",
-        bg: require("../assets/img/giftcard1.jpg"),
-        overlay: 8,
       }
+      // {
+      //   main_text: "Gift cards",
+      //   sub_text:
+      //     "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore.",
+      //   bg: require("../assets/img/giftcard1.jpg"),
+      //   overlay: 8,
+      // }
     );
 
     this.setState({ heros });

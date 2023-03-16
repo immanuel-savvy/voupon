@@ -112,29 +112,34 @@ class Vendor_header extends React.Component {
                 {verified &&
                 loggeduser.vendor &&
                 loggeduser.vendor === vendor._id ? (
-                  <Wallet vendor={vendor} />
-                ) : null}
+                  <>
+                    <Wallet vendor={vendor} />
 
-                <Dropdown_menu
-                  items={
-                    new Array(
-                      {
-                        title: "Create offer voucher",
-                        action: this.toggle_create_offer_voucher,
-                      },
-                      {
-                        title: "Create coupon",
-                        action: this.toggle_create_coupon,
-                      },
-                      {
-                        title: "close vendor account",
-                        style: { backgroundColor: "#d9534f", color: "#fff" },
-                        action: this.toggle_close_vendor_account,
+                    <Dropdown_menu
+                      items={
+                        new Array(
+                          {
+                            title: "Create offer voucher",
+                            action: this.toggle_create_offer_voucher,
+                          },
+                          {
+                            title: "Create coupon",
+                            action: this.toggle_create_coupon,
+                          },
+                          {
+                            title: "close vendor account",
+                            style: {
+                              backgroundColor: "#d9534f",
+                              color: "#fff",
+                            },
+                            action: this.toggle_close_vendor_account,
+                          }
+                        )
                       }
-                    )
-                  }
-                  style={{ alignSelf: "flex-start", marginTop: 24 }}
-                />
+                      style={{ alignSelf: "flex-start", marginTop: 24 }}
+                    />
+                  </>
+                ) : null}
               </div>
 
               {/* {vendor.verified && user === _id ? (

@@ -5,11 +5,12 @@ import {
   commalise_figures,
   generate_random_string,
 } from "../assets/js/utils/functions";
-import { save_to_session } from "../sections/footer";
-import { scroll_to_top } from "./explore_more";
+import { save_to_session, scroll_to_top } from "../sections/footer";
+import Event_tickets from "./event_tickets";
+import Modal from "./modal";
 import Preview_image from "./preview_image";
 
-class Offer_voucher extends React.Component {
+class Event extends React.Component {
   constructor(props) {
     super(props);
 
@@ -17,20 +18,36 @@ class Offer_voucher extends React.Component {
   }
 
   handle_vendor = () => {
-    let { vendor } = this.props;
+    let { event } = this.props;
 
-    save_to_session("vendor", vendor);
+    save_to_session("vendor", event.vendor);
   };
 
+  toggle_tickets = () => this.tickets?.toggle();
+
   render() {
-    let { voucher, vendor, in_vouchers, voucher_code } = this.props;
-    let { title, images, total_sales, state, value } = voucher;
+    let { full } = this.state;
+    let { event, in_events, in_vendor, ticket_code } = this.props;
+    if (!event) return;
+
+    let {
+      title,
+      images,
+      short_description,
+      vendor,
+      total_sales,
+      state,
+      value,
+      location,
+    } = event;
+    if (!vendor) return;
+
     let { category, name, logo, logo_hash } = vendor;
 
     return (
       <div
         className={
-          in_vouchers
+          in_events
             ? "col-xl-6 col-lg-6 col-md-6 col-sm-12"
             : "col-xl-4 col-lg-4 col-md-6 col-sm-12"
         }
@@ -38,12 +55,12 @@ class Offer_voucher extends React.Component {
         <div className="crs_grid">
           <div className="crs_grid_thumb">
             <Link
-              to="/voucher"
+              to="/event"
               onClick={() => {
-                save_to_session("voucher", {
-                  ...voucher,
+                save_to_session("event", {
+                  ...event,
                   total_sales,
-                  voucher_code,
+                  ticket_code,
                 });
                 save_to_session("vendor", vendor);
                 scroll_to_top();
@@ -53,6 +70,7 @@ class Offer_voucher extends React.Component {
               <Preview_image
                 image={images[0].url || require("../assets/img/vouchers1.png")}
                 image_hash={images[0].image_hash}
+                class_name="img img-fluid rounded"
               />
             </Link>
           </div>
@@ -64,25 +82,29 @@ class Offer_voucher extends React.Component {
                 </div>
               </div>
               <div className="crs_fl_last">
-                <div className="crs_inrolled">
+                <div
+                  onClick={in_vendor ? this.toggle_tickets : null}
+                  style={in_vendor ? { cursor: "pointer" } : null}
+                  className="crs_inrolled"
+                >
                   <strong>
                     {commalise_figures(
                       total_sales || Number(generate_random_string(5, "num"))
                     )}
                   </strong>
-                  Purchased
+                  Tickets sold
                 </div>
               </div>
             </div>
             <div className="crs_title">
               <h4>
                 <Link
-                  to="/voucher"
+                  to="/event"
                   onClick={() => {
-                    save_to_session("voucher", {
-                      ...voucher,
+                    save_to_session("event", {
+                      ...event,
                       total_sales,
-                      voucher_code,
+                      ticket_code,
                     });
                     save_to_session("vendor", vendor);
                     scroll_to_top();
@@ -93,11 +115,17 @@ class Offer_voucher extends React.Component {
                 </Link>
               </h4>
             </div>
-            {voucher_code ? (
+            <p onClick={() => this.setState({ full: !this.state.full })}>
+              {full ? short_description : short_description.slice(0, 70)}
+            </p>
+            <p>
+              <i style={{}} className="fas fa-map-marker"></i> <b>{location}</b>
+            </p>
+            {ticket_code ? (
               <div className="crs_info_detail">
-                <CopyToClipboard text={voucher_code}>
+                <CopyToClipboard text={ticket_code}>
                   <span style={{ cursor: "pointer" }}>
-                    {voucher_code}{" "}
+                    {ticket_code}{" "}
                     {state && state !== "unused" ? (
                       <div className="crs_cates cl_1">
                         <span>{state}</span>
@@ -156,9 +184,13 @@ class Offer_voucher extends React.Component {
             </div>
           </div>
         </div>
+
+        <Modal ref={(tickets) => (this.tickets = tickets)}>
+          <Event_tickets event={event} toggle={this.toggle_tickets} />
+        </Modal>
       </div>
     );
   }
 }
 
-export default Offer_voucher;
+export default Event;

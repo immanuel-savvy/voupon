@@ -28,7 +28,7 @@ let navs = new Array(
   "vouchers",
   "coupons",
   "tickets",
-  "gift cards",
+  // "gift cards",
   "vendors",
   "developer",
   "login",
@@ -43,6 +43,7 @@ let subnavs = new Object({
     "redeem_voucher",
     "verify_voucher"
   ),
+  tickets: new Array("events", "my_tickets"),
   vendors: new Array("become_a_vendor", "all_vendors"),
   coupons: new Array("coupons", "create_coupon", "verify_coupon"),
 });
@@ -57,6 +58,13 @@ class Custom_Nav extends React.Component {
   my_vouchers = () => window.location.assign(`${client_domain}/user_vouchers`);
 
   vouchers = () => window.location.assign(`${client_domain}/vouchers`);
+
+  events = () => window.location.assign(`${client_domain}/events`);
+
+  create_an_event = () =>
+    window.location.assign(`${client_domain}/create_event`);
+
+  my_tickets = () => window.location.assign(`${client_domain}/my_tickets`);
 
   all_vendors = () => window.location.assign(`${client_domain}/vendors`);
 
@@ -191,6 +199,13 @@ class Custom_Nav extends React.Component {
                                         this.loggeduser?.vendor
                                       )
                                         subnav = "vendor_profile";
+
+                                      if (
+                                        subnav === "my_tickets" &&
+                                        !loggeduser
+                                      )
+                                        return;
+
                                       return (
                                         <li
                                           style={{ cursor: "pointer" }}

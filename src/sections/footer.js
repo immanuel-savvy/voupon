@@ -55,17 +55,19 @@ class Footer extends React.Component {
                     <div className="footer_widget">
                       <h4 className="widget_title">Useful Links</h4>
                       <ul className="footer-menu">
-                        {navs.map((nav) => (
-                          <li
-                            className={`text-light`}
-                            key={nav}
-                            onClick={scroll_to_top}
-                          >
-                            <Link to={`/${nav.replace(/ /g, "")}`}>
-                              {nav || "home"}
-                            </Link>
-                          </li>
-                        ))}
+                        {navs.map((nav) =>
+                          nav === "developer" ? null : (
+                            <li
+                              className={`text-light`}
+                              key={nav}
+                              onClick={scroll_to_top}
+                            >
+                              <Link to={`/${nav.replace(/ /g, "")}`}>
+                                {nav || "home"}
+                              </Link>
+                            </li>
+                          )
+                        )}
                       </ul>
                     </div>
                   </div>

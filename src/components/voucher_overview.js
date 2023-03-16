@@ -11,7 +11,8 @@ class Voucher_overview extends React.Component {
   }
 
   render() {
-    let { voucher, vendor } = this.props;
+    let { voucher, vendor, event } = this.props;
+    if (!voucher) voucher = event;
 
     return (
       <div class="col-lg-8 col-md-12 order-lg-first">

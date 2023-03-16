@@ -18,7 +18,8 @@ class Voucher_purchase_details extends React.Component {
   render() {
     let { copied } = this.state;
     let { details } = this.props || new Object();
-    let { voucher_code, firstname, lastname, email } = details;
+    let { voucher_code, firstname, lastname, email, _id } = details;
+    let is_event = _id && _id.startsWith("event");
 
     return (
       <div
@@ -34,7 +35,7 @@ class Voucher_purchase_details extends React.Component {
       >
         {copied ? (
           <div className="alert alert-info" role="alert">
-            Voucher code copied to clipboard!
+            {is_event ? "Ticket" : "Voucher"} code copied to clipboard!
           </div>
         ) : null}
 
@@ -44,8 +45,8 @@ class Voucher_purchase_details extends React.Component {
             {firstname} {lastname}
           </span>
         </p>
-        <h4>Voucher Purchased Successfully</h4>
-        <p>with voucher code </p>
+        <h4>{is_event ? "Ticket" : "Voucher"} Purchased Successfully</h4>
+        <p>with {is_event ? "ticket" : "voucher"} code </p>
         <CopyToClipboard text={voucher_code} onCopy={this.copy_alert}>
           <h2 style={{ cursor: "pointer" }}>
             {voucher_code}{" "}
@@ -58,7 +59,8 @@ class Voucher_purchase_details extends React.Component {
           </h2>
         </CopyToClipboard>
         <p>
-          Details on your voucher has been sent to your email at{" "}
+          Details on your {is_event ? "ticket" : "voucher"} has been sent to
+          your email at{" "}
           <b>
             <em>{email}</em>
           </b>

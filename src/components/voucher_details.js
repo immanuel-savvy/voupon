@@ -9,15 +9,25 @@ class Voucher_details extends React.Component {
 
   render() {
     let { voucher, vendor } = this.props;
-    let { short_description, things_to_know, what_to_expect } = voucher;
+    let {
+      short_description,
+      things_to_know,
+      what_to_expect,
+      _id,
+      more_description,
+    } = voucher;
+
+    let is_event = _id.startsWith("event");
 
     return (
       <>
         <div class="edu_wraper">
-          <h4 class="edu_title">Offer Details</h4>
-          {short_description.split("\n").map((d, index) => (
-            <p key={index}>{d}</p>
-          ))}
+          <h4 class="edu_title">{is_event ? "Event" : "Offer"} Details</h4>
+          {(is_event ? more_description : short_description)
+            .split("\n")
+            .map((d, index) => (
+              <p key={index}>{d}</p>
+            ))}
 
           {things_to_know && things_to_know.length ? (
             <>

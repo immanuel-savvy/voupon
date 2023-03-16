@@ -8,7 +8,6 @@ import Emitter from "semitter";
 // Pages
 import Home from "./pages/Home";
 import Vouchers from "./pages/Vouchers";
-import Tickets from "./pages/Tickets";
 import Giftcards from "./pages/Giftcards";
 import Coupons from "./pages/Coupons";
 import Login from "./pages/Login";
@@ -26,6 +25,10 @@ import Vendors from "./pages/Vendors";
 import Create_offer_voucher from "./pages/Create_offer_voucher";
 import Voucher from "./pages/Voucher";
 import Developer from "./pages/Developer";
+import Create_event from "./pages/Create_event";
+import Events from "./pages/Events";
+import Event from "./pages/Event";
+import User_tickets_dash from "./pages/User_tickets";
 
 const emitter = new Emitter();
 
@@ -122,11 +125,14 @@ class Voupon extends React.Component {
                 <Route index element={<Home />} />
                 <Route path="vouchers" element={<Vouchers />} />
                 <Route path="vendors" element={<Vendors />} />
-                <Route path="tickets" element={<Tickets />} />
+                <Route path="create_event" element={<Create_event />} />
+                <Route path="events" element={<Events />} />
+                <Route path="event" element={<Event />} />
                 <Route path="gift_cards" element={<Giftcards />} />
                 <Route path="coupons" element={<Coupons />} />
                 <Route path="dashboard" element={<Dashboard />} />
                 <Route path="vendor" element={<Vendor_profile />} />
+                <Route path="my_tickets" element={<User_tickets_dash />} />
                 <Route path="verify_email" element={<Verify_email />} />
                 <Route path="login" element={<Login />} />
                 <Route path="signup" element={<Signup />} />

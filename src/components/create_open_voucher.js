@@ -101,7 +101,9 @@ class Create_open_voucher extends React.Component {
           this.loggeduser = loggeduser;
 
           if (!loggeduser)
-            return <Login action={this.set_details} no_redirect />;
+            return (
+              <Login toggle={toggle} action={this.set_details} no_redirect />
+            );
 
           return (
             <section style={{ paddingTop: 20 }}>

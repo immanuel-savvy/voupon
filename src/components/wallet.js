@@ -20,14 +20,9 @@ class Wallet extends React.Component {
   net_balance = () => {
     let { wallet } = this.state;
 
-    let { vouchers, coupons, giftcards, tickets } = wallet;
+    let { vouchers, coupons, tickets } = wallet;
 
-    return (
-      (vouchers || 0) +
-      (coupons || 0) +
-      (giftcards || 0) +
-      (tickets || 0)
-    ).toFixed(2);
+    return ((vouchers || 0) + (coupons || 0) + (tickets || 0)).toFixed(2);
   };
 
   render() {
@@ -87,11 +82,6 @@ class Wallet extends React.Component {
             <div class="dashboard_stats_wrap_content text-light">
               <h6 className="text-light">NGN 0.00</h6>
               <span>Tickets</span>
-            </div>
-            &nbsp;&nbsp;&nbsp;&nbsp;
-            <div class="dashboard_stats_wrap_content text-light">
-              <h6 className="text-light">NGN 0.00</h6>
-              <span>Giftcards</span>
             </div>
           </div>
 

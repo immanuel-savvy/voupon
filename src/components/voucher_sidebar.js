@@ -1,6 +1,12 @@
 import React from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
-import { commalise_figures, to_title } from "../assets/js/utils/functions";
+import {
+  commalise_figures,
+  date_string,
+  time_string,
+  to_title,
+} from "../assets/js/utils/functions";
+import Buy_ticket from "./buy_ticket";
 import Get_voucher from "./get_voucher";
 import Modal from "./modal";
 import Redeem_voucher from "./redeem_voucher";
@@ -10,8 +16,9 @@ class Voucher_sidebar extends React.Component {
   constructor(props) {
     super(props);
 
-    let { voucher_code } = this.props;
-    this.state = { voucher_code };
+    let { voucher_code, ticket_code } = this.props;
+
+    this.state = { voucher_code: voucher_code || ticket_code };
   }
 
   redeem_voucher = () => this.redeem_voucher_?.toggle();
@@ -22,11 +29,35 @@ class Voucher_sidebar extends React.Component {
 
   purchase_voucher = () => this.purchase_voucher_?.toggle();
 
+  parse_datetime = (datetime) => {
+    let date = new Date(datetime).getTime();
+
+    return `${date_string(date)}, ${time_string(date)}`;
+  };
+
   render() {
     let { voucher_code } = this.state;
-    let { voucher, vendor, on_redeem, on_tranfer } = this.props;
+    let { voucher, vendor, on_redeem, on_tranfer, event } = this.props;
+    if (!voucher) voucher = event;
+
     let { address } = vendor;
-    let { value, actual_price, state, quantities, short_description } = voucher;
+    let {
+      value,
+      actual_price,
+      _id,
+      state,
+      event_date_time,
+      quantities,
+      short_description,
+    } = voucher;
+
+    let is_event = _id.startsWith("event");
+
+    if (is_event) {
+      address = event.location;
+
+      quantities = event.quantity;
+    }
 
     voucher_code = voucher_code || voucher.voucher_code;
 
@@ -34,7 +65,13 @@ class Voucher_sidebar extends React.Component {
       <div className="col-lg-4 col-md-12 order-lg-last">
         <div className="ed_view_box style_2 border ovrlio stick_top min pt-3">
           <span className="ml-3">
-            {voucher_code ? "Voucher Code:" : "Voucher Value"}
+            {voucher_code
+              ? is_event
+                ? "Ticket Code"
+                : "Voucher Code:"
+              : is_event
+              ? "Ticket Price"
+              : "Voucher Value"}
           </span>
           <div className="ed_author">
             {voucher_code ? (
@@ -99,21 +136,34 @@ class Voucher_sidebar extends React.Component {
                 onClick={this.purchase_voucher}
                 className="btn theme-bg enroll-btn"
               >
-                Get Voucher<i className="ti-angle-right"></i>
+                {is_event ? "Buy Ticket" : "Get Voucher"}
+                <i className="ti-angle-right"></i>
               </a>
             </div>
           )}
           <div className="ed_view_features">
             <div className="eld mb-3">
-              <h5 className="font-medium">What this offer is about:</h5>
+              <h5 className="font-medium">
+                {is_event ? "Event Description" : "What this offer is about:"}
+              </h5>
               <p>{short_description}</p>
             </div>
             <div className="eld mb-3">
               <ul className="edu_list right">
                 <li>
-                  <i className="ti-time"></i>Quantities Remaining:
-                  <strong>{quantities}</strong>
+                  <i className="ti-time"></i>
+                  {is_event
+                    ? "Total tickets remaining"
+                    : "Quantities Remaining"}
+                  :<strong>{quantities}</strong>
                 </li>
+                {is_event ? (
+                  <li>
+                    <i className="ti-calendar"></i>
+                    Date and Time
+                    <strong>{this.parse_datetime(event_date_time)}</strong>
+                  </li>
+                ) : null}
                 <li>
                   <i className="ti-map"></i>Location:
                   <strong>{to_title(address)}</strong>
@@ -150,12 +200,21 @@ class Voucher_sidebar extends React.Component {
             (this.purchase_voucher_ = purchase_voucher_)
           }
         >
-          <Get_voucher
-            voucher={voucher}
-            vendor={vendor}
-            on_purchase={(voucher_code) => this.setState({ voucher_code })}
-            toggle={this.purchase_voucher}
-          />
+          {is_event ? (
+            <Buy_ticket
+              event={event}
+              vendor={vendor}
+              on_purchase={(voucher_code) => this.setState({ voucher_code })}
+              toggle={this.purchase_voucher}
+            />
+          ) : (
+            <Get_voucher
+              voucher={voucher}
+              vendor={vendor}
+              on_purchase={(voucher_code) => this.setState({ voucher_code })}
+              toggle={this.purchase_voucher}
+            />
+          )}
         </Modal>
       </div>
     );
