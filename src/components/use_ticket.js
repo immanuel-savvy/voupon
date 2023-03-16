@@ -43,32 +43,28 @@ class Use_ticket extends React.Component {
       ticket_code,
       vendor: vendor._id,
     });
-    console.log(vendor._id);
-
-    console.log(result, "can redeem otp");
 
     if (result && result.can_redeem) {
       this.setState({
         can_redeem: true,
         user: result.user,
-        ticket: result.owner_ticket,
       });
 
       this.setState({ requesting_otp: true });
       result = await post_request(`request_ticket_otp`, {
         user: result.user,
         ticket_code: result.ticket_code,
-        ticket: result.owner_ticket,
+        ticket: result.ticket,
         email: result.email,
       });
 
-      console.log(result, "request ticket otp");
+      this.setState({ event: result.event, ticket: result.ticket });
     } else this.setState({ message: result.message });
   };
 
-  proceed = async () => {
+  proceed = async (otp) => {
     let { vendor, on_use } = this.props;
-    let { proceeding, user, ticket } = this.state;
+    let { proceeding, event, user, ticket } = this.state;
     if (proceeding) return;
 
     this.setState({ proceeding: true });
@@ -77,6 +73,8 @@ class Use_ticket extends React.Component {
       vendor: vendor._id,
       ticket,
       user,
+      event,
+      otp,
     };
 
     let result = await post_request("use_ticket", details);
@@ -161,7 +159,7 @@ class Use_ticket extends React.Component {
                             toggle={this.reset_state}
                             details={{
                               user,
-                              ticket: used_voucher,
+                              ticket: used_ticket,
                               vendor,
                             }}
                           />

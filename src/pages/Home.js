@@ -1,6 +1,7 @@
 import React from "react";
 import { Carousel } from "react-bootstrap";
 import Loadindicator from "../components/loadindicator";
+import Upcoming_events from "../components/upcoming_events";
 import Featured_coupons from "../sections/featured_coupons";
 import Featured_vouchers from "../sections/featured_vouchers";
 import Footer from "../sections/footer";
@@ -82,6 +83,7 @@ class Home extends React.Component {
             <Loadindicator />
           )}
 
+          <Upcoming_events />
           <Featured_vouchers />
           <Featured_coupons />
 

@@ -30,8 +30,6 @@ class Vendor_coupons extends React.Component {
       `vendor_coupons/${vendor._id}`
     );
 
-    console.log(open_coupons, vendor);
-
     this.setState({ open_coupons, premium_coupons });
 
     this.new_coupon = (coupon) => {

@@ -27,7 +27,7 @@ class Event extends React.Component {
 
   render() {
     let { full } = this.state;
-    let { event, in_events, in_vendor, ticket_code } = this.props;
+    let { event, class_name, in_events, in_vendor, ticket_code } = this.props;
     if (!event) return;
 
     let {
@@ -47,9 +47,10 @@ class Event extends React.Component {
     return (
       <div
         className={
-          in_events
+          class_name ||
+          (in_events
             ? "col-xl-6 col-lg-6 col-md-6 col-sm-12"
-            : "col-xl-4 col-lg-4 col-md-6 col-sm-12"
+            : "col-xl-4 col-lg-4 col-md-6 col-sm-12")
         }
       >
         <div className="crs_grid">
@@ -115,7 +116,10 @@ class Event extends React.Component {
                 </Link>
               </h4>
             </div>
-            <p onClick={() => this.setState({ full: !this.state.full })}>
+            <p
+              className="cursor-pointer"
+              onClick={() => this.setState({ full: !this.state.full })}
+            >
               {full ? short_description : short_description.slice(0, 70)}
             </p>
             <p>

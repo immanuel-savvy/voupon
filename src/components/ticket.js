@@ -1,4 +1,5 @@
 import React from "react";
+import { to_title } from "../assets/js/utils/functions";
 import { Loggeduser } from "../Contexts";
 import Preview_image from "./preview_image";
 
@@ -12,7 +13,7 @@ class Ticket extends React.Component {
   render = () => {
     let { event, ticket } = this.props;
     let { images, title } = event;
-    let { ticket_code, user } = ticket;
+    let { ticket_code, user, state } = ticket;
     let { firstname, lastname, email } = user;
 
     return (
@@ -40,6 +41,12 @@ class Ticket extends React.Component {
                         <li class="video">
                           <i className="fas fa-copy"></i>
                           {ticket_code}
+                        </li>
+
+                        <li class="video">
+                          <div className="crs_cates cl_1">
+                            <span>{to_title(state)}</span>
+                          </div>
                         </li>
                       </ul>
                     </div>

@@ -2,7 +2,10 @@ import React from "react";
 import { get_request } from "../assets/js/utils/services";
 import Dropdown_menu from "./dropdown_menu";
 import Loadindicator from "./loadindicator";
+import Manage_bank_accounts from "./manage_bank_accounts";
+import Modal from "./modal";
 import Small_btn from "./small_btn";
+import Withdraw_wallet from "./withdraw_wallet";
 
 class Wallet extends React.Component {
   constructor(props) {
@@ -25,7 +28,12 @@ class Wallet extends React.Component {
     return ((vouchers || 0) + (coupons || 0) + (tickets || 0)).toFixed(2);
   };
 
+  toggle_bank_accounts = () => this.bank_accounts?.toggle();
+
+  toggle_withdraw = () => this.withdraw?.toggle();
+
   render() {
+    let { vendor } = this.props;
     let { wallet } = this.state;
 
     if (!wallet) return <Loadindicator small />;
@@ -80,7 +88,9 @@ class Wallet extends React.Component {
             </div>
             &nbsp;&nbsp;&nbsp;&nbsp;
             <div class="dashboard_stats_wrap_content text-light">
-              <h6 className="text-light">NGN 0.00</h6>
+              <h6 className="text-light">
+                NGN {(wallet.tickets || 0).toFixed(2)}
+              </h6>
               <span>Tickets</span>
             </div>
           </div>
@@ -93,20 +103,36 @@ class Wallet extends React.Component {
               alignItems: "center",
             }}
           >
-            <Small_btn title="Withdraw" disabled={wallet.value > 0} />
+            <Small_btn
+              title="Withdraw"
+              action={this.toggle_withdraw}
+              disabled={wallet.value > 0}
+            />
             <Dropdown_menu
               items={
-                new Array(
-                  {
-                    title: "add bank account",
-                    action: this.toggle_add_bank_account,
-                  },
-                  { title: "bank accounts", action: this.bank_accounts }
-                )
+                new Array({
+                  title: "manage bank account",
+                  action: this.toggle_bank_accounts,
+                })
               }
             />
           </div>
         </div>
+
+        <Modal ref={(withdraw) => (this.withdraw = withdraw)}>
+          <Withdraw_wallet
+            wallet={wallet}
+            on_withdraw={this.on_withdraw}
+            toggle={this.toggle_withdraw}
+          />
+        </Modal>
+
+        <Modal ref={(bank_accounts) => (this.bank_accounts = bank_accounts)}>
+          <Manage_bank_accounts
+            vendor={vendor}
+            toggle={this.toggle_bank_accounts}
+          />
+        </Modal>
       </div>
     );
   }

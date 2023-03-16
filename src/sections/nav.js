@@ -22,6 +22,7 @@ import Verify_voucher from "../components/verify_voucher";
 import Create_open_voucher from "../components/create_open_voucher";
 import Create_coupon from "../components/create_coupon";
 import Verify_coupon from "../components/verify_coupon";
+import Verify_ticket from "../components/verify_ticket";
 
 let navs = new Array(
   "",
@@ -43,7 +44,7 @@ let subnavs = new Object({
     "redeem_voucher",
     "verify_voucher"
   ),
-  tickets: new Array("events", "my_tickets"),
+  tickets: new Array("events", "my_tickets", "verify_ticket"),
   vendors: new Array("become_a_vendor", "all_vendors"),
   coupons: new Array("coupons", "create_coupon", "verify_coupon"),
 });
@@ -81,6 +82,8 @@ class Custom_Nav extends React.Component {
   create_voucher = () => this.create_voucher_?.toggle();
 
   verify_voucher = () => this.verify_voucher_?.toggle();
+
+  verify_ticket = () => this.verify_ticket_?.toggle();
 
   verify_coupon = () => this.verify_coupon_?.toggle();
 
@@ -310,6 +313,12 @@ class Custom_Nav extends React.Component {
                 ref={(verify_coupon_) => (this.verify_coupon_ = verify_coupon_)}
               >
                 <Verify_coupon toggle={this.verify_coupon} />
+              </Modal>
+
+              <Modal
+                ref={(verify_ticket_) => (this.verify_ticket_ = verify_ticket_)}
+              >
+                <Verify_ticket toggle={this.verify_ticket} />
               </Modal>
 
               <Modal

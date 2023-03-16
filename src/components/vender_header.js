@@ -74,13 +74,19 @@ class Vendor_header extends React.Component {
                 </div>
               </div>
 
-              <span className="ml-2">
-                <span className="text-light">Your vendor ID:</span>
-                <br />
+              <span className="">
                 <CopyToClipboard text={parse_vendor_id(_id)}>
-                  <span>
-                    <Text_btn text={parse_vendor_id(_id)} icon="fa-copy" />
-                  </span>
+                  <>
+                    <span className="text-light">Your vendor ID:</span>
+                    <br />
+                    <span className="">
+                      <Text_btn
+                        style={{ marginLeft: 0 }}
+                        text={parse_vendor_id(_id)}
+                        icon="fa-copy"
+                      />
+                    </span>
+                  </>
                 </CopyToClipboard>
               </span>
             </div>

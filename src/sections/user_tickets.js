@@ -54,7 +54,7 @@ class User_tickets extends React.Component {
                         tickets.map(({ ticket }) => (
                           <Event
                             key={ticket._id}
-                            event={ticket.event}
+                            event={{ ...ticket.event, state: ticket.state }}
                             ticket_code={ticket.ticket_code}
                           />
                         ))

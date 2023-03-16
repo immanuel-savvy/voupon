@@ -1,10 +1,10 @@
 import React from "react";
-import { get_request } from "../assets/js/utils/services";
-import Explore_more from "../components/explore_more";
-import Loadindicator from "../components/loadindicator";
-import Vendor from "../components/vendor";
+import Explore_more from "./explore_more";
+import Loadindicator from "./loadindicator";
+import Event from "./event";
+import { get_request, post_request } from "../assets/js/utils/services";
 
-class Our_vendors extends React.Component {
+class Upcoming_events extends React.Component {
   constructor(props) {
     super(props);
 
@@ -12,13 +12,13 @@ class Our_vendors extends React.Component {
   }
 
   componentDidMount = async () => {
-    let vendors = await get_request("vendors/10");
-    this.setState({ vendors });
+    let upcoming_events = await post_request("upcoming_events/10");
+    this.setState({ upcoming_events });
   };
 
   render() {
-    let { vendors } = this.state;
-    if (vendors && !vendors.length) return;
+    let { upcoming_events } = this.state;
+    if (upcoming_events && !upcoming_events.length) return;
 
     return (
       <section>
@@ -27,7 +27,7 @@ class Our_vendors extends React.Component {
             <div className="col-lg-7 col-md-8">
               <div className="sec-heading center">
                 <h2>
-                  explore <span className="theme-cl">Vendors</span>
+                  upcoming <span className="theme-cl">Events</span>
                 </h2>
                 <p>
                   In dolore sint duis in est et. Exercitation do ex proident
@@ -38,9 +38,9 @@ class Our_vendors extends React.Component {
           </div>
           <div className="row justify-content-center">
             <>
-              {vendors ? (
-                vendors.map((vendor) => (
-                  <Vendor vendor={vendor} key={vendor._id} />
+              {upcoming_events ? (
+                upcoming_events.map((event) => (
+                  <Event event={event} key={event._id} />
                 ))
               ) : (
                 <div
@@ -52,12 +52,11 @@ class Our_vendors extends React.Component {
               )}
             </>
           </div>
-
-          <Explore_more to="vendors" />
+          <Explore_more to="events" />
         </div>
       </section>
     );
   }
 }
 
-export default Our_vendors;
+export default Upcoming_events;
