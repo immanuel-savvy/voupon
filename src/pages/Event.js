@@ -4,7 +4,7 @@ import Loadindicator from "../components/loadindicator";
 import Padder from "../components/padder";
 import Voucher_overview from "../components/voucher_overview";
 import Voucher_sidebar from "../components/voucher_sidebar";
-import Footer, { get_session } from "../sections/footer";
+import Footer, { get_session, scroll_to_top } from "../sections/footer";
 import Custom_Nav from "../sections/nav";
 import Voucher_header from "./voucher_header";
 
@@ -21,6 +21,8 @@ class Event extends React.Component {
     if (event) document.title = `${event.title} | ${organisation_name}`;
 
     this.setState({ event, vendor: get_session("vendor") });
+
+    scroll_to_top();
   };
 
   on_transfer = () => this.setState({ transferred: true });

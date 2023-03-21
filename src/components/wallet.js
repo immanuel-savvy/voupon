@@ -20,6 +20,12 @@ class Wallet extends React.Component {
     this.setState({ wallet });
   };
 
+  on_withdraw = ({ amount, balance }) => {
+    let { wallet } = this.state;
+    wallet[balance] -= Number(amount);
+    this.setState({ wallet }, this.toggle_withdraw);
+  };
+
   net_balance = () => {
     let { wallet } = this.state;
 

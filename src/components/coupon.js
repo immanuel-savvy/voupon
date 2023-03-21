@@ -7,10 +7,12 @@ import {
   to_title,
 } from "../assets/js/utils/functions";
 import { Loggeduser } from "../Contexts";
+import { emitter } from "../Voupon";
 import Dropdown_menu from "./dropdown_menu";
 import Modal from "./modal";
 import Obtain_coupon from "./obtain_coupon";
 import Text_btn from "./text_btn";
+import Toaster from "./toast";
 
 class Coupon extends React.Component {
   constructor(props) {
@@ -23,6 +25,10 @@ class Coupon extends React.Component {
     clearTimeout(this.clear_copy);
     this.setState({ copied: true });
 
+    emitter.emit("toggle_toast", {
+      message: this.props.coupon.coupon_code,
+      title: "Coupon code copied!",
+    });
     this.clear_copy = setTimeout(() => this.setState({ copied: false }), 3000);
   };
 
@@ -33,7 +39,7 @@ class Coupon extends React.Component {
     let { type } = coupon;
 
     if (type === "open") {
-      this.copy_code?.click();
+      this.copy_code?.onClick();
       this.copy_alert();
     } else this.toggle_obtain_coupon();
   };

@@ -1,5 +1,5 @@
 import React from "react";
-import { developer_domain } from "../assets/js/utils/constants";
+import { developer_domain, domain } from "../assets/js/utils/constants";
 import Padder from "../components/padder";
 import Breadcrumb_banner from "../sections/breadcrumb_banner";
 import Footer from "../sections/footer";
@@ -13,7 +13,7 @@ class Developer extends React.Component {
   }
 
   componentDidMount = () => {
-    window.open(developer_domain);
+    window.open(`${domain}/docs`);
     window.history.go(-1);
   };
 

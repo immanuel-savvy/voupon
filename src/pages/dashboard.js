@@ -5,7 +5,7 @@ import Dash_header, { panels } from "../components/dash_header";
 import Padder from "../components/padder";
 import Transactions from "../components/transactions";
 import { Loggeduser } from "../Contexts";
-import Footer from "../sections/footer";
+import Footer, { scroll_to_top } from "../sections/footer";
 import Custom_Nav from "../sections/nav";
 import User_coupons from "../sections/user_coupons";
 import User_vouchers from "../sections/user_vouchers";
@@ -19,6 +19,8 @@ class Dashboard extends React.Component {
 
   componentDidMount = () => {
     if (!this.loggeduser) window.location.assign(client_domain);
+
+    scroll_to_top();
   };
 
   set_panel = (panel) => this.setState({ panel });

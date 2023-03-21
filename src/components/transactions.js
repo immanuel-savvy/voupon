@@ -29,6 +29,7 @@ class Transactions extends React.Component {
   };
 
   render() {
+    let { wallet } = this.props;
     let { transactions } = this.state;
 
     return (
@@ -44,7 +45,11 @@ class Transactions extends React.Component {
                 <div class="ground-list ground-hover-list">
                   {transactions.length ? (
                     transactions.map((tx) => (
-                      <Transaction transaction={tx} key={tx._id} />
+                      <Transaction
+                        in_vendor={!!wallet}
+                        transaction={tx}
+                        key={tx._id}
+                      />
                     ))
                   ) : (
                     <Listempty text="No transactions yet." />

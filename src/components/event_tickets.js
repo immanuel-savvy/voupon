@@ -44,7 +44,12 @@ class Event_tickets extends React.Component {
               {tickets ? (
                 tickets.length ? (
                   tickets.map((ticket) => (
-                    <Ticket event={event} ticket={ticket} key={ticket._id} />
+                    <Ticket
+                      full
+                      event={event}
+                      ticket={ticket}
+                      key={ticket._id}
+                    />
                   ))
                 ) : (
                   <Listempty />

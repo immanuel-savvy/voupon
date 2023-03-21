@@ -1,6 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { developer_domain } from "../assets/js/utils/constants";
+import Toaster from "../components/toast";
+import { emitter } from "../Voupon";
 import { navs } from "./nav";
 
 const scroll_to_top = () => window.scrollTo({ top: 0, behavior: "smooth" });
@@ -25,7 +27,27 @@ class Footer extends React.Component {
     this.state = {};
   }
 
+  componentDidMount = () => {
+    this.toggle_toast = ({ message, title }) => {
+      clearTimeout(this.clear_toast);
+      this.setState({ message, title }, () => {
+        this.clear_toast = setTimeout(
+          () => this.setState({ title: "", message: "" }),
+          3000
+        );
+      });
+    };
+
+    emitter.listen("toggle_toast", this.toggle_toast);
+  };
+
+  componentWillUnmount = () => {
+    emitter.remove_listener("toggle_toast", this.toggle_toast);
+  };
+
   render() {
+    let { message, title } = this.state;
+
     return (
       <footer
         className="dark-footer skin-dark-footer style-2"
@@ -107,6 +129,8 @@ class Footer extends React.Component {
             </div>
           </div>
         </div>
+
+        {message && title ? <Toaster message={message} title={title} /> : null}
       </footer>
     );
   }

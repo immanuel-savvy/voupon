@@ -3,7 +3,9 @@ import CopyToClipboard from "react-copy-to-clipboard";
 import { Link } from "react-router-dom";
 import {
   commalise_figures,
+  date_string,
   generate_random_string,
+  time_string,
 } from "../assets/js/utils/functions";
 import { save_to_session, scroll_to_top } from "../sections/footer";
 import Event_tickets from "./event_tickets";
@@ -25,6 +27,12 @@ class Event extends React.Component {
 
   toggle_tickets = () => this.tickets?.toggle();
 
+  parse_datetime = (datetime) => {
+    let date = new Date(datetime).getTime();
+
+    return `${date_string(date)}, ${time_string(date)}`;
+  };
+
   render() {
     let { full } = this.state;
     let { event, class_name, in_events, in_vendor, ticket_code } = this.props;
@@ -39,6 +47,7 @@ class Event extends React.Component {
       state,
       value,
       location,
+      event_date_time,
     } = event;
     if (!vendor) return;
 
@@ -147,7 +156,15 @@ class Event extends React.Component {
                 </CopyToClipboard>
               </div>
             ) : null}
+
+            <div class="crs_info_detail">
+              <ul>
+                <i class="fa fa-clock text-danger"></i>&nbsp;&nbsp;
+                <span>{this.parse_datetime(event_date_time)}</span>
+              </ul>
+            </div>
           </div>
+
           <div className="crs_grid_foot">
             <div className="crs_flex">
               <div className="crs_fl_first">

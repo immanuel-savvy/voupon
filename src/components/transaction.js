@@ -1,9 +1,11 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import {
   date_string,
   time_string,
   to_title,
 } from "../assets/js/utils/functions";
+import { save_to_session } from "../sections/footer";
 
 class Transaction extends React.Component {
   constructor(props) {
@@ -16,9 +18,23 @@ class Transaction extends React.Component {
     e.preventDefault();
   };
 
+  handle_click = (datatype, data, vendor) => {
+    save_to_session(datatype, data);
+    save_to_session("vendor", vendor);
+  };
+
   render() {
-    let { transaction } = this.props;
-    let { title, type, credit, value, created } = transaction;
+    let { transaction, in_vendor } = this.props;
+    let { title, data, customer, vendor, type, credit, value, created } =
+      transaction;
+
+    let routename = "";
+    if (data)
+      routename = data._id.startsWith("events")
+        ? "event"
+        : data._id?.startsWith("vouchers")
+        ? "voucher"
+        : "";
 
     return (
       <div class="ground ground-list-single">
@@ -48,6 +64,35 @@ class Transaction extends React.Component {
               </span>
             </div>
           </h6>
+
+          {data && data._id ? (
+            <Link
+              onClick={() => this.handle_click(routename, data, vendor)}
+              to={`/${routename}`}
+            >
+              <h5 style={{ marginBottom: 0 }}>{data.title}</h5>
+            </Link>
+          ) : null}
+
+          {(customer && in_vendor) || (vendor && !in_vendor) ? (
+            <p>
+              {in_vendor ? "User" : "Vendor"}:{" "}
+              <Link
+                onClick={
+                  in_vendor ? null : () => save_to_session("vendor", vendor)
+                }
+                to={in_vendor ? "" : `/vendor?${vendor._id}`}
+              >
+                <b>
+                  {to_title(
+                    in_vendor
+                      ? `${customer.firstname} ${customer.lastname}`
+                      : vendor.name
+                  )}
+                </b>
+              </Link>
+            </p>
+          ) : null}
 
           <b>
             <small class="text-fade">&#8358; {value}</small>
