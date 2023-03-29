@@ -147,6 +147,15 @@ const commalise_figures = (figure) => {
   return ff.slice(0, -1);
 };
 
+const mask_id = (_id) => {
+  _id = _id.split("~");
+  _id.splice(0, 1);
+  _id.unshift(_id[1].slice(5));
+  _id[2] = _id[2].slice(0, 5);
+
+  return _id.join("$");
+};
+
 export {
   _id,
   to_title,
@@ -160,4 +169,5 @@ export {
   shuffle_array,
   countdown,
   commalise_figures,
+  mask_id,
 };

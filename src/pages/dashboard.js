@@ -4,6 +4,7 @@ import { to_title } from "../assets/js/utils/functions";
 import Dash_header, { panels } from "../components/dash_header";
 import Padder from "../components/padder";
 import Transactions from "../components/transactions";
+import User_dashboard_header from "../components/user_dashboard_header";
 import { Loggeduser } from "../Contexts";
 import Footer, { scroll_to_top } from "../sections/footer";
 import Custom_Nav from "../sections/nav";
@@ -52,6 +53,9 @@ class Dashboard extends React.Component {
                       </div>
                     </div>
                     <div className="col-lg-9 col-md-9 col-sm-12">
+                      <Padder />
+                      <User_dashboard_header user={loggeduser} />
+
                       <div className="row mt-3">
                         <div className="col-lg-12 col-md-12 col-sm-12 pb-4">
                           <nav aria-label="breadcrumb">

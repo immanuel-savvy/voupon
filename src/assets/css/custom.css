@@ -28,3 +28,13 @@ div {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
+
+.my_stylus {
+  background-color: #fc3;
+  padding: 15px;
+  border-radius: 10;
+  cursor: pointer;
+}
+
+.my_stylus :hover {
+}

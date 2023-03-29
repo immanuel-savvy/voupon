@@ -64,10 +64,9 @@ class Manage_bank_accounts extends React.Component {
   };
 
   componentDidMount = async () => {
-    let { wallet } = this.props;
+    let { wallet, toggle } = this.props;
+    if (!wallet) return toggle && toggle();
     let accounts = await get_request(`accounts/${wallet._id}`);
-
-    console.log(accounts);
 
     this.setState({ accounts });
   };
@@ -90,11 +89,11 @@ class Manage_bank_accounts extends React.Component {
               <form>
                 <div className="crs_log_wrap">
                   <div className="crs_log__thumb">
-                    {/* <img
-                  src={require(`../assets/img/vouchers1.png`)}
-                  className="img-fluid"
-                  alt=""
-                /> */}
+                    <img
+                      src={require(`../assets/img/vouchers1.png`)}
+                      className="img-fluid"
+                      alt=""
+                    />
                   </div>
                   <div className="crs_log__caption">
                     <div className="rcs_log_123">

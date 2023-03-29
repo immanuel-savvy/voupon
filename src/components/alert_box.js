@@ -1,8 +1,8 @@
 import React from "react";
 
-const Alert_box = ({ message }) => {
+const Alert_box = ({ message, style }) => {
   return (
-    <div class="alert alert-danger" role="alert">
+    <div class="alert alert-danger" style={{ ...style }} role="alert">
       {message}
     </div>
   );

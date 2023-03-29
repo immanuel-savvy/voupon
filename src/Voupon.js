@@ -29,6 +29,7 @@ import Create_event from "./pages/Create_event";
 import Events from "./pages/Events";
 import Event from "./pages/Event";
 import User_tickets_dash from "./pages/User_tickets";
+import { post_request } from "./assets/js/utils/services";
 
 const emitter = new Emitter();
 
@@ -72,12 +73,28 @@ class Voupon extends React.Component {
     }
 
     emitter.single_listener("is_logged_in", this.is_logged_in);
+
+    this.reward_interval = setInterval(() => {
+      let { loggeduser } = this.state;
+      if (this.log_timestamp && loggeduser) {
+        if (Date.now() - this.log_timestamp >= 10 * 60 * 1000) {
+          post_request(`claim_daily_reward_token/${loggeduser._id}`);
+          clearInterval(this.reward_interval);
+        }
+      }
+    }, 60 * 1000);
+  };
+
+  componentWillUnmount = () => {
+    clearInterval(this.reward_interval);
   };
 
   logout = () =>
     this.setState({ loggeduser: null }, () => {
       window.sessionStorage.removeItem("loggeduser");
       window.location.assign(client_domain);
+
+      delete this.log_timestamp;
     });
 
   restore_loggeduser = (loggeduser, cb) =>
@@ -89,6 +106,8 @@ class Voupon extends React.Component {
   login = (user, no_redirect) =>
     this.setState({ loggeduser: user }, () => {
       window.sessionStorage.setItem("loggeduser", JSON.stringify(user));
+
+      if (!this.log_timestamp) this.log_timestamp = Date.now();
 
       if (no_redirect) return;
 
