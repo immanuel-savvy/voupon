@@ -10,6 +10,8 @@ import Buy_ticket from "./buy_ticket";
 import Get_voucher from "./get_voucher";
 import Modal from "./modal";
 import Redeem_voucher from "./redeem_voucher";
+import Text_btn from "./text_btn";
+import Ticket_codes from "./ticket_codes";
 import Transfer_voucher from "./transfer_voucher";
 
 class Voucher_sidebar extends React.Component {
@@ -28,6 +30,8 @@ class Voucher_sidebar extends React.Component {
   componentDidMount = async () => {};
 
   purchase_voucher = () => this.purchase_voucher_?.toggle();
+
+  toggle_ticket_codes = () => this.codes?.toggle();
 
   parse_datetime = (datetime) => {
     let date = new Date(datetime).getTime();
@@ -48,6 +52,7 @@ class Voucher_sidebar extends React.Component {
       state,
       event_date_time,
       quantities,
+      ticket,
       short_description,
     } = voucher;
 
@@ -75,30 +80,56 @@ class Voucher_sidebar extends React.Component {
           </span>
           <div className="ed_author">
             {voucher_code ? (
-              <>
-                <CopyToClipboard
-                  text={state !== "unused" ? null : voucher_code}
-                >
-                  <h2 style={{ cursor: "pointer" }} className="theme-cl m-0">
-                    {voucher_code}&nbsp;&nbsp;
-                    {state !== "unused" ? (
-                      <div className="crs_cates cl_1">
-                        <span>{state}</span>
-                      </div>
-                    ) : (
-                      <span>
-                        <i
-                          style={{
-                            color: "rgb(30, 144, 255, 0.8)",
-                            fontSize: 22,
-                          }}
-                          className="fas fa-copy"
-                        ></i>
-                      </span>
-                    )}
-                  </h2>
-                </CopyToClipboard>
-              </>
+              Array.isArray(voucher_code) && voucher_code.length > 1 ? (
+                <>
+                  <span style={{ fontSize: 18 }}>
+                    <span>Quantity:</span>{" "}
+                    <span>
+                      <b>{voucher_code.length}</b>
+                    </span>
+                  </span>
+                  &nbsp; &nbsp;
+                  <div>
+                    <Text_btn
+                      text="View ticket codes"
+                      style={{ fontWeight: "bold" }}
+                      action={this.toggle_ticket_codes}
+                    />
+                  </div>
+                  <br />
+                </>
+              ) : (
+                <>
+                  <CopyToClipboard
+                    text={
+                      state !== "unused"
+                        ? null
+                        : Array.isArray(voucher_code)
+                        ? voucher_code[0]
+                        : voucher_code
+                    }
+                  >
+                    <h2 style={{ cursor: "pointer" }} className="theme-cl m-0">
+                      {voucher_code}&nbsp;&nbsp;
+                      {state !== "unused" ? (
+                        <div className="crs_cates cl_1">
+                          <span>{state}</span>
+                        </div>
+                      ) : (
+                        <span>
+                          <i
+                            style={{
+                              color: "rgb(30, 144, 255, 0.8)",
+                              fontSize: 22,
+                            }}
+                            className="fas fa-copy"
+                          ></i>
+                        </span>
+                      )}
+                    </h2>
+                  </CopyToClipboard>
+                </>
+              )
             ) : (
               <h2 className="theme-cl m-0">
                 &#8358;{commalise_figures(value)}
@@ -215,6 +246,14 @@ class Voucher_sidebar extends React.Component {
               toggle={this.purchase_voucher}
             />
           )}
+        </Modal>
+
+        <Modal ref={(codes) => (this.codes = codes)}>
+          <Ticket_codes
+            ticket={ticket}
+            event={event}
+            toggle={this.toggle_ticket_codes}
+          />
         </Modal>
       </div>
     );

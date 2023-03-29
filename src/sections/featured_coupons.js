@@ -30,7 +30,7 @@ class Featured_coupons extends React.Component {
                 <h2>
                   explore featured <span class="theme-cl">Coupons</span>
                 </h2>
-                <p>Get discount on your favorite product here</p>
+                <p>Get discounts on your favorite product here</p>
               </div>
             </div>
           </div>
@@ -42,7 +42,7 @@ class Featured_coupons extends React.Component {
             )}
           </div>
 
-          <Explore_more to="coupons" />
+          {coupons && coupons.length ? <Explore_more to="coupons" /> : null}
         </div>
       </section>
     );

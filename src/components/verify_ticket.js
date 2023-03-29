@@ -8,7 +8,6 @@ import Login from "./login";
 import Stretch_button from "./stretch_button";
 import Text_btn from "./text_btn";
 import Text_input from "./text_input";
-import Voucher_verified_details from "./voucher_verified_details";
 
 class Verify_ticket extends React.Component {
   constructor(props) {
@@ -31,8 +30,7 @@ class Verify_ticket extends React.Component {
       ticket_code,
     });
 
-    console.log(result);
-    if (result && result.state)
+    if (result && result.ticket)
       this.setState({ verified: true, ticket: result.ticket, result });
     else
       this.setState({

@@ -2,7 +2,6 @@ import React from "react";
 import { Loggeduser } from "../Contexts";
 import Stretch_button from "./stretch_button";
 import Text_input from "./text_input";
-import Voucher from "./event";
 import { PaystackConsumer } from "react-paystack";
 import { email_regex } from "../assets/js/utils/functions";
 import { post_request } from "../assets/js/utils/services";
@@ -14,7 +13,9 @@ class Buy_ticket extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      quantity: 1,
+    };
   }
 
   componentDidMount = () => {
@@ -33,7 +34,7 @@ class Buy_ticket extends React.Component {
 
   payment_successful = () => {
     let { event, on_purchase } = this.props;
-    let { email, firstname, lastname, phone, updating } = this.state;
+    let { email, quantity, firstname, lastname, phone, updating } = this.state;
     if (updating) return;
 
     this.setState({ updating: true });
@@ -45,6 +46,7 @@ class Buy_ticket extends React.Component {
       event: event._id,
       lastname,
       phone,
+      quantity: Number(quantity),
       vendor: event.vendor._id || event.vendor,
     })
       .then((res) => {
@@ -60,7 +62,7 @@ class Buy_ticket extends React.Component {
     this.setState({ firstname, lastname, email });
 
   render() {
-    let { firstname, lastname, email, updating, ticket_code, phone } =
+    let { firstname, lastname, quantity, email, updating, ticket_code, phone } =
       this.state;
     let { event, toggle } = this.props;
     let { value, _id } = event;
@@ -69,7 +71,7 @@ class Buy_ticket extends React.Component {
       email,
       metadata: { firstname, lastname, phone },
       publicKey: Paystack_public_key,
-      amount: value * 100,
+      amount: Number(quantity) * value * 100,
       onSuccess: this.payment_successful,
       onClose: this.cancel,
     };
@@ -114,6 +116,7 @@ class Buy_ticket extends React.Component {
                             email,
                             firstname,
                             lastname,
+                            quantity,
                           }}
                         />
                       ) : (
@@ -159,6 +162,19 @@ class Buy_ticket extends React.Component {
                             action={(phone) =>
                               this.setState({
                                 phone,
+                                message: "",
+                              })
+                            }
+                            important
+                          />
+
+                          <Text_input
+                            value={quantity}
+                            title="quantity"
+                            type="number"
+                            action={(quantity) =>
+                              this.setState({
+                                quantity: quantity < 1 ? 1 : quantity,
                                 message: "",
                               })
                             }

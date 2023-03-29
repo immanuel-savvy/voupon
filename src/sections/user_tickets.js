@@ -32,7 +32,7 @@ class User_tickets extends React.Component {
 
   render() {
     let { style } = this.props;
-    let { active_tab, tickets } = this.state;
+    let { tickets } = this.state;
 
     return (
       <Loggeduser.Consumer>
@@ -56,6 +56,7 @@ class User_tickets extends React.Component {
                             key={ticket._id}
                             event={{ ...ticket.event, state: ticket.state }}
                             ticket_code={ticket.ticket_code}
+                            ticket={ticket}
                           />
                         ))
                       ) : (

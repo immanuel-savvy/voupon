@@ -11,6 +11,8 @@ import { save_to_session, scroll_to_top } from "../sections/footer";
 import Event_tickets from "./event_tickets";
 import Modal from "./modal";
 import Preview_image from "./preview_image";
+import Text_btn from "./text_btn";
+import Ticket_codes from "./ticket_codes";
 
 class Event extends React.Component {
   constructor(props) {
@@ -33,9 +35,12 @@ class Event extends React.Component {
     return `${date_string(date)}, ${time_string(date)}`;
   };
 
+  toggle_ticket_codes = () => this.codes?.toggle();
+
   render() {
     let { full } = this.state;
-    let { event, class_name, in_events, in_vendor, ticket_code } = this.props;
+    let { event, ticket, class_name, in_events, in_vendor, ticket_code } =
+      this.props;
     if (!event) return;
 
     let {
@@ -71,6 +76,7 @@ class Event extends React.Component {
                   ...event,
                   total_sales,
                   ticket_code,
+                  ticket,
                 });
                 save_to_session("vendor", vendor);
                 scroll_to_top();
@@ -115,6 +121,7 @@ class Event extends React.Component {
                       ...event,
                       total_sales,
                       ticket_code,
+                      ticket,
                     });
                     save_to_session("vendor", vendor);
                     scroll_to_top();
@@ -136,24 +143,44 @@ class Event extends React.Component {
             </p>
             {ticket_code ? (
               <div className="crs_info_detail">
-                <CopyToClipboard text={ticket_code}>
-                  <span style={{ cursor: "pointer" }}>
-                    {ticket_code}{" "}
-                    {state && state !== "unused" ? (
-                      <div className="crs_cates cl_1">
-                        <span>{state}</span>
-                      </div>
-                    ) : (
-                      <i
-                        style={{
-                          color: "rgb(30, 144, 255, 0.8)",
-                          fontSize: 22,
-                        }}
-                        className="fas fa-copy"
-                      ></i>
-                    )}
-                  </span>
-                </CopyToClipboard>
+                {Array.isArray(ticket_code) && ticket_code.length > 1 ? (
+                  <>
+                    <span style={{ fontSize: 18 }}>
+                      <span>Quantity:</span>{" "}
+                      <span>
+                        <b>{ticket_code.length}</b>
+                      </span>
+                    </span>
+                    &nbsp; &nbsp;
+                    <div>
+                      <Text_btn
+                        text="View ticket codes"
+                        style={{ fontWeight: "bold" }}
+                        action={this.toggle_ticket_codes}
+                      />
+                    </div>
+                    <br />
+                  </>
+                ) : (
+                  <CopyToClipboard text={ticket_code}>
+                    <span style={{ cursor: "pointer" }}>
+                      {ticket_code}{" "}
+                      {state && state !== "unused" ? (
+                        <div className="crs_cates cl_1">
+                          <span>{state}</span>
+                        </div>
+                      ) : (
+                        <i
+                          style={{
+                            color: "rgb(30, 144, 255, 0.8)",
+                            fontSize: 22,
+                          }}
+                          className="fas fa-copy"
+                        ></i>
+                      )}
+                    </span>
+                  </CopyToClipboard>
+                )}
               </div>
             ) : null}
 
@@ -208,6 +235,15 @@ class Event extends React.Component {
 
         <Modal ref={(tickets) => (this.tickets = tickets)}>
           <Event_tickets event={event} toggle={this.toggle_tickets} />
+        </Modal>
+
+        <Modal ref={(codes) => (this.codes = codes)}>
+          <Ticket_codes
+            event={event}
+            ticket={ticket}
+            ticket_code={ticket_code}
+            toggle={this.toggle_ticket_codes}
+          />
         </Modal>
       </div>
     );

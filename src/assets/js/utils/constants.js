@@ -2,17 +2,13 @@ const DEV = true;
 
 const hostname = DEV
   ? `http://${"localhost"}`
-  : "https://voupon.udaralinksapp.com";
+  : "https://dev.voucherafrica.com:2555";
 
-const client_domain = DEV
-  ? `${hostname}:3000`
-  : `https://voupon.neovacityafrica.com`;
+const client_domain = DEV ? `${hostname}:3000` : `https://voucherafrica.com`;
 
-const domain = DEV ? `${hostname}:1449` : `https://voupon.udaralinksapp.com`;
+const domain = DEV ? `${hostname}:1449` : `https://dev.voucherafrica.com:2555`;
 
-const developer_domain = DEV
-  ? `${domain}/docs`
-  : `voupon_dev.neovacityafrica.com/docs`;
+const developer_domain = `${domain}/docs`;
 
 const default_admin = "adminstrators~123voupon~1234567890123";
 

@@ -37,6 +37,7 @@ class Text_input extends React.Component {
             placeholder={placeholder || to_title(title)}
             value={value}
             onChange={({ target }) => action && action(target.value)}
+            {...this.props}
           />
           {info ? (
             <span style={{ marginBottom: 10 }} className="text-info">

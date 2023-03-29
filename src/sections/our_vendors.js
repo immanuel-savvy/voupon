@@ -53,7 +53,7 @@ class Our_vendors extends React.Component {
             </>
           </div>
 
-          <Explore_more to="vendors" />
+          {vendors && vendors.length ? <Explore_more to="vendors" /> : null}
         </div>
       </section>
     );

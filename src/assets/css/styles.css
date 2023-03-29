@@ -270,7 +270,7 @@ html body .db {
   color: #03b97c !important;
 }
 .theme-bg-light {
-  background: rgba(3, 185, 124, 0.12) !important;
+  background: #03b97c1f !important;
 }
 /*------------ Global Settings: Ul List Style ----------------*/
 ul.list-style {

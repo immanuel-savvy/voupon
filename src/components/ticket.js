@@ -1,7 +1,10 @@
 import React from "react";
 import { to_title } from "../assets/js/utils/functions";
 import { Loggeduser } from "../Contexts";
+import Modal from "./modal";
 import Preview_image from "./preview_image";
+import Text_btn from "./text_btn";
+import Ticket_codes from "./ticket_codes";
 
 class Ticket extends React.Component {
   constructor(props) {
@@ -10,8 +13,10 @@ class Ticket extends React.Component {
     this.state = {};
   }
 
+  toggle_ticket_codes = () => this.codes?.toggle();
+
   render = () => {
-    let { event, ticket, full } = this.props;
+    let { event, ticket, full, no_user } = this.props;
     let { images, title } = event;
     let { ticket_code, user, state } = ticket;
     let { firstname, lastname, email } = user;
@@ -41,8 +46,31 @@ class Ticket extends React.Component {
                       </h4>
                       <ul className="meta">
                         <li className="video">
-                          <i className="fas fa-copy"></i>
-                          {ticket_code}
+                          {Array.isArray(ticket_code) &&
+                          ticket_code.length > 1 ? (
+                            <>
+                              <span style={{ fontSize: 16 }}>
+                                <span>Quantity:</span>{" "}
+                                <span>
+                                  <b>{ticket_code.length}</b>
+                                </span>
+                              </span>
+                              &nbsp; &nbsp;
+                              <div>
+                                <Text_btn
+                                  text="View ticket codes"
+                                  style={{ fontWeight: "bold" }}
+                                  action={this.toggle_ticket_codes}
+                                />
+                              </div>
+                              <br />
+                            </>
+                          ) : (
+                            <>
+                              <i className="fas fa-copy"></i>
+                              {ticket_code}
+                            </>
+                          )}
                         </li>
 
                         <li className="video">
@@ -58,19 +86,29 @@ class Ticket extends React.Component {
                     </div>
                   </div>
 
-                  <span>
-                    <div className="edu_cat_data pt-2">
-                      <b>User</b>
-                      <h4 className="title">
-                        <a href="#">{`${firstname} ${lastname}`}</a>
-                      </h4>
-                      <ul className="meta">
-                        <li className="video">{email}</li>
-                      </ul>
-                    </div>
-                  </span>
+                  {!no_user && (firstname || lastname) ? (
+                    <span style={{ width: "100%", textAlign: "center" }}>
+                      <div className="edu_cat_data pt-2 text-center">
+                        <b>User</b>
+                        <h4 className="title">
+                          <a href="#">{`${firstname} ${lastname}`}</a>
+                        </h4>
+                        <ul className="meta">
+                          <li className="video">{email}</li>
+                        </ul>
+                      </div>
+                    </span>
+                  ) : null}
                 </div>
               </div>
+
+              <Modal ref={(codes) => (this.codes = codes)}>
+                <Ticket_codes
+                  ticket={ticket}
+                  event={event}
+                  toggle={this.toggle_ticket_codes}
+                />
+              </Modal>
             </div>
           );
         }}

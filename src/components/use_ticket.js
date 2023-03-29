@@ -37,34 +37,36 @@ class Use_ticket extends React.Component {
     let { vendor } = this.props;
     let { ticket_code, user, email } = this.state;
 
-    let result = await post_request("can_redeem_ticket", {
+    let result = await post_request("can_transact_ticket", {
       user: user || this.loggeduser?._id,
       email,
       ticket_code,
       vendor: vendor._id,
     });
 
-    if (result && result.can_redeem) {
+    if (result && result.can_transact) {
       this.setState({
-        can_redeem: true,
+        can_transact: true,
         user: result.user,
       });
 
+      console.log(result);
       this.setState({ requesting_otp: true });
       result = await post_request(`request_ticket_otp`, {
         user: result.user,
-        ticket_code: result.ticket_code,
+        ticket_code,
         ticket: result.ticket,
         email: result.email,
       });
 
+      console.log(result, "2");
       this.setState({ event: result.event, ticket: result.ticket });
     } else this.setState({ message: result.message });
   };
 
   proceed = async (otp) => {
     let { vendor, on_use } = this.props;
-    let { proceeding, event, user, ticket } = this.state;
+    let { proceeding, ticket_code, event, user, ticket } = this.state;
     if (proceeding) return;
 
     this.setState({ proceeding: true });
@@ -74,6 +76,7 @@ class Use_ticket extends React.Component {
       ticket,
       user,
       event,
+      ticket_code,
       otp,
     };
 

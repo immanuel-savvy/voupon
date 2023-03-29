@@ -1,6 +1,7 @@
 import React from "react";
 import { Carousel } from "react-bootstrap";
 import Loadindicator from "../components/loadindicator";
+import Packages from "../components/packages";
 import Upcoming_events from "../components/upcoming_events";
 import Featured_coupons from "../sections/featured_coupons";
 import Featured_vouchers from "../sections/featured_vouchers";
@@ -21,28 +22,24 @@ class Home extends React.Component {
       {
         main_text:
           "We've Got Your Coupon, Vouchers, Gift Cards And Favorite Events All In One Place",
-        sub_text:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore.",
+        sub_text: "",
         bg: require("../assets/img/hero1.png"),
       },
       {
         main_text: "Vouchers",
-        sub_text:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore.",
+        sub_text: "Buy vouchers from some of your favourite stores in naira.",
         bg: require("../assets/img/vouchers1.png"),
         overlay: 7,
       },
       {
         main_text: "Tickets",
-        sub_text:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore.",
+        sub_text: "The best events happening now",
         bg: require("../assets/img/tickets2.jpeg"),
       },
 
       {
         main_text: "Coupons",
-        sub_text:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore.",
+        sub_text: "Get discount on your favorite product here",
         bg: require("../assets/img/coupons1.jpg"),
         overlay: 9,
       }
@@ -88,6 +85,8 @@ class Home extends React.Component {
           <Featured_coupons />
 
           <Our_vendors />
+
+          <Packages />
         </div>
         <Footer />
       </div>

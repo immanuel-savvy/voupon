@@ -2,7 +2,7 @@ import React from "react";
 import Explore_more from "./explore_more";
 import Loadindicator from "./loadindicator";
 import Event from "./event";
-import { get_request, post_request } from "../assets/js/utils/services";
+import { post_request } from "../assets/js/utils/services";
 
 class Upcoming_events extends React.Component {
   constructor(props) {
@@ -29,10 +29,7 @@ class Upcoming_events extends React.Component {
                 <h2>
                   upcoming <span className="theme-cl">Events</span>
                 </h2>
-                <p>
-                  In dolore sint duis in est et. Exercitation do ex proident
-                  occaecat.
-                </p>
+                <p>The best events' happening now</p>
               </div>
             </div>
           </div>
@@ -52,7 +49,9 @@ class Upcoming_events extends React.Component {
               )}
             </>
           </div>
-          <Explore_more to="events" />
+          {upcoming_events && upcoming_events.length ? (
+            <Explore_more to="events" />
+          ) : null}
         </div>
       </section>
     );

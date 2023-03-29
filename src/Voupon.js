@@ -136,6 +136,7 @@ class Voupon extends React.Component {
                 <Route path="verify_email" element={<Verify_email />} />
                 <Route path="login" element={<Login />} />
                 <Route path="signup" element={<Signup />} />
+                <Route path="signup/:referral" element={<Signup />} />
                 <Route
                   path="create_offer_voucher"
                   element={<Create_offer_voucher />}

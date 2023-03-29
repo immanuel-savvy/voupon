@@ -19,7 +19,8 @@ class Signup extends React.Component {
     this.setState({ reveal_password: !this.state.reveal_password });
 
   sign_up = async () => {
-    let { firstname, lastname, email, password, loading } = this.state;
+    let { firstname, lastname, email, password, loading, referral } =
+      this.state;
 
     if (
       !firstname ||
@@ -35,7 +36,7 @@ class Signup extends React.Component {
 
     this.setState({ loading: true });
 
-    let user = { firstname, lastname, email, password };
+    let user = { firstname, lastname, email, password, referral };
 
     let res = await post_request("signup", user);
     if (!res._id) return this.setState({ message: res, loading: false });

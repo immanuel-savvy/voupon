@@ -31,9 +31,7 @@ class Featured_vouchers extends React.Component {
                 <h2>
                   explore Offer <span class="theme-cl">Vouchers</span>
                 </h2>
-                <p>
-                  Get vouchers by your favorite vendors at discounted prices
-                </p>
+                <p>Buy vouchers from some of your favourite stores in naira.</p>
               </div>
             </div>
           </div>
@@ -54,7 +52,7 @@ class Featured_vouchers extends React.Component {
             )}
           </div>
 
-          <Explore_more to="vouchers" />
+          {vouchers && vouchers.length ? <Explore_more to="vouchers" /> : null}
         </div>
       </section>
     );
