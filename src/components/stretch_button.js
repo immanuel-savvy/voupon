@@ -8,6 +8,12 @@ class Stretch_button extends React.Component {
     this.state = {};
   }
 
+  action = () => {
+    let { action, loading, disabled } = this.props;
+
+    !loading && !disabled && action && action();
+  };
+
   render() {
     let { title, action, loading, disabled } = this.props;
 

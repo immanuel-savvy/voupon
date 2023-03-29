@@ -14,42 +14,51 @@ class Premium_user extends React.Component {
     this.state = {};
   }
 
-  subscribe = async () => {
+  componentDidMount = () => {
+    let { init } = this.props;
+    init && this.btn?.action();
+  };
+
+  subscribe = () => {
     let { toggle } = this.props;
     let { _id } = this.loggeduser;
 
-    let result = await post_request(`premium_user_subscription/${_id}`);
-    if (result && result.date) {
-      this.loggeduser.premium = result.date;
-      this.set_loggeduser(this.loggeduser);
-      toggle && toggle();
-    } else {
-      this.setState({
-        message:
-          "Your subscription couldn't be completed at this time, Please ensure to contact our customer support at voucherafrica@digitaladplanet.com",
-      });
-    }
+    post_request(`premium_user_subscription/${_id}`)
+      .then((result) => {
+        if (result && result.date) {
+          this.loggeduser.premium = result.date;
+          this.set_loggeduser(this.loggeduser);
+          toggle && toggle();
+        } else {
+          this.setState({
+            message:
+              "Your subscription couldn't be completed at this time, Please ensure to contact our customer support at voucherafrica@digitaladplanet.com",
+          });
+        }
+      })
+      .catch((err) => console.log(err));
   };
 
-  cancle = () => {};
+  cancel = () => {};
 
   render() {
     let { message } = this.state;
 
     return (
       <Loggeduser.Consumer>
-        {({ loggeduser }) => {
+        {({ loggeduser, set_loggeduser }) => {
           if (!loggeduser) return <Login no_redirect />;
 
           let { email, firstname, lastname } = loggeduser;
-          loggeduser = this.loggeduser;
+          this.loggeduser = loggeduser;
+          this.set_loggeduser = set_loggeduser;
 
           let payment_props = {
             email,
             metadata: { firstname, lastname },
             publicKey: Paystack_public_key,
             amount: 700 * 20 * 100,
-            onSuccess: this.payment_successful,
+            onSuccess: this.subscribe,
             onClose: this.cancel,
           };
 
@@ -93,6 +102,7 @@ class Premium_user extends React.Component {
                           <PaystackConsumer {...payment_props}>
                             {({ initializePayment }) => (
                               <Stretch_button
+                                ref={(btn) => (this.btn = btn)}
                                 title="Subscribe to Premium"
                                 action={() => {
                                   initializePayment(

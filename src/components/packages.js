@@ -74,7 +74,7 @@ class Packages extends React.Component {
         </div>
 
         <Modal ref={(premium) => (this.premium = premium)}>
-          <Premium_user toggle={this.toggle_premium} />
+          <Premium_user init toggle={this.toggle_premium} />
         </Modal>
       </section>
     );

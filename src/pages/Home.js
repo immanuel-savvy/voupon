@@ -3,6 +3,7 @@ import { Carousel } from "react-bootstrap";
 import Loadindicator from "../components/loadindicator";
 import Packages from "../components/packages";
 import Upcoming_events from "../components/upcoming_events";
+import { Loggeduser } from "../Contexts";
 import Featured_coupons from "../sections/featured_coupons";
 import Featured_vouchers from "../sections/featured_vouchers";
 import Footer from "../sections/footer";
@@ -59,37 +60,43 @@ class Home extends React.Component {
     let { heros } = this.state;
 
     return (
-      <div>
-        <Nav page="" />
-        <div className="body">
-          {heros ? (
-            <div
-              style={{
-                backgroundImage: `url(${require("../assets/img/hero1.png")})`,
-              }}
-            >
-              <Carousel fade nextLabel="" prevLabel="" indicators={false}>
-                {heros.map((hero, index) => (
-                  <Carousel.Item>
-                    <Hero_banner hero={hero} key={index} />
-                  </Carousel.Item>
-                ))}
-              </Carousel>
+      <Loggeduser.Consumer>
+        {({ loggeduser }) => {
+          return (
+            <div>
+              <Nav page="" />
+              <div className="body">
+                {heros ? (
+                  <div
+                    style={{
+                      backgroundImage: `url(${require("../assets/img/hero1.png")})`,
+                    }}
+                  >
+                    <Carousel fade nextLabel="" prevLabel="" indicators={false}>
+                      {heros.map((hero, index) => (
+                        <Carousel.Item>
+                          <Hero_banner hero={hero} key={index} />
+                        </Carousel.Item>
+                      ))}
+                    </Carousel>
+                  </div>
+                ) : (
+                  <Loadindicator />
+                )}
+
+                <Upcoming_events />
+                <Featured_vouchers />
+                <Featured_coupons />
+
+                <Our_vendors />
+
+                {loggeduser && loggeduser.premium ? null : <Packages />}
+              </div>
+              <Footer />
             </div>
-          ) : (
-            <Loadindicator />
-          )}
-
-          <Upcoming_events />
-          <Featured_vouchers />
-          <Featured_coupons />
-
-          <Our_vendors />
-
-          <Packages />
-        </div>
-        <Footer />
-      </div>
+          );
+        }}
+      </Loggeduser.Consumer>
     );
   }
 }
