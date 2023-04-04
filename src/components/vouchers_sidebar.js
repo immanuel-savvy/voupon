@@ -76,7 +76,7 @@ class Vouchers_sidebar extends React.Component {
                         />
                         <label for="aa-41" class="checkbox-custom-label">
                           {to_title(vendor.name)}
-                          <i class="count"></i>
+                          <i class="count">{vendor.vouchers || ""}</i>
                         </label>
                       </li>
                     ))

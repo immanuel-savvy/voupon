@@ -1,9 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { client_domain } from "../assets/js/utils/constants";
-import Login from "../components/login";
-import Modal from "../components/modal";
-import { Loggeduser } from "../Contexts";
 import {
   Collapse,
   Navbar,
@@ -16,70 +12,46 @@ import {
   DropdownToggle,
   DropdownMenu,
 } from "reactstrap";
+import { client_domain } from "../assets/js/utils/constants";
 import { to_title } from "../assets/js/utils/functions";
+import Create_coupon from "../components/create_coupon";
+import Create_open_voucher from "../components/create_open_voucher";
+import Loadindicator from "../components/loadindicator";
+import Login from "../components/login";
+import Modal from "../components/modal";
 import Redeem_voucher from "../components/redeem_voucher";
 import Verify_voucher from "../components/verify_voucher";
-import Create_open_voucher from "../components/create_open_voucher";
-import Create_coupon from "../components/create_coupon";
 import Verify_coupon from "../components/verify_coupon";
 import Verify_ticket from "../components/verify_ticket";
+import { Loggeduser, Nav_context } from "../Contexts";
+import { emitter } from "../Voupon";
+import { scroll_to_top } from "./footer";
+import Small_btn from "../components/small_btn";
 
-let navs = new Array(
-  "",
-  "vouchers",
-  "coupons",
-  "tickets",
-  // "gift cards",
-  "vendors",
-  "developer",
-  "login",
-  "signup"
-);
-
-let subnavs = new Object({
-  vouchers: new Array(
-    "vouchers",
-    "my_vouchers",
-    "create_voucher",
-    "redeem_voucher",
-    "verify_voucher"
-  ),
-  tickets: new Array("events", "my_tickets", "verify_ticket"),
-  vendors: new Array("become_a_vendor", "all_vendors"),
-  coupons: new Array("coupons", "create_coupon", "verify_coupon"),
-});
-
-class Custom_Nav extends React.Component {
+class Custom_nav extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.toggle = this.toggle.bind(this);
+    this.state = {
+      isOpen: false,
+      subnavs: new Object(),
+    };
   }
 
-  my_vouchers = () => window.location.assign(`${client_domain}/user_vouchers`);
+  login = () => this.login_modal?.toggle();
 
-  vouchers = () => window.location.assign(`${client_domain}/vouchers`);
+  toggle() {
+    this.setState({
+      isOpen: !this.state.isOpen,
+    });
+  }
 
-  events = () => window.location.assign(`${client_domain}/events`);
+  open_vouchers = () => this.create_voucher_?.toggle();
 
-  create_an_event = () =>
-    window.location.assign(`${client_domain}/create_event`);
-
-  my_tickets = () => window.location.assign(`${client_domain}/my_tickets`);
-
-  all_vendors = () => window.location.assign(`${client_domain}/vendors`);
-
-  become_a_vendor = () =>
-    window.location.assign(`${client_domain}/become_a_vendor`);
-
-  vendor_profile = () =>
-    window.location.assign(`${client_domain}/vendor?${this.loggeduser.vendor}`);
-
-  coupons = () => window.location.assign(`${client_domain}/coupons`);
-
-  create_coupon = () => this.create_coupon_?.toggle();
-
-  create_voucher = () => this.create_voucher_?.toggle();
+  offer_voucher = () => {
+    window.location.assign(`${client_domain}/create_offer_voucher`);
+  };
 
   verify_voucher = () => this.verify_voucher_?.toggle();
 
@@ -87,257 +59,441 @@ class Custom_Nav extends React.Component {
 
   verify_coupon = () => this.verify_coupon_?.toggle();
 
-  redeem_voucher = () => this.redeem_voucher_?.toggle();
+  quick_paths = new Object({
+    all_vendors: "/vendors",
+    events: "/events",
+    coupons: "/coupons",
+    vouchers: "/vouchers",
+    my_tickets: "/my_tickets",
+    my_vouchers: "/user_vouchers",
+  });
 
-  toggle = () =>
-    this.setState({
-      isOpen: !this.state.isOpen,
-    });
+  redeem_voucher = () => {
+    console.log("HELLO");
 
-  toggle_login = () => this.login_modal?.toggle();
+    this.redeem_voucher_?.toggle();
+  };
 
-  go_to_profile = () => window.location.assign(`${client_domain}/profile`);
+  componentDidMount = () => {};
 
-  subnav_actions = (subnav) => {
-    return this[subnav];
+  handle_course = (course) => {
+    window.sessionStorage.setItem("course", JSON.stringify(course));
+    emitter.emit("push_course", course);
+  };
+
+  search = () => {
+    let { search_param } = this.state;
+    window.location.assign(
+      `${client_domain}/search_result?search_param=${search_param}`
+    );
+    scroll_to_top();
   };
 
   render() {
-    let { current_nav } = this.state;
+    let { subnavs, current_subnav, current_nav, show_search, search_param } =
+      this.state;
 
     return (
       <Loggeduser.Consumer>
         {({ loggeduser, logout }) => {
-          this.loggeduser = loggeduser;
+          this.logout = logout;
 
           return (
-            <div>
-              <div
-                className="header"
-                style={{
-                  backgroundColor: "#fff",
-                  color: "#000",
-                  position: "fixed",
-                  width: "100vw",
-                }}
-              >
-                <div className="container">
-                  <div
-                    id="navigation"
-                    className="navigation navigation-landscape"
-                  >
-                    <Navbar expand="lg">
-                      <NavbarBrand href="/" className="nav-brand">
-                        {/* <img src="assets/img/logo.png" className="logo" alt="" /> */}
-                        <h2 className="text-dark">Voucher Africa</h2>
-                      </NavbarBrand>
-                      <NavbarToggler
-                        style={{ color: "#000" }}
-                        onClick={this.toggle}
-                      />
+            <Nav_context.Consumer>
+              {({ navs, set_subnav }) => {
+                this.navs = navs;
+                this.set_subnav = set_subnav;
 
-                      <Collapse isOpen={this.state.isOpen} navbar>
-                        <Nav
-                          className="ml-auto"
-                          navbar
-                          style={{ alignItems: "center" }}
+                return (
+                  <div>
+                    <div
+                      className="header"
+                      style={{
+                        backgroundColor: "#fff",
+                        color: "#000",
+                        position: "fixed",
+                        width: "100vw",
+                      }}
+                    >
+                      <div className="container">
+                        <div
+                          id="navigation"
+                          className="navigation navigation-landscape"
                         >
-                          {navs.map((nav, index) => {
-                            let sub = subnavs[nav];
-                            if (sub && sub.length) sub = new Array(...sub);
-                            if (nav === "vouchers") {
-                              if (!loggeduser)
-                                sub = sub.filter((s) => s !== "my_vouchers");
-                            } else if (nav === "vendors") {
-                              if (loggeduser && loggeduser.vendor) {
-                                sub[0] = "vendor_profile";
-                              }
-                            }
-                            if (nav === "coupons") {
-                              if (!loggeduser?.vendor) {
-                                sub = sub.filter((s) => s !== "create_coupon");
-                              }
-                            }
-                            return sub && sub.length ? (
-                              <UncontrolledDropdown key={index} nav inNavbar>
-                                <DropdownToggle
-                                  style={{
-                                    backgroundColor: "transparent",
-                                  }}
-                                  nav
-                                  caret
-                                  ref={(dropdown) =>
-                                    (this[`main_dropdown_${index}`] = dropdown)
-                                  }
-                                  onMouseOver={() => {
-                                    let comp = this[`main_dropdown_${index}`];
-                                    !comp.context.isOpen &&
-                                      comp.context.toggle();
-                                    this.setState({ current_nav: nav });
-                                  }}
-                                  onMouseMove={() => {
-                                    let comp = this[`main_dropdown_${index}`];
-                                    current_nav !== nav &&
-                                      comp.context.isOpen &&
-                                      comp.context.toggle();
-                                  }}
-                                  onClick={() =>
-                                    window.location.assign(
-                                      `${client_domain}/${nav}`
-                                    )
-                                  }
-                                >
-                                  <span style={{ color: "#000" }}>
-                                    {to_title(nav.replace(/_/g, " "))}
-                                  </span>
-                                </DropdownToggle>
-                                {current_nav === nav ? (
-                                  <DropdownMenu
-                                    className="nav-dropdown nav-submenu"
-                                    end
-                                  >
-                                    {sub.map((subnav, index) => {
-                                      if (
-                                        subnav === "become_a_vendor" &&
-                                        this.loggeduser?.vendor
-                                      )
-                                        subnav = "vendor_profile";
-
-                                      if (
-                                        subnav === "my_tickets" &&
-                                        !loggeduser
-                                      )
-                                        return;
-
-                                      return (
-                                        <li
-                                          style={{ cursor: "pointer" }}
-                                          key={index}
-                                        >
-                                          <a
-                                            onClick={this.subnav_actions(
-                                              subnav
-                                            )}
-                                          >
-                                            {to_title(
-                                              subnav.replace(/_/g, " ")
-                                            )}
-                                          </a>
-                                        </li>
-                                      );
-                                    })}
-                                  </DropdownMenu>
-                                ) : null}
-                              </UncontrolledDropdown>
-                            ) : nav === "login" ? (
-                              <li key={index}>
-                                <a
-                                  href="#"
-                                  onClick={
-                                    loggeduser ? logout : this.toggle_login
-                                  }
-                                  className="alio_green"
-                                  data-toggle="modal"
-                                  data-target="#login"
-                                  style={{ color: "#000", marginRight: 20 }}
-                                >
-                                  <i className="fas fa-sign-in-alt mr-1"></i>
-                                  <span className="dn-lg">
-                                    {loggeduser ? `Sign out` : "Sign In"}
-                                  </span>
-                                </a>
-                              </li>
-                            ) : nav === "signup" ? (
-                              <li
-                                key={index}
-                                className="add-listing btn  theme-bg"
+                          <Navbar light expand="lg">
+                            <NavbarBrand href="/" className="nav-brand">
+                              {/* <img
+                    src={require(`assets/img/logo.png`)}
+                    className="logo"
+                    id="logo_white"
+                    alt=""
+                  /> */}
+                              <h2 className="text-dark">Voucher Africa</h2>
+                            </NavbarBrand>
+                            <NavbarToggler
+                              style={{ color: "#000" }}
+                              onClick={this.toggle}
+                            />
+                            <Collapse isOpen={this.state.isOpen} navbar>
+                              <Nav
+                                className="ml-auto"
+                                navbar
+                                style={{ alignItems: "center" }}
                               >
-                                <Link
-                                  to={loggeduser ? "/dashboard" : "/signup"}
-                                  className="text-white"
-                                >
-                                  {loggeduser
-                                    ? to_title(
-                                        `${loggeduser.firstname} ${loggeduser.lastname}`
+                                {navs.map((nav, index) => {
+                                  nav = { ...nav };
+                                  if (nav.title === "login" && loggeduser) {
+                                    nav.title = "logout ";
+                                  }
+
+                                  return nav.submenu && nav.submenu.length ? (
+                                    <UncontrolledDropdown
+                                      key={index}
+                                      nav
+                                      inNavbar
+                                    >
+                                      <DropdownToggle
+                                        style={{
+                                          backgroundColor: "transparent",
+                                        }}
+                                        nav
+                                        caret
+                                        ref={(dropdown) =>
+                                          (this[`main_dropdown_${index}`] =
+                                            dropdown)
+                                        }
+                                        onMouseOver={() => {
+                                          let comp =
+                                            this[`main_dropdown_${index}`];
+                                          !comp.context.isOpen &&
+                                            comp.context.toggle();
+                                          this.setState({
+                                            current_nav: nav.title,
+                                          });
+                                        }}
+                                      >
+                                        <span>
+                                          {to_title(
+                                            nav.title.replace(/_/g, " ")
+                                          )}
+                                        </span>
+                                      </DropdownToggle>
+                                      {current_nav === nav.title ? (
+                                        <DropdownMenu
+                                          className="nav-dropdown nav-submenu"
+                                          end
+                                        >
+                                          {nav.submenu.map((subnav, index) => {
+                                            subnav = { ...subnav };
+                                            if (
+                                              subnav.title ===
+                                                "become_a_vendor" &&
+                                              loggeduser &&
+                                              loggeduser.vendor
+                                            ) {
+                                              subnav.title = "vendor_profile";
+                                              subnav.path = `/vendor?${loggeduser.vendor}`;
+                                            } else
+                                              subnav.path =
+                                                this.quick_paths[subnav.title];
+
+                                            return (
+                                              <li
+                                                key={index}
+                                                onMouseOver={() => {
+                                                  this.setState({
+                                                    current_subnav:
+                                                      subnav.title,
+                                                  });
+                                                }}
+                                              >
+                                                <Link
+                                                  onClick={this[subnav.title]}
+                                                  to={subnav.path || ""}
+                                                >
+                                                  {subnav.view_all
+                                                    ? "View all courses..."
+                                                    : to_title(
+                                                        subnav.title.replace(
+                                                          /_/g,
+                                                          " "
+                                                        )
+                                                      )}
+                                                </Link>
+                                                {subnav.submenu &&
+                                                subnav.submenu.length &&
+                                                current_subnav ===
+                                                  subnav.title ? (
+                                                  <UncontrolledDropdown
+                                                    key={index}
+                                                    nav
+                                                    inNavbar
+                                                    onClick={subnav.on_click}
+                                                  >
+                                                    <DropdownToggle
+                                                      style={{
+                                                        backgroundColor:
+                                                          "transparent",
+                                                      }}
+                                                      nav
+                                                      caret
+                                                      ref={(dropdown) =>
+                                                        (this[
+                                                          `dropdown_${index}`
+                                                        ] = dropdown)
+                                                      }
+                                                      onMouseOver={
+                                                        subnav.view_all
+                                                          ? null
+                                                          : () => {
+                                                              let comp =
+                                                                this[
+                                                                  `dropdown_${index}`
+                                                                ];
+                                                              !comp.context
+                                                                .isOpen &&
+                                                                comp.context.toggle();
+                                                            }
+                                                      }
+                                                    ></DropdownToggle>
+                                                    <DropdownMenu
+                                                      className="nav-dropdown nav-submenu"
+                                                      end
+                                                    >
+                                                      {subnav.submenu ? (
+                                                        subnav.submenu
+                                                          .length ? (
+                                                          subnav.submenu.map(
+                                                            (sub_nav) => (
+                                                              <li
+                                                                onClick={
+                                                                  this[
+                                                                    sub_nav
+                                                                      .title
+                                                                  ]
+                                                                }
+                                                                style={{
+                                                                  backgroundColor:
+                                                                    "transparent",
+                                                                }}
+                                                                key={
+                                                                  sub_nav._id
+                                                                }
+                                                              >
+                                                                <Link
+                                                                  to={
+                                                                    sub_nav.path ||
+                                                                    ""
+                                                                  }
+                                                                >
+                                                                  {to_title(
+                                                                    sub_nav.title.replace(
+                                                                      /_/g,
+                                                                      " "
+                                                                    )
+                                                                  )}
+                                                                </Link>
+                                                              </li>
+                                                            )
+                                                          )
+                                                        ) : null
+                                                      ) : (
+                                                        <Loadindicator />
+                                                      )}
+                                                    </DropdownMenu>
+                                                  </UncontrolledDropdown>
+                                                ) : null}
+                                              </li>
+                                            );
+                                          })}
+                                        </DropdownMenu>
+                                      ) : null}
+                                    </UncontrolledDropdown>
+                                  ) : nav.title === "search" ? (
+                                    <li
+                                      onClick={() =>
+                                        this.setState({
+                                          show_search: !this.state.show_search,
+                                        })
+                                      }
+                                    >
+                                      <Link
+                                        to="#"
+                                        style={{ border: "none" }}
+                                        className="btn btn-action"
+                                      >
+                                        <i className="ti-search"></i>
+                                      </Link>
+                                    </li>
+                                  ) : new Array("login", "logout").includes(
+                                      nav.title
+                                    ) ? (
+                                    <ul className="nav-menu nav-menu-social align-to-right">
+                                      <li>
+                                        <Link
+                                          onClick={this[nav.title]}
+                                          to={nav.path}
+                                          className="alio_green"
+                                          data-toggle="modal"
+                                          data-target="#login"
+                                        >
+                                          <i className="fas fa-sign-in-alt mr-1 text-dark"></i>
+                                          <span className="dn-lg text-dark">
+                                            Log In
+                                          </span>
+                                        </Link>
+                                      </li>
+                                    </ul>
+                                  ) : nav.title === "get_started" ? (
+                                    <ul className="nav-menu nav-menu-social align-to-right mb-3">
+                                      <li className="add-listing theme-bg">
+                                        <Link
+                                          to={
+                                            loggeduser
+                                              ? "/dashboard"
+                                              : "/signup"
+                                          }
+                                          className="text-white"
+                                        >
+                                          {loggeduser
+                                            ? `${loggeduser.firstname} ${loggeduser.lastname}`
+                                            : "Get Started"}
+                                        </Link>
+                                      </li>
+                                    </ul>
+                                  ) : (
+                                    <NavItem
+                                      onMouseOver={() =>
+                                        this.setState({
+                                          current_nav: nav.title,
+                                        })
+                                      }
+                                    >
+                                      <NavLink
+                                        style={{
+                                          backgroundColor: "transparent",
+                                        }}
+                                      >
+                                        <Link
+                                          onClick={this[nav.title]}
+                                          style={{
+                                            textDecorationColor: "none",
+                                          }}
+                                          to={nav.path || ""}
+                                        >
+                                          <span>
+                                            {to_title(
+                                              nav.title.replace(/_/g, " ")
+                                            )}
+                                          </span>
+                                        </Link>
+                                      </NavLink>
+                                    </NavItem>
+                                  );
+                                })}
+                              </Nav>
+                            </Collapse>
+                          </Navbar>
+                          {show_search ? (
+                            <div className="row align-items-center">
+                              <div className="form-group mr-0 pr-0 col-md-6 col-lg-4">
+                                <div className="input-with-icon">
+                                  <input
+                                    type="text"
+                                    className="form-control"
+                                    autoFocus
+                                    placeholder="Search Voucher Africa"
+                                    value={search_param}
+                                    onKeyUp={async (e) => {
+                                      if (
+                                        e.target.value ===
+                                          this.previous_value &&
+                                        this.previous_value
                                       )
-                                    : "Get Started"}
-                                </Link>
-                              </li>
-                            ) : (
-                              <NavItem key={index}>
-                                <NavLink
-                                  style={{
-                                    backgroundColor: "transparent",
-                                  }}
-                                >
-                                  <Link
-                                    style={{ textDecorationColor: "none" }}
-                                    to={`/${nav.replace(/ /g, "_")}`}
-                                  >
-                                    <span style={{ color: "#000" }}>
-                                      {to_title(nav.replace(/_/g, " "))}
-                                    </span>
-                                  </Link>
-                                </NavLink>
-                              </NavItem>
-                            );
-                          })}
-                        </Nav>
-                      </Collapse>
-                    </Navbar>
+                                        return this.search(e);
+                                      this.previous_value = e.target.value;
+                                    }}
+                                    onChange={({ target }) =>
+                                      this.setState({
+                                        search_param: target.value,
+                                      })
+                                    }
+                                  />
+                                  <i className="ti-search"></i>
+                                </div>
+                              </div>
+                              <div className="form-group col-4">
+                                <Small_btn
+                                  title="Search"
+                                  action={this.search}
+                                />
+                              </div>
+                            </div>
+                          ) : null}
+                        </div>
+                      </div>
+                    </div>
+
+                    <Modal
+                      ref={(login_modal) => (this.login_modal = login_modal)}
+                    >
+                      <Login toggle={() => this.login_modal?.toggle()} />
+                    </Modal>
+
+                    <Modal
+                      ref={(redeem_voucher_) =>
+                        (this.redeem_voucher_ = redeem_voucher_)
+                      }
+                    >
+                      <Redeem_voucher toggle={this.redeem_voucher} />
+                    </Modal>
+
+                    <Modal
+                      ref={(verify_voucher_) =>
+                        (this.verify_voucher_ = verify_voucher_)
+                      }
+                    >
+                      <Verify_voucher toggle={this.verify_voucher} />
+                    </Modal>
+
+                    <Modal
+                      ref={(verify_coupon_) =>
+                        (this.verify_coupon_ = verify_coupon_)
+                      }
+                    >
+                      <Verify_coupon toggle={this.verify_coupon} />
+                    </Modal>
+
+                    <Modal
+                      ref={(verify_ticket_) =>
+                        (this.verify_ticket_ = verify_ticket_)
+                      }
+                    >
+                      <Verify_ticket toggle={this.verify_ticket} />
+                    </Modal>
+
+                    <Modal
+                      ref={(create_voucher_) =>
+                        (this.create_voucher_ = create_voucher_)
+                      }
+                    >
+                      <Create_open_voucher toggle={this.create_voucher} />
+                    </Modal>
+
+                    <Modal
+                      ref={(create_coupon_) =>
+                        (this.create_coupon_ = create_coupon_)
+                      }
+                    >
+                      <Create_coupon
+                        vendor={loggeduser?.vendor}
+                        toggle={this.create_coupon}
+                      />
+                    </Modal>
                   </div>
-                </div>
-              </div>
-
-              <Modal ref={(login_modal) => (this.login_modal = login_modal)}>
-                <Login toggle={this.toggle_login} />
-              </Modal>
-
-              <Modal
-                ref={(redeem_voucher_) =>
-                  (this.redeem_voucher_ = redeem_voucher_)
-                }
-              >
-                <Redeem_voucher toggle={this.redeem_voucher} />
-              </Modal>
-
-              <Modal
-                ref={(verify_voucher_) =>
-                  (this.verify_voucher_ = verify_voucher_)
-                }
-              >
-                <Verify_voucher toggle={this.verify_voucher} />
-              </Modal>
-
-              <Modal
-                ref={(verify_coupon_) => (this.verify_coupon_ = verify_coupon_)}
-              >
-                <Verify_coupon toggle={this.verify_coupon} />
-              </Modal>
-
-              <Modal
-                ref={(verify_ticket_) => (this.verify_ticket_ = verify_ticket_)}
-              >
-                <Verify_ticket toggle={this.verify_ticket} />
-              </Modal>
-
-              <Modal
-                ref={(create_voucher_) =>
-                  (this.create_voucher_ = create_voucher_)
-                }
-              >
-                <Create_open_voucher toggle={this.create_voucher} />
-              </Modal>
-
-              <Modal
-                ref={(create_coupon_) => (this.create_coupon_ = create_coupon_)}
-              >
-                <Create_coupon
-                  vendor={loggeduser?.vendor}
-                  toggle={this.create_coupon}
-                />
-              </Modal>
-            </div>
+                );
+              }}
+            </Nav_context.Consumer>
           );
         }}
       </Loggeduser.Consumer>
@@ -345,5 +501,4 @@ class Custom_Nav extends React.Component {
   }
 }
 
-export default Custom_Nav;
-export { navs };
+export default Custom_nav;

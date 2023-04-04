@@ -1,14 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { to_title } from "../assets/js/utils/functions";
-import { domain, post_request } from "../assets/js/utils/services";
+import { domain, get_request, post_request } from "../assets/js/utils/services";
 import Alert_box from "../components/alert_box";
 import Handle_file_upload from "../components/handle_file_upload";
 import Loadindicator from "../components/loadindicator";
 import Padder from "../components/padder";
-import Preview_image from "../components/preview_image";
 import Section_header from "../components/section_headers";
 import Vendor_header from "../components/vender_header";
+import { Loggeduser } from "../Contexts";
 import Footer, { get_session } from "../sections/footer";
 import Custom_Nav from "../sections/nav";
 import { emitter } from "../Voupon";
@@ -21,8 +21,6 @@ class Create_offer_voucher extends Handle_file_upload {
 
     if (window.location.pathname === "/edit_offer_voucher")
       voucher = voucher || get_session("voucher_in_edit");
-
-    console.log(voucher);
 
     if (voucher) {
       if (voucher.schools && voucher.schools.length)
@@ -48,7 +46,19 @@ class Create_offer_voucher extends Handle_file_upload {
   tab_pills = new Array("basic", "pricing", "media", "meta_info", "finish");
 
   componentDidMount = async () => {
-    this.setState({ vendor: get_session("vendor") });
+    this.loggeduser = this.loggeduser || get_session("loggeduser");
+
+    if (!this.loggeduser || (this.loggeduser && !this.loggeduser.vendor))
+      return window.history.go(-1);
+
+    let vendor = get_session("vendor");
+    if (!vendor || (vendor && vendor._id !== this.loggeduser.vendor)) {
+      vendor = await get_request(`vendor/${this.loggeduser.vendor}`);
+
+      if (!vendor || (vendor && vendor._id)) return window.history.go(-1);
+    }
+
+    this.setState({ vendor });
   };
 
   important_fields = new Array("title", "price", "short_description", "images");
@@ -110,7 +120,6 @@ class Create_offer_voucher extends Handle_file_upload {
         {!this.is_set() && !new_voucher ? (
           <>
             {this.important_fields.map((field_prop) => {
-              console.log(this.state);
               let field = this.state[field_prop];
               if (Array.isArray(field)) {
                 if (!field.length)
@@ -691,59 +700,67 @@ class Create_offer_voucher extends Handle_file_upload {
     if (!vendor) return <Loadindicator />;
 
     return (
-      <div id="main-wrapper">
-        <Custom_Nav />
-        <Padder />
+      <Loggeduser.Consumer>
+        {({ loggeduser }) => {
+          this.loggeduser = loggeduser;
 
-        <Vendor_header vendor={vendor} />
-        <div className="container">
-          <Section_header
-            title="Create Offer Voucher"
-            description="Deserunt aute proident excepteur duis officia eiusmod sit do duis commodo fugiat nisi est cillum."
-          />
+          return (
+            <div id="main-wrapper">
+              <Custom_Nav />
+              <Padder />
 
-          <div className="row">
-            <div className="col-12">
-              <div className="row">
-                <div className="col-xl-12 col-lg-12 col-md-12">
-                  <div className="dashboard_wrap">
-                    <div className="form_blocs_wrap">
-                      <form>
-                        <div className="row justify-content-between">
-                          <div className="col-xl-3 col-lg-4 col-md-5 col-sm-12">
-                            <div
-                              className="nav flex-column nav-pills me-3"
-                              id="v-pills-tab"
-                              role="tablist"
-                              aria-orientation="vertical"
-                            >
-                              {this.render_tab_pills()}
-                            </div>
-                          </div>
-                          <div className="col-xl-9 col-lg-8 col-md-7 col-sm-12">
-                            <div
-                              className="tab-content"
-                              id="v-pills-tabContent"
-                            >
-                              {this.basic_tab_panel()}
-                              {this.pricing_tab_panel()}
-                              {this.media_tab_panel()}
-                              {this.meta_info_tab_panel()}
-                              {this.finish_tab_panel()}
-                            </div>
+              <Vendor_header vendor={vendor} />
+              <div className="container">
+                <Section_header
+                  title="Create Offer Voucher"
+                  description="Deserunt aute proident excepteur duis officia eiusmod sit do duis commodo fugiat nisi est cillum."
+                />
+
+                <div className="row">
+                  <div className="col-12">
+                    <div className="row">
+                      <div className="col-xl-12 col-lg-12 col-md-12">
+                        <div className="dashboard_wrap">
+                          <div className="form_blocs_wrap">
+                            <form>
+                              <div className="row justify-content-between">
+                                <div className="col-xl-3 col-lg-4 col-md-5 col-sm-12">
+                                  <div
+                                    className="nav flex-column nav-pills me-3"
+                                    id="v-pills-tab"
+                                    role="tablist"
+                                    aria-orientation="vertical"
+                                  >
+                                    {this.render_tab_pills()}
+                                  </div>
+                                </div>
+                                <div className="col-xl-9 col-lg-8 col-md-7 col-sm-12">
+                                  <div
+                                    className="tab-content"
+                                    id="v-pills-tabContent"
+                                  >
+                                    {this.basic_tab_panel()}
+                                    {this.pricing_tab_panel()}
+                                    {this.media_tab_panel()}
+                                    {this.meta_info_tab_panel()}
+                                    {this.finish_tab_panel()}
+                                  </div>
+                                </div>
+                              </div>
+                            </form>
                           </div>
                         </div>
-                      </form>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
 
-        <Footer />
-      </div>
+              <Footer />
+            </div>
+          );
+        }}
+      </Loggeduser.Consumer>
     );
   }
 }

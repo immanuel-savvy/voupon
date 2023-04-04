@@ -38,7 +38,94 @@ class Voupon extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      submenus: new Object({
+        create_voucher: new Array(
+          { title: "open_vouchers", action: () => {}, path: "" },
+          { title: "offer_vouchers", action: () => {}, path: "" }
+        ),
+      }),
+      subnavs: new Object(),
+      navs: new Array(
+        {
+          title: "search",
+          path: "/search_result",
+        },
+        {
+          title: "home",
+          path: "/",
+        },
+        {
+          title: "vouchers",
+          path: "/vouchers",
+          submenu: new Array(
+            {
+              title: "vouchers",
+              _id: 1,
+              // on_click: () => {},
+              path: "/vouchers",
+            },
+            {
+              title: "my_vouchers",
+              _id: 2,
+              // on_click: () => {},
+              path: "/user_vouchers",
+            },
+            {
+              title: "create_voucher",
+              _id: "create_voucher",
+              // on_click: () => {},
+              submenu: new Array(
+                { title: "open_vouchers", path: "" },
+                { title: "offer_vouchers", path: "" }
+              ),
+              path: "",
+            },
+            { title: "redeem_voucher", _id: 4, path: "" },
+            { title: "verify_voucher", _id: 5, path: "" }
+          ),
+        },
+        {
+          title: "coupons",
+          path: "/coupons",
+          submenu: new Array(
+            {
+              title: "coupons",
+            },
+            { title: "create_coupon" },
+            { title: "verify_coupon" }
+          ),
+        },
+        {
+          title: "tickets",
+          path: "/events",
+          submenu: new Array(
+            { title: "events", path: "/events" },
+            { title: "my_tickets", path: "/my_tickets" },
+            { title: "verify_ticket" }
+          ),
+        },
+
+        {
+          title: "vendors",
+          path: "",
+          submenu: new Array(
+            { title: "become_a_vendor" },
+            { title: "all_vendors" }
+          ),
+        },
+        { title: "developer", path: "/developer" },
+
+        {
+          title: "login",
+          path: "",
+        },
+        {
+          title: "get_started",
+          path: "/signup",
+        }
+      ),
+    };
   }
 
   componentDidMount = () => {
@@ -75,6 +162,32 @@ class Voupon extends React.Component {
     clearInterval(this.reward_interval);
   };
 
+  set_subnav = async (nav) => {
+    let { subnavs } = this.state;
+    if (subnavs[nav._id]) return;
+
+    let navs = await post_request("get_courses", { courses: nav.submenu });
+    subnavs[nav._id] = navs.map((nav) => ({
+      ...nav,
+      path: "/course",
+      on_click: () => this.handle_course(nav),
+    }));
+    this.setState({ subnavs });
+  };
+
+  load_subnavs = async (current_subnav) => {
+    let { submenus } = this.state;
+
+    let courses = await post_request("get_courses", {
+      courses: current_subnav.submenu,
+    });
+    submenus[current_subnav._id] = courses;
+
+    this.setState({
+      submenus,
+    });
+  };
+
   logout = () =>
     this.setState({ loggeduser: null }, () => {
       window.sessionStorage.removeItem("loggeduser");
@@ -109,7 +222,8 @@ class Voupon extends React.Component {
     });
 
   render = () => {
-    let { loggeduser, admin_logged, voucher_in_edit } = this.state;
+    let { loggeduser, navs, subnavs, submenus, admin_logged, voucher_in_edit } =
+      this.state;
 
     return (
       <Loggeduser.Provider
@@ -124,7 +238,15 @@ class Voupon extends React.Component {
         <Logged_admin.Provider
           value={{ admin_logged, log_admin: this.log_admin }}
         >
-          <Nav_context.Provider value={null}>
+          <Nav_context.Provider
+            value={{
+              navs,
+              subnavs,
+              set_subnav: this.set_subnav,
+              load_subnavs: this.load_subnavs,
+              submenus,
+            }}
+          >
             <BrowserRouter>
               <Routes>
                 <Route index element={<Home />} />

@@ -84,7 +84,7 @@ class Verify_ticket extends React.Component {
 
                         <div className="rcs_log_124">
                           <div className="Lpo09">
-                            <h4>Verify Voucher</h4>
+                            <h4>Verify Ticket</h4>
                           </div>
 
                           <div
