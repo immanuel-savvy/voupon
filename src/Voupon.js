@@ -31,6 +31,8 @@ import Event from "./pages/Event";
 import User_tickets_dash from "./pages/User_tickets";
 import { post_request } from "./assets/js/utils/services";
 import { save_to_session } from "./sections/footer";
+import Search_results from "./pages/Search_results";
+import About from "./pages/About";
 
 const emitter = new Emitter();
 
@@ -261,9 +263,11 @@ class Voupon extends React.Component {
                 <Route path="vendor" element={<Vendor_profile />} />
                 <Route path="my_tickets" element={<User_tickets_dash />} />
                 <Route path="verify_email" element={<Verify_email />} />
+                <Route path="about" element={<About />} />
                 <Route path="login" element={<Login />} />
                 <Route path="signup" element={<Signup />} />
                 <Route path="signup/:referral" element={<Signup />} />
+                <Route path="search_result" element={<Search_results />} />
                 <Route
                   path="create_offer_voucher"
                   element={<Create_offer_voucher />}

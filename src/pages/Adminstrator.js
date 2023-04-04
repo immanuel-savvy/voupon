@@ -13,6 +13,7 @@ import Unverified_vendors from "../sections/dashboard/unverified_vendors";
 import Footer, { scroll_to_top } from "../sections/footer";
 import Nav from "../sections/nav";
 import { emitter } from "../Voupon";
+import About_statement from "../sections/dashboard/about_statement";
 
 class Adminstrator extends React.Component {
   constructor(props) {
@@ -65,6 +66,7 @@ class Adminstrator extends React.Component {
       unverified_vendors: <Unverified_vendors />,
       coupons: <D_coupons />,
       users: <D_users />,
+      about_statement: <About_statement />,
     });
 
   render() {

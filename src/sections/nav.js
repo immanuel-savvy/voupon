@@ -36,6 +36,7 @@ class Custom_nav extends React.Component {
     this.state = {
       isOpen: false,
       subnavs: new Object(),
+      search_param: "",
     };
   }
 
@@ -49,7 +50,7 @@ class Custom_nav extends React.Component {
 
   open_vouchers = () => this.create_voucher_?.toggle();
 
-  offer_voucher = () => {
+  offer_vouchers = () => {
     window.location.assign(`${client_domain}/create_offer_voucher`);
   };
 
@@ -66,13 +67,10 @@ class Custom_nav extends React.Component {
     vouchers: "/vouchers",
     my_tickets: "/my_tickets",
     my_vouchers: "/user_vouchers",
+    become_a_vendor: "/become_a_vendor",
   });
 
-  redeem_voucher = () => {
-    console.log("HELLO");
-
-    this.redeem_voucher_?.toggle();
-  };
+  redeem_voucher = () => this.redeem_voucher_?.toggle();
 
   componentDidMount = () => {};
 
@@ -83,8 +81,10 @@ class Custom_nav extends React.Component {
 
   search = () => {
     let { search_param } = this.state;
+    if (!search_param.trim()) return;
+
     window.location.assign(
-      `${client_domain}/search_result?search_param=${search_param}`
+      `${client_domain}/search_result?search_param=${search_param || ""}`
     );
     scroll_to_top();
   };
@@ -123,11 +123,11 @@ class Custom_nav extends React.Component {
                           <Navbar light expand="lg">
                             <NavbarBrand href="/" className="nav-brand">
                               {/* <img
-                    src={require(`assets/img/logo.png`)}
-                    className="logo"
-                    id="logo_white"
-                    alt=""
-                  /> */}
+                                    src={require(`assets/img/logo.png`)}
+                                    className="logo"
+                                    id="logo_white"
+                                    alt=""
+                                  /> */}
                               <h2 className="text-dark">Voucher Africa</h2>
                             </NavbarBrand>
                             <NavbarToggler
@@ -142,9 +142,9 @@ class Custom_nav extends React.Component {
                               >
                                 {navs.map((nav, index) => {
                                   nav = { ...nav };
-                                  if (nav.title === "login" && loggeduser) {
-                                    nav.title = "logout ";
-                                  }
+
+                                  if (nav.title === "login" && loggeduser)
+                                    nav.title = "logout";
 
                                   return nav.submenu && nav.submenu.length ? (
                                     <UncontrolledDropdown
@@ -185,6 +185,23 @@ class Custom_nav extends React.Component {
                                         >
                                           {nav.submenu.map((subnav, index) => {
                                             subnav = { ...subnav };
+
+                                            if (
+                                              subnav.title === "my_vouchers" &&
+                                              !loggeduser
+                                            )
+                                              return;
+                                            if (
+                                              subnav.title === "my_coupons" &&
+                                              !loggeduser
+                                            )
+                                              return;
+                                            if (
+                                              subnav.title === "my_tickets" &&
+                                              !loggeduser
+                                            )
+                                              return;
+
                                             if (
                                               subnav.title ===
                                                 "become_a_vendor" &&
@@ -264,37 +281,50 @@ class Custom_nav extends React.Component {
                                                         subnav.submenu
                                                           .length ? (
                                                           subnav.submenu.map(
-                                                            (sub_nav) => (
-                                                              <li
-                                                                onClick={
-                                                                  this[
-                                                                    sub_nav
-                                                                      .title
-                                                                  ]
-                                                                }
-                                                                style={{
-                                                                  backgroundColor:
-                                                                    "transparent",
-                                                                }}
-                                                                key={
-                                                                  sub_nav._id
-                                                                }
-                                                              >
-                                                                <Link
-                                                                  to={
-                                                                    sub_nav.path ||
-                                                                    ""
+                                                            (sub_nav) => {
+                                                              if (
+                                                                sub_nav.title ===
+                                                                "offer_vouchers"
+                                                              )
+                                                                if (
+                                                                  !loggeduser ||
+                                                                  (loggeduser &&
+                                                                    !loggeduser.vendor)
+                                                                )
+                                                                  return;
+
+                                                              return (
+                                                                <li
+                                                                  onClick={
+                                                                    this[
+                                                                      sub_nav
+                                                                        .title
+                                                                    ]
+                                                                  }
+                                                                  style={{
+                                                                    backgroundColor:
+                                                                      "transparent",
+                                                                  }}
+                                                                  key={
+                                                                    sub_nav._id
                                                                   }
                                                                 >
-                                                                  {to_title(
-                                                                    sub_nav.title.replace(
-                                                                      /_/g,
-                                                                      " "
-                                                                    )
-                                                                  )}
-                                                                </Link>
-                                                              </li>
-                                                            )
+                                                                  <Link
+                                                                    to={
+                                                                      sub_nav.path ||
+                                                                      ""
+                                                                    }
+                                                                  >
+                                                                    {to_title(
+                                                                      sub_nav.title.replace(
+                                                                        /_/g,
+                                                                        " "
+                                                                      )
+                                                                    )}
+                                                                  </Link>
+                                                                </li>
+                                                              );
+                                                            }
                                                           )
                                                         ) : null
                                                       ) : (
@@ -325,25 +355,24 @@ class Custom_nav extends React.Component {
                                         <i className="ti-search"></i>
                                       </Link>
                                     </li>
-                                  ) : new Array("login", "logout").includes(
-                                      nav.title
-                                    ) ? (
-                                    <ul className="nav-menu nav-menu-social align-to-right">
-                                      <li>
-                                        <Link
-                                          onClick={this[nav.title]}
-                                          to={nav.path}
-                                          className="alio_green"
-                                          data-toggle="modal"
-                                          data-target="#login"
-                                        >
-                                          <i className="fas fa-sign-in-alt mr-1 text-dark"></i>
-                                          <span className="dn-lg text-dark">
-                                            Log In
-                                          </span>
-                                        </Link>
-                                      </li>
-                                    </ul>
+                                  ) : nav.title === "logout" ? (
+                                    <li>
+                                      <Link
+                                        onClick={
+                                          loggeduser
+                                            ? () => {
+                                                logout();
+                                              }
+                                            : this.login
+                                        }
+                                        to={nav.path}
+                                      >
+                                        <i className="fas fa-sign-in-alt mr-1 text-dark"></i>
+                                        <span className="dn-lg text-dark">
+                                          {loggeduser ? "Logout" : "Log In"}
+                                        </span>
+                                      </Link>
+                                    </li>
                                   ) : nav.title === "get_started" ? (
                                     <ul className="nav-menu nav-menu-social align-to-right mb-3">
                                       <li className="add-listing theme-bg">

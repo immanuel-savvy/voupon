@@ -21,14 +21,8 @@ class Dashboard_nav_menu extends React.Component {
         },
         {
           title: "vendors",
-          icon: "fa-th",
-          subnav: new Array(
-            {
-              title: "vendors",
-            },
-            { title: "unverified_vendors" }
-          ),
         },
+        { title: "unverified_vendors" },
         {
           title: "vouchers",
           icon: "fa-th",
@@ -36,6 +30,9 @@ class Dashboard_nav_menu extends React.Component {
             { title: "running_vouchers" },
             { title: "redeemed_vouchers" }
           ),
+        },
+        {
+          title: "about_statement",
         }
       ),
     };

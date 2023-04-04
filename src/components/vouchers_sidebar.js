@@ -68,13 +68,13 @@ class Vouchers_sidebar extends React.Component {
                     top_vendors.map((vendor) => (
                       <li key={vendor._id}>
                         <input
-                          id="aa-41"
+                          id={vendor._id}
                           class="checkbox-custom"
-                          name="aa-41"
+                          name="vendors"
                           type="checkbox"
                           onChange={this.handle_top_vendors}
                         />
-                        <label for="aa-41" class="checkbox-custom-label">
+                        <label for={vendor._id} class="checkbox-custom-label">
                           {to_title(vendor.name)}
                           <i class="count">{vendor.vouchers || ""}</i>
                         </label>

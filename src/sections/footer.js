@@ -3,8 +3,7 @@ import { Link } from "react-router-dom";
 import { developer_domain } from "../assets/js/utils/constants";
 import Toaster from "../components/toast";
 import { emitter } from "../Voupon";
-// import { navs } from "./nav";
-let navs = new Array();
+let navs = new Array("vouchers", "events", "coupons", "vendors");
 
 const rewards = new Object({
   create_voucher: 100,
