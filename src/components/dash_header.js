@@ -12,7 +12,7 @@ class Dash_header extends React.Component {
 
   render() {
     let { user, set_panel } = this.props;
-    let { firstname, lastname, email } = user;
+    let { firstname, lastname, email, premium } = user;
 
     return (
       <div className="d-user-avater">
@@ -21,8 +21,15 @@ class Dash_header extends React.Component {
           className="img-fluid avater"
           alt=""
         />
-        <h4>{to_title(`${firstname} ${lastname}`)}</h4>
-        <span>User</span>
+        <h4>
+          {to_title(`${firstname} ${lastname}`)}{" "}
+          {premium ? (
+            <span className="theme-cl">
+              <i className="fas fa-star"></i>
+            </span>
+          ) : null}
+        </h4>
+        <span>{email}</span>
         <div className="elso_syu89"></div>
         <div className="elso_syu77 mx-5">
           {panels.map((panel) => (

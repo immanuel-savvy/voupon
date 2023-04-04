@@ -50,6 +50,8 @@ class Vendor_vouchers extends React.Component {
 
   toggle_use_voucher = () => this.use_voucher?.toggle();
 
+  edit = (voucher, vendor) => emitter.emit("edit_voucher", { voucher, vendor });
+
   render() {
     let { vendor, loggeduser } = this.props;
     let { offer_vouchers, filter, use_voucher } = this.state;
@@ -95,6 +97,12 @@ class Vendor_vouchers extends React.Component {
                 (!voucher.state && filter === "running") ? (
                   <Offer_voucher
                     in_vendor
+                    edit={
+                      (loggeduser && loggeduser.vendor) ===
+                      (vendor && vendor._id)
+                        ? () => this.edit(voucher, vendor)
+                        : null
+                    }
                     vendor={vendor}
                     voucher={voucher}
                     key={voucher._id}

@@ -1,6 +1,6 @@
 import React from "react";
 import { client_domain } from "../assets/js/utils/constants";
-import { gen_random_int } from "../assets/js/utils/functions";
+import { date_string, gen_random_int } from "../assets/js/utils/functions";
 import Preview_image from "../components/preview_image";
 import { save_to_session } from "../sections/footer";
 
@@ -19,7 +19,8 @@ class Voucher_header extends React.Component {
   };
 
   parse_duration = (duration) => {
-    let hours = Math.floor(duration / 60);
+    duration = duration / 1000;
+    let hours = Math.floor(duration / (60 * 60));
     let minutes = duration - hours * 60;
 
     let str = "";
@@ -85,13 +86,16 @@ class Voucher_header extends React.Component {
                 </li>
                 <li className="col-lg-6 col-md-6 col-sm-6 pt-2 pb-2">
                   <i className="fas fa-clock mr-1 text-success"></i>
-                  <span>{this.parse_duration(duration)}</span>
+                  <span>
+                    {is_event
+                      ? this.parse_duration(duration)
+                      : date_string(duration)}
+                  </span>
                 </li>
                 <li className="col-lg-6 col-md-6 col-sm-6 pt-2 pb-2">
                   <i className="fas fa-user mr-1 text-info"></i>
                   <span>
-                    {total_sales || gen_random_int(500, 100)}{" "}
-                    {is_event ? "Tickets Sold" : "Purchased"}
+                    {total_sales || 0} {is_event ? "Tickets Sold" : "Purchased"}
                   </span>
                 </li>
               </ul>

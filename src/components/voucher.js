@@ -112,6 +112,7 @@ class Voucher extends React.Component {
                     />
                   </a>
                 </div>
+
                 <div className="edu_cat_data">
                   <h4 className="title">
                     <div

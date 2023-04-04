@@ -6,6 +6,7 @@ import Login from "./login";
 import Stretch_button from "./stretch_button";
 import { post_request } from "../assets/js/utils/services";
 import Alert_box from "./alert_box";
+import { rewards } from "../sections/footer";
 
 class Premium_user extends React.Component {
   constructor(props) {
@@ -57,7 +58,7 @@ class Premium_user extends React.Component {
             email,
             metadata: { firstname, lastname },
             publicKey: Paystack_public_key,
-            amount: 700 * 20 * 100,
+            amount: rewards.subscription_fee * 100,
             onSuccess: this.subscribe,
             onClose: this.cancel,
           };

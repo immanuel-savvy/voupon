@@ -23,7 +23,7 @@ class Offer_voucher extends React.Component {
   };
 
   render() {
-    let { voucher, vendor, in_vouchers, voucher_code } = this.props;
+    let { voucher, vendor, in_vouchers, voucher_code, edit } = this.props;
     let { title, images, total_sales, state, value } = voucher;
     let { category, name, logo, logo_hash } = vendor;
 
@@ -55,6 +55,12 @@ class Offer_voucher extends React.Component {
                 image_hash={images[0].image_hash}
               />
             </Link>
+
+            {edit ? (
+              <div className="crs_video_ico" onClick={edit}>
+                <i className={`fa fa-edit`}></i>
+              </div>
+            ) : null}
           </div>
           <div className="crs_grid_caption">
             <div className="crs_flex">
@@ -65,11 +71,7 @@ class Offer_voucher extends React.Component {
               </div>
               <div className="crs_fl_last">
                 <div className="crs_inrolled">
-                  <strong>
-                    {commalise_figures(
-                      total_sales || Number(generate_random_string(5, "num"))
-                    )}
-                  </strong>
+                  <strong>{commalise_figures(total_sales || 0)}</strong>
                   Purchased
                 </div>
               </div>

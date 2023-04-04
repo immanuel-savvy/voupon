@@ -25,7 +25,6 @@ class Vouchers extends React.Component {
   componentDidMount = async () => {
     let { limit } = this.state;
 
-    console.log("hello");
     let { vouchers, vendors, total } = await get_request(
       `get_offer_vouchers/${limit}`
     );

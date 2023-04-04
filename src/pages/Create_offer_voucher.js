@@ -6,6 +6,7 @@ import Alert_box from "../components/alert_box";
 import Handle_file_upload from "../components/handle_file_upload";
 import Loadindicator from "../components/loadindicator";
 import Padder from "../components/padder";
+import Preview_image from "../components/preview_image";
 import Section_header from "../components/section_headers";
 import Vendor_header from "../components/vender_header";
 import Footer, { get_session } from "../sections/footer";
@@ -17,6 +18,12 @@ class Create_offer_voucher extends Handle_file_upload {
     super(props);
 
     let { voucher } = this.props;
+
+    if (window.location.pathname === "/edit_offer_voucher")
+      voucher = voucher || get_session("voucher_in_edit");
+
+    console.log(voucher);
+
     if (voucher) {
       if (voucher.schools && voucher.schools.length)
         voucher.schools = Array.from(
@@ -28,10 +35,13 @@ class Create_offer_voucher extends Handle_file_upload {
       current_pill: "basic",
       what_to_expect: new Array(),
       things_to_know: new Array(),
+      images: new Array(),
       ...voucher,
       learn_index: null,
       requirement_index: null,
-      images: new Array(),
+      vendor: null,
+      duration: voucher && new Date(voucher.duration),
+      price: (voucher && voucher.value) || "",
     };
   }
 
@@ -51,29 +61,31 @@ class Create_offer_voucher extends Handle_file_upload {
   render_tab_pills = () => {
     let { current_pill, _id } = this.state;
 
-    return this.tab_pills.map((pill) => (
-      <button
-        key={pill}
-        className={pill === current_pill ? "nav-link active" : "nav-link"}
-        id={`v-pills-${pill}-tab`}
-        data-toggle="pill"
-        data-target={`#v-pills-${pill}`}
-        type="button"
-        role="tab"
-        aria-controls={`v-pills-${pill}`}
-        aria-selected={pill === current_pill ? "true" : "false"}
-        onClick={() =>
-          this.setState(
-            { current_pill: pill },
-            pill === "finish" ? this.on_finish : null
-          )
-        }
-      >
-        {_id && pill === "finish"
-          ? "Finish Edit"
-          : to_title(pill.replace(/_/g, " "))}
-      </button>
-    ));
+    return this.tab_pills.map((pill) =>
+      pill === "pricing" && _id ? null : (
+        <button
+          key={pill}
+          className={pill === current_pill ? "nav-link active" : "nav-link"}
+          id={`v-pills-${pill}-tab`}
+          data-toggle="pill"
+          data-target={`#v-pills-${pill}`}
+          type="button"
+          role="tab"
+          aria-controls={`v-pills-${pill}`}
+          aria-selected={pill === current_pill ? "true" : "false"}
+          onClick={() =>
+            this.setState(
+              { current_pill: pill },
+              pill === "finish" ? this.on_finish : null
+            )
+          }
+        >
+          {_id && pill === "finish"
+            ? "Finish Edit"
+            : to_title(pill.replace(/_/g, " "))}
+        </button>
+      )
+    );
   };
 
   handle_course = () => {
@@ -98,6 +110,7 @@ class Create_offer_voucher extends Handle_file_upload {
         {!this.is_set() && !new_voucher ? (
           <>
             {this.important_fields.map((field_prop) => {
+              console.log(this.state);
               let field = this.state[field_prop];
               if (Array.isArray(field)) {
                 if (!field.length)
@@ -268,6 +281,7 @@ class Create_offer_voucher extends Handle_file_upload {
       requirement_in_edit,
       requirement_index,
       learn_index,
+      quantities,
       duration,
     } = this.state;
 
@@ -290,6 +304,19 @@ class Create_offer_voucher extends Handle_file_upload {
             placeholder="Select"
             value={duration}
             onChange={({ target }) => this.setState({ duration: target.value })}
+          />
+        </div>
+
+        <div className="form-group smalls">
+          <label>Quantities</label>
+          <input
+            type="number"
+            className="form-control"
+            placeholder="Quantities"
+            value={quantities}
+            onChange={({ target }) =>
+              this.setState({ quantities: target.value })
+            }
           />
         </div>
 
@@ -559,7 +586,7 @@ class Create_offer_voucher extends Handle_file_upload {
                   src={
                     url && url.startsWith("data")
                       ? url
-                      : `${domain}/Images/${url}`
+                      : `${domain}/images/${url}`
                   }
                 />
                 <a
@@ -601,6 +628,7 @@ class Create_offer_voucher extends Handle_file_upload {
       _id,
       actual_price,
       duration,
+      quantities,
       images,
       vendor,
     } = this.state;
@@ -615,6 +643,7 @@ class Create_offer_voucher extends Handle_file_upload {
       value: Number(price),
       video,
       images,
+      quantities,
       actual_price: Number(actual_price) || null,
       vendor: vendor._id,
       duration: new Date(duration || Date.now()).getTime(),
@@ -633,7 +662,6 @@ class Create_offer_voucher extends Handle_file_upload {
       voucher._id = response._id;
       voucher.created = response.created;
     }
-    console.log(response);
     if (response?._id) {
       this.setState({ new_voucher: voucher });
 
@@ -652,9 +680,8 @@ class Create_offer_voucher extends Handle_file_upload {
       price: "",
       title: "",
       uploading_voucher: false,
-      schools: new Array(),
+      quantities: "",
       sections: new Array(),
-      certifications: new Array(),
       what_to_expect: new Array(),
       things_to_know: new Array(),
     });

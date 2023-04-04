@@ -30,6 +30,7 @@ import Events from "./pages/Events";
 import Event from "./pages/Event";
 import User_tickets_dash from "./pages/User_tickets";
 import { post_request } from "./assets/js/utils/services";
+import { save_to_session } from "./sections/footer";
 
 const emitter = new Emitter();
 
@@ -40,31 +41,7 @@ class Voupon extends React.Component {
     this.state = {};
   }
 
-  script_paths = new Array(
-    "jquery.min.js",
-    "popper.min.js",
-    "bootstrap.min.js",
-    "select2.min.js",
-    "slick.js",
-    "moment.min.js",
-    "daterangepicker.js",
-    "summernote.min.js",
-    "metisMenu.min.js",
-    "custom.js",
-    "my_custom.js"
-  );
-
-  append_script = (path) => {
-    const script = document.createElement("script");
-    script.src = `http://localhost:3000/js/${path}`;
-    script.type = "text/babel";
-    script.async = false;
-    document.body.appendChild(script);
-  };
-
   componentDidMount = () => {
-    this.script_paths.map((scr) => this.append_script(scr));
-
     let loggeduser = window.sessionStorage.getItem("loggeduser");
     if (loggeduser) {
       try {
@@ -83,6 +60,15 @@ class Voupon extends React.Component {
         }
       }
     }, 60 * 1000);
+
+    this.edit_voucher = ({ voucher, vendor }) =>
+      this.setState({ voucher_in_edit: voucher }, () => {
+        save_to_session("voucher_in_edit", voucher);
+        save_to_session("vendor", vendor);
+        window.location.assign(`${client_domain}/edit_offer_voucher`);
+      });
+
+    emitter.listen("edit_voucher", this.edit_voucher);
   };
 
   componentWillUnmount = () => {
@@ -123,7 +109,7 @@ class Voupon extends React.Component {
     });
 
   render = () => {
-    let { loggeduser, admin_logged } = this.state;
+    let { loggeduser, admin_logged, voucher_in_edit } = this.state;
 
     return (
       <Loggeduser.Provider
@@ -159,6 +145,10 @@ class Voupon extends React.Component {
                 <Route
                   path="create_offer_voucher"
                   element={<Create_offer_voucher />}
+                />
+                <Route
+                  path="edit_offer_voucher"
+                  element={<Create_offer_voucher voucher={voucher_in_edit} />}
                 />
                 <Route path="user_vouchers" element={<User_vouchers />} />
                 <Route path="become_a_vendor" element={<Become_a_vendor />} />

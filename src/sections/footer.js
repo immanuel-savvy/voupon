@@ -5,6 +5,13 @@ import Toaster from "../components/toast";
 import { emitter } from "../Voupon";
 import { navs } from "./nav";
 
+const rewards = new Object({
+  create_voucher: 100,
+  ticket_sales: 5,
+  offer_voucher_sales: 5,
+  subscription_fee: 15000,
+});
+
 const scroll_to_top = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
 const save_to_session = (key, value) =>
@@ -137,4 +144,4 @@ class Footer extends React.Component {
 }
 
 export default Footer;
-export { scroll_to_top, save_to_session, get_session };
+export { scroll_to_top, save_to_session, get_session, rewards };

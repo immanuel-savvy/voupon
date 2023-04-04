@@ -185,7 +185,7 @@ class Become_a_vendor extends handle_file_upload {
       this.loggeduser.vendor_status = "pending";
       this.set_loggeduser(this.loggeduser, () =>
         this.setState({ loading: false }, () =>
-          window.location.assign(`${client_domain}/vendor`)
+          window.location.assign(`${client_domain}/vendor?${res._id}`)
         )
       );
     } else this.setState({ message: res.message });

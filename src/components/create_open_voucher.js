@@ -3,6 +3,8 @@ import { PaystackConsumer } from "react-paystack";
 import { email_regex } from "../assets/js/utils/functions";
 import { post_request } from "../assets/js/utils/services";
 import { Loggeduser } from "../Contexts";
+import { rewards } from "../sections/footer";
+import Alert_box from "./alert_box";
 import Form_divider from "./form_divider";
 import { Paystack_public_key } from "./get_voucher";
 import Login from "./login";
@@ -86,11 +88,15 @@ class Create_open_voucher extends React.Component {
       phone,
     } = this.state;
 
+    let tx_fee = this.loggeduser?.premium
+      ? rewards.create_voucher / 2
+      : rewards.create_voucher;
+
     let payment_props = {
       email,
       metadata: { firstname, lastname, phone },
       publicKey: Paystack_public_key,
-      amount: value * 100,
+      amount: (Number(value) + tx_fee) * 100,
       onSuccess: this.payment_successful,
       onClose: this.cancel,
     };
@@ -216,6 +222,11 @@ class Create_open_voucher extends React.Component {
                                 })
                               }
                               important
+                            />
+
+                            <Alert_box
+                              type="info"
+                              message={`Transaction Fee: N${tx_fee}`}
                             />
 
                             <PaystackConsumer {...payment_props}>
