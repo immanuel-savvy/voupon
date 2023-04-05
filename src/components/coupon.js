@@ -12,6 +12,7 @@ import Dropdown_menu from "./dropdown_menu";
 import Modal from "./modal";
 import Obtain_coupon from "./obtain_coupon";
 import Premium_user from "./premium_user";
+import Small_btn from "./small_btn";
 import Text_btn from "./text_btn";
 import Toaster from "./toast";
 
@@ -154,18 +155,22 @@ class Coupon extends React.Component {
                         <b> {obtained}</b>
                       </li>
                     ) : null}
-                    {duration ? (
-                      <li className="video">
-                        <span>Valid till:</span>&nbsp;
-                        <b>{` ${time_string(duration)}, ${date_string(
-                          duration
-                        )}`}</b>
-                      </li>
-                    ) : null}
+
+                    <li className="video">
+                      <span>Valid till:</span>&nbsp;
+                      <b>
+                        {duration
+                          ? ` ${time_string(duration)}, ${date_string(
+                              duration
+                            )}`
+                          : "-"}
+                      </b>
+                    </li>
 
                     {in_user ? null : (
-                      <Text_btn
-                        text={
+                      <Small_btn
+                        style={{ marginTop: 10 }}
+                        title={
                           type === "open" ? "Copy coupon code" : "Obtain coupon"
                         }
                         action={this.handle_coupon}
