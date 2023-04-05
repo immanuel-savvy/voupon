@@ -83,9 +83,11 @@ class User_vouchers extends React.Component {
                           {((vouchers) =>
                             vouchers ? (
                               vouchers.length ? (
-                                vouchers.map((voucher, index) =>
-                                  voucher.state === filter ||
-                                  (!voucher.state && filter === "unused") ? (
+                                vouchers.map((voucher, index) => {
+                                  console.log(voucher);
+                                  if (!voucher.state) voucher.state = "unused";
+
+                                  return voucher.state === filter ? (
                                     voucher?._id.startsWith("user") ? (
                                       <Offer_voucher
                                         voucher={{
@@ -107,8 +109,8 @@ class User_vouchers extends React.Component {
                                         key={index}
                                       />
                                     )
-                                  ) : null
-                                )
+                                  ) : null;
+                                })
                               ) : (
                                 <Listempty />
                               )

@@ -43,17 +43,19 @@ class Transactions extends React.Component {
                   <span>Sort: </span>
                 </div>
                 <div class="ground-list ground-hover-list">
-                  {transactions.length ? (
-                    transactions.map((tx) => (
-                      <Transaction
-                        in_vendor={!!wallet}
-                        transaction={tx}
-                        key={tx._id}
-                      />
-                    ))
-                  ) : (
-                    <Listempty text="No transactions yet." />
-                  )}
+                  <div className="row">
+                    {transactions.length ? (
+                      transactions.map((tx) => (
+                        <Transaction
+                          in_vendor={!!wallet}
+                          transaction={tx}
+                          key={tx._id}
+                        />
+                      ))
+                    ) : (
+                      <Listempty text="No transactions yet." />
+                    )}
+                  </div>
                 </div>
               </div>
             </div>

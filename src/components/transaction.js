@@ -37,69 +37,71 @@ class Transaction extends React.Component {
         : "";
 
     return (
-      <div class="ground ground-list-single">
-        <div
-          class={`rounded-circle p-3 p-sm-4 d-flex align-items-center justify-content-center bg-light-${
-            credit ? "success" : "warning"
-          }`}
-        >
+      <div className="col-md-6 col-lg-6 col-sm-12">
+        <div class="ground ground-list-single">
           <div
-            class={`position-absolute text-${
+            class={`rounded-circle p-3 p-sm-4 d-flex align-items-center justify-content-center bg-light-${
               credit ? "success" : "warning"
-            } h5 mb-0`}
+            }`}
           >
-            <i class={`fas fa-arrow-${credit ? "down" : "up"}`}></i>
-          </div>
-        </div>
-
-        <div class="ground-content">
-          <h6>
-            <a href="#" onClick={this.tx_clicked}>
-              {title || "Voucher used"}
-            </a>
-
-            <div className="ml-2 crs_cates cl_1">
-              <span style={{ fontWeight: "normal" }}>
-                {to_title(type || "voucher")}
-              </span>
-            </div>
-          </h6>
-
-          {data && data._id ? (
-            <Link
-              onClick={() => this.handle_click(routename, data, vendor)}
-              to={`/${routename}`}
+            <div
+              class={`position-absolute text-${
+                credit ? "success" : "warning"
+              } h5 mb-0`}
             >
-              <h5 style={{ marginBottom: 0 }}>{data.title}</h5>
-            </Link>
-          ) : null}
+              <i class={`fas fa-arrow-${credit ? "down" : "up"}`}></i>
+            </div>
+          </div>
 
-          {(customer && in_vendor) || (vendor && !in_vendor) ? (
-            <p>
-              {in_vendor ? "User" : "Vendor"}:{" "}
+          <div class="ground-content">
+            <h6>
+              <a href="#" onClick={this.tx_clicked}>
+                {title || "Voucher used"}
+              </a>
+
+              <div className="ml-2 crs_cates cl_1">
+                <span style={{ fontWeight: "normal" }}>
+                  {to_title(type || "voucher")}
+                </span>
+              </div>
+            </h6>
+
+            {data && data._id ? (
               <Link
-                onClick={
-                  in_vendor ? null : () => save_to_session("vendor", vendor)
-                }
-                to={in_vendor ? "" : `/vendor?${vendor._id}`}
+                onClick={() => this.handle_click(routename, data, vendor)}
+                to={`/${routename}`}
               >
-                <b>
-                  {to_title(
-                    in_vendor
-                      ? `${customer.firstname} ${customer.lastname}`
-                      : vendor.name
-                  )}
-                </b>
+                <h5 style={{ marginBottom: 0 }}>{data.title}</h5>
               </Link>
-            </p>
-          ) : null}
+            ) : null}
 
-          <b>
-            <small class="text-fade">&#8358; {value}</small>
-          </b>
-          <span class="small">
-            {time_string(created)}, {date_string(created)}
-          </span>
+            {(customer && in_vendor) || (vendor && !in_vendor) ? (
+              <p>
+                {in_vendor ? "User" : "Vendor"}:{" "}
+                <Link
+                  onClick={
+                    in_vendor ? null : () => save_to_session("vendor", vendor)
+                  }
+                  to={in_vendor ? "" : `/vendor?${vendor._id}`}
+                >
+                  <b>
+                    {to_title(
+                      in_vendor
+                        ? `${customer.firstname} ${customer.lastname}`
+                        : vendor.name
+                    )}
+                  </b>
+                </Link>
+              </p>
+            ) : null}
+
+            <b>
+              <small class="text-fade">&#8358; {value}</small>
+            </b>
+            <span class="small">
+              {time_string(created)}, {date_string(created)}
+            </span>
+          </div>
         </div>
       </div>
     );

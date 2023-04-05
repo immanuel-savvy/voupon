@@ -33,6 +33,7 @@ import { post_request } from "./assets/js/utils/services";
 import { save_to_session } from "./sections/footer";
 import Search_results from "./pages/Search_results";
 import About from "./pages/About";
+import Contact from "./pages/Contact";
 
 const emitter = new Emitter();
 
@@ -264,6 +265,7 @@ class Voupon extends React.Component {
                 <Route path="my_tickets" element={<User_tickets_dash />} />
                 <Route path="verify_email" element={<Verify_email />} />
                 <Route path="about" element={<About />} />
+                <Route path="contact" element={<Contact />} />
                 <Route path="login" element={<Login />} />
                 <Route path="signup" element={<Signup />} />
                 <Route path="signup/:referral" element={<Signup />} />

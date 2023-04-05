@@ -68,7 +68,7 @@ class Voucher_sidebar extends React.Component {
 
     return (
       <div className="col-lg-4 col-md-12 order-lg-last">
-        <div className="ed_view_box style_2 border ovrlio stick_top min pt-3">
+        <div className="ed_view_box style_2 border min pt-3">
           <span className="ml-3">
             {voucher_code
               ? is_event

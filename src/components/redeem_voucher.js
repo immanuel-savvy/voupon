@@ -14,7 +14,7 @@ import Text_input from "./text_input";
 import Voucher_otp from "./voucher_otp";
 import Voucher_redeemed_details from "./voucher_redeemed_details";
 
-const voucher_types = new Array("open voucher", "offer voucher");
+const voucher_types = new Array("open_voucher", "offer_voucher");
 
 class Redeem_voucher extends React.Component {
   constructor(props) {
@@ -78,17 +78,14 @@ class Redeem_voucher extends React.Component {
   proceed_to_otp = async () => {
     let { voucher_code, voucher_type } = this.state;
 
+    this.setState({ loading: true });
     let result = await post_request("can_redeem_voucher", {
       user: this.loggeduser._id,
       voucher_type,
       voucher_code,
     });
-    if (result && result.can_redeem) {
-      this.setState({
-        can_redeem: true,
-        voucher: result.owner_voucher,
-        requesting_otp: true,
-      });
+    if (result && (result.can_redeem || result.can_transact)) {
+      let voucher = result.owner_voucher;
 
       result = await post_request(`request_voucher_otp`, {
         user: result.user,
@@ -97,8 +94,25 @@ class Redeem_voucher extends React.Component {
         voucher_type: result.voucher_type,
         email: result.email,
       });
-      console.log(result);
-    } else this.setState({ message: result.message });
+
+      if (result && result.voucher)
+        this.setState({
+          can_redeem: true,
+          voucher,
+          requesting_otp: true,
+        });
+      else
+        this.setState({
+          message:
+            (result && result.message) ||
+            "Cannot get voucher OTP at this time.",
+          loading: false,
+        });
+    } else
+      this.setState({
+        message:
+          (result && result.message) || "Cannot redeem voucher at the moment",
+      });
   };
 
   proceed = async (otp) => {
@@ -124,14 +138,14 @@ class Redeem_voucher extends React.Component {
     if (result && !result.voucher)
       return this.setState({ message: result.message, redeeming: false });
 
-    on_redeem && on_redeem();
+    result && result.redeemed && on_redeem && on_redeem();
     this.setState(
       {
-        message: result.message,
-        redeemed: result.redeemed,
+        message: result && result.message,
+        redeemed: result && result.redeemed,
         redeeming: false,
       },
-      toggle
+      result && result.redeemed && toggle
     );
   };
 
@@ -162,6 +176,7 @@ class Redeem_voucher extends React.Component {
       requesting_otp,
       can_redeem,
       redeeming,
+      loading,
     } = this.state;
 
     return (
@@ -170,7 +185,9 @@ class Redeem_voucher extends React.Component {
           this.loggeduser = loggeduser;
 
           if (!loggeduser)
-            return <Login action={this.set_details} no_redirect />;
+            return (
+              <Login toggle={toggle} action={this.set_details} no_redirect />
+            );
 
           return (
             <section style={{ paddingTop: 20, paddingBottom: 20 }}>
@@ -229,6 +246,9 @@ class Redeem_voucher extends React.Component {
                                 <label>Voucher Type</label>
 
                                 {voucher_types.map((voucher_type_) => {
+                                  if (voucher && voucher_type !== voucher_type_)
+                                    return null;
+
                                   return (
                                     <Checkbox
                                       type="radio"
@@ -333,7 +353,7 @@ class Redeem_voucher extends React.Component {
                                   ? "Verifying voucher"
                                   : `Proceed`
                               }
-                              loading={proceeding}
+                              loading={proceeding || loading}
                               disabled={!this.is_set()}
                               action={() => this.proceed_to_otp()}
                             />

@@ -74,21 +74,23 @@ class Vendor_header extends React.Component {
                 </div>
               </div>
 
-              <span className="">
-                <CopyToClipboard text={parse_vendor_id(_id)}>
-                  <>
-                    <span className="text-light">Your vendor ID:</span>
-                    <br />
-                    <span className="">
-                      <Text_btn
-                        style={{ marginLeft: 0 }}
-                        text={parse_vendor_id(_id)}
-                        icon="fa-copy"
-                      />
-                    </span>
-                  </>
-                </CopyToClipboard>
-              </span>
+              {loggeduser && loggeduser.vendor === vendor._id ? (
+                <span className="">
+                  <CopyToClipboard text={parse_vendor_id(_id)}>
+                    <>
+                      <span className="text-light">Your vendor ID:</span>
+                      <br />
+                      <span className="">
+                        <Text_btn
+                          style={{ marginLeft: 0 }}
+                          text={parse_vendor_id(_id)}
+                          icon="fa-copy"
+                        />
+                      </span>
+                    </>
+                  </CopyToClipboard>
+                </span>
+              ) : null}
             </div>
 
             <div className="col-lg-9 col-md-12 col-sm-12">

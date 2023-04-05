@@ -506,7 +506,7 @@ class Custom_nav extends React.Component {
                         (this.create_voucher_ = create_voucher_)
                       }
                     >
-                      <Create_open_voucher toggle={this.create_voucher} />
+                      <Create_open_voucher toggle={this.open_vouchers} />
                     </Modal>
 
                     <Modal

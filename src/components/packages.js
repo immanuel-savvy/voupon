@@ -34,7 +34,7 @@ class Packages extends React.Component {
           </div>
 
           <div class="row justify-content-center">
-            <div className="col-6">
+            <div className="col-lg-6 col-md-6">
               <div class="pricing_wrap">
                 <div class="prt_head">
                   <h4>Basic</h4>

@@ -19,7 +19,7 @@ class Contact_us_today extends React.Component {
                   <h3>Need any assistance ?</h3>
                   <span>Feel free to contact our customer support.</span>
                 </div>
-                <Link to="/contact_us" className="btn btn-call_action_wrap">
+                <Link to="/contact" className="btn btn-call_action_wrap">
                   Contact Us Today
                 </Link>
               </div>

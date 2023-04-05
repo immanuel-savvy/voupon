@@ -86,9 +86,13 @@ class Vendor_profile extends React.Component {
                             className="mb-3"
                           >
                             {vendor_tabs.map((tab) =>
-                              tab === vendor_tabs[3] &&
-                              (!loggeduser ||
-                                vendor.user !== loggeduser?._id) ? null : (
+                              (new Array(
+                                vendor_tabs[3],
+                                vendor_tabs[4]
+                              ).includes(tab) &&
+                                (loggeduser && loggeduser.vendor) !==
+                                  vendor?._id) ||
+                              !loggeduser ? null : (
                                 <Tab
                                   eventKey={tab}
                                   title={to_title(tab)}
