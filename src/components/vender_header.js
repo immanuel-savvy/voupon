@@ -123,7 +123,7 @@ class Vendor_header extends React.Component {
                   <>
                     <Wallet vendor={vendor} />
 
-                    <Dropdown_menu
+                    {/* <Dropdown_menu
                       items={
                         new Array(
                           {
@@ -145,7 +145,7 @@ class Vendor_header extends React.Component {
                         )
                       }
                       style={{ alignSelf: "flex-start", marginTop: 24 }}
-                    />
+                    /> */}
                   </>
                 ) : null}
               </div>

@@ -54,6 +54,8 @@ class Custom_nav extends React.Component {
     window.location.assign(`${client_domain}/create_offer_voucher`);
   };
 
+  create_coupon = () => this.create_coupon_.toggle();
+
   verify_voucher = () => this.verify_voucher_?.toggle();
 
   verify_ticket = () => this.verify_ticket_?.toggle();

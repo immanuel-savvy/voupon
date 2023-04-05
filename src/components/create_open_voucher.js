@@ -7,7 +7,9 @@ import { rewards } from "../sections/footer";
 import Alert_box from "./alert_box";
 import Form_divider from "./form_divider";
 import { Paystack_public_key } from "./get_voucher";
+import Icon_btn from "./icon_btn";
 import Login from "./login";
+import Modal_form_title from "./modal_form_title";
 import Stretch_button from "./stretch_button";
 import Text_input from "./text_input";
 import Voucher_purchase_details from "./voucher_purchase_details";
@@ -133,12 +135,10 @@ class Create_open_voucher extends React.Component {
                           </div>
                         </div>
 
-                        <div className="rcs_log_124">
-                          <div className="Lpo09">
-                            <h4>Open Voucher</h4>
-                          </div>
-                        </div>
-
+                        <Modal_form_title
+                          title="open voucher"
+                          toggle={toggle}
+                        />
                         {voucher_code ? (
                           <Voucher_purchase_details
                             toggle={toggle}

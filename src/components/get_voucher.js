@@ -83,7 +83,7 @@ class Get_voucher extends React.Component {
 
           if (!this.loggeduser)
             return (
-              <Login action={this.set_details} no_redirect toggle={() => {}} />
+              <Login action={this.set_details} no_redirect toggle={toggle} />
             );
 
           return (

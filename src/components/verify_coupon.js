@@ -5,6 +5,7 @@ import { Loggeduser } from "../Contexts";
 import Alert_box from "./alert_box";
 import Checkbox from "./checkbox";
 import Coupon_created_details from "./coupon_created_details";
+import Modal_form_title from "./modal_form_title";
 import Stretch_button from "./stretch_button";
 import Text_btn from "./text_btn";
 import Text_input from "./text_input";
@@ -85,25 +86,10 @@ class Verify_coupon extends React.Component {
                           </div>
                         </div>
 
-                        <div className="rcs_log_124">
-                          <div className="Lpo09">
-                            <h4>Verify Coupon</h4>
-                          </div>
-
-                          <div
-                            style={{
-                              width: "100%",
-                              display: "flex",
-                              justifyContent: "flex-end",
-                            }}
-                          >
-                            <Text_btn
-                              action={toggle}
-                              icon="fa-window-close"
-                              style={{ paddingRight: 15 }}
-                            />
-                          </div>
-                        </div>
+                        <Modal_form_title
+                          title="verify coupon"
+                          toggle={toggle}
+                        />
 
                         {verified ? (
                           <Coupon_created_details

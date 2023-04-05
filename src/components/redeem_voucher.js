@@ -9,6 +9,7 @@ import { Paystack_private_key } from "./get_voucher";
 import Listempty from "./listempty";
 import Loadindicator from "./loadindicator";
 import Login from "./login";
+import Modal_form_title from "./modal_form_title";
 import Stretch_button from "./stretch_button";
 import Text_input from "./text_input";
 import Voucher_otp from "./voucher_otp";
@@ -211,11 +212,10 @@ class Redeem_voucher extends React.Component {
                           </div>
                         </div>
 
-                        <div className="rcs_log_124">
-                          <div className="Lpo09">
-                            <h4>Redeem Voucher</h4>
-                          </div>
-                        </div>
+                        <Modal_form_title
+                          title="redeem voucher"
+                          toggle={toggle}
+                        />
 
                         {redeemed ? (
                           <Voucher_redeemed_details

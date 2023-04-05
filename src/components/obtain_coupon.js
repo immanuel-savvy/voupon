@@ -5,6 +5,7 @@ import { Loggeduser } from "../Contexts";
 import Alert_box from "./alert_box";
 import Coupon_created_details from "./coupon_created_details";
 import Login from "./login";
+import Modal_form_title from "./modal_form_title";
 import Premium_user from "./premium_user";
 import Stretch_button from "./stretch_button";
 import Text_input from "./text_input";
@@ -74,11 +75,10 @@ class Obtain_coupon extends React.Component {
                           </div>
                         </div>
 
-                        <div className="rcs_log_124">
-                          <div className="Lpo09">
-                            <h4>Obtain Coupon</h4>
-                          </div>
-                        </div>
+                        <Modal_form_title
+                          title="obtain coupon"
+                          toggle={toggle}
+                        />
 
                         {coupon ? (
                           <Coupon_created_details

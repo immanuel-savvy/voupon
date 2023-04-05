@@ -3,6 +3,7 @@ import { email_regex } from "../assets/js/utils/functions";
 import { post_request } from "../assets/js/utils/services";
 import { Loggeduser } from "../Contexts";
 import Alert_box from "./alert_box";
+import Modal_form_title from "./modal_form_title";
 import Stretch_button from "./stretch_button";
 import Text_input from "./text_input";
 import Ticket_used_details from "./ticket_used_details";
@@ -50,7 +51,6 @@ class Use_ticket extends React.Component {
         user: result.user,
       });
 
-      console.log(result);
       this.setState({ requesting_otp: true });
       result = await post_request(`request_ticket_otp`, {
         user: result.user,
@@ -59,7 +59,6 @@ class Use_ticket extends React.Component {
         email: result.email,
       });
 
-      console.log(result, "2");
       this.setState({ event: result.event, ticket: result.ticket });
     } else this.setState({ message: result.message });
   };
@@ -110,7 +109,7 @@ class Use_ticket extends React.Component {
   };
 
   render() {
-    let { ticket } = this.props;
+    let { ticket, toggle } = this.props;
     let {
       proceeding,
       message,
@@ -151,11 +150,7 @@ class Use_ticket extends React.Component {
                           </div>
                         </div>
 
-                        <div className="rcs_log_124">
-                          <div className="Lpo09">
-                            <h4>Use Ticket</h4>
-                          </div>
-                        </div>
+                        <Modal_form_title title="use ticket" toggle={toggle} />
 
                         {use_successful ? (
                           <Ticket_used_details

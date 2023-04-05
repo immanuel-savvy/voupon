@@ -9,6 +9,7 @@ import Coupon from "./coupon";
 import { Tab, Tabs } from "react-bootstrap";
 import { to_title } from "../assets/js/utils/functions";
 import Create_coupon from "./create_coupon";
+import { Loggeduser } from "../Contexts";
 
 const coupon_types = new Array("open", "premium");
 
@@ -54,7 +55,7 @@ class Vendor_coupons extends React.Component {
   toggle_premium_coupon = () => this.premium_coupon?.toggle();
 
   render() {
-    let { vendor } = this.props;
+    let { vendor, loggeduser } = this.props;
     let { filter } = this.state;
 
     return (
@@ -70,10 +71,12 @@ class Vendor_coupons extends React.Component {
                 <User_voucher_header
                   voucher_filters={this.coupon_states}
                   side_buttons={
-                    new Array({
-                      title: `create coupon`,
-                      action: this.toggle_create_coupon,
-                    })
+                    loggeduser && loggeduser.vendor === vendor._id
+                      ? new Array({
+                          title: `create coupon`,
+                          action: this.toggle_create_coupon,
+                        })
+                      : null
                   }
                   set_voucher_filter={(filter) => this.setState({ filter })}
                 />

@@ -3,6 +3,7 @@ import { email_regex, to_title } from "../assets/js/utils/functions";
 import { post_request } from "../assets/js/utils/services";
 import Alert_box from "./alert_box";
 import Checkbox from "./checkbox";
+import Modal_form_title from "./modal_form_title";
 import { voucher_types } from "./redeem_voucher";
 import Stretch_button from "./stretch_button";
 import Text_input from "./text_input";
@@ -117,7 +118,7 @@ class Use_voucher extends React.Component {
   };
 
   render() {
-    let { voucher } = this.props;
+    let { voucher, toggle } = this.props;
     let {
       proceeding,
       message,
@@ -155,11 +156,7 @@ class Use_voucher extends React.Component {
                     </div>
                   </div>
 
-                  <div className="rcs_log_124">
-                    <div className="Lpo09">
-                      <h4>Use Voucher</h4>
-                    </div>
-                  </div>
+                  <Modal_form_title title="use voucher" toggle={toggle} />
 
                   {use_successful ? (
                     <Voucher_used_details

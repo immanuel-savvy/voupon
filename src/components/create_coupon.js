@@ -4,6 +4,7 @@ import { post_request } from "../assets/js/utils/services";
 import { emitter } from "../Voupon";
 import Checkbox from "./checkbox";
 import Coupon_created_details from "./coupon_created_details";
+import Modal_form_title from "./modal_form_title";
 import Stretch_button from "./stretch_button";
 import Text_input from "./text_input";
 import { coupon_types } from "./vendor_coupons";
@@ -56,7 +57,7 @@ class Create_coupon extends React.Component {
   };
 
   render() {
-    let { toggle } = this.props;
+    let { toggle, vendor } = this.props;
     let {
       quantities,
       coupon,
@@ -89,15 +90,36 @@ class Create_coupon extends React.Component {
                     </div>
                   </div>
 
-                  <div className="rcs_log_124">
-                    <div className="Lpo09">
-                      <h4>Create Open Coupon</h4>
-                    </div>
-                  </div>
+                  <Modal_form_title title="create coupon" toggle={toggle} />
+
                   {coupon ? (
                     <Coupon_created_details coupon={coupon} toggle={toggle} />
                   ) : (
                     <>
+                      <div className="col-xl-6 col-lg-12 col-md-12 col-sm-12">
+                        <div className="form-group">
+                          <label>Coupon Type</label>
+
+                          {coupon_types.map((coupon_type_) => {
+                            if (!vendor && coupon_type_ === coupon_types[1])
+                              return;
+                            return (
+                              <Checkbox
+                                type="radio"
+                                title={to_title(
+                                  coupon_type_.replace(/_/g, " ")
+                                )}
+                                key={coupon_type_}
+                                _id={coupon_type_}
+                                checked={coupon_type_ === coupon_type}
+                                action={(_id) => this.set_coupon_type(_id)}
+                                name="coupon_type"
+                              />
+                            );
+                          })}
+                        </div>
+                      </div>
+
                       <Text_input
                         value={title}
                         title="coupon title"
@@ -123,28 +145,6 @@ class Create_coupon extends React.Component {
                         type="number"
                         important
                       />
-
-                      <div className="col-xl-6 col-lg-12 col-md-12 col-sm-12">
-                        <div className="form-group">
-                          <label>Coupon Type</label>
-
-                          {coupon_types.map((coupon_type_) => {
-                            return (
-                              <Checkbox
-                                type="radio"
-                                title={to_title(
-                                  coupon_type_.replace(/_/g, " ")
-                                )}
-                                key={coupon_type_}
-                                _id={coupon_type_}
-                                checked={coupon_type_ === coupon_type}
-                                action={(_id) => this.set_coupon_type(_id)}
-                                name="coupon_type"
-                              />
-                            );
-                          })}
-                        </div>
-                      </div>
 
                       <Text_input
                         value={quantities}

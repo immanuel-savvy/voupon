@@ -5,6 +5,7 @@ import { Loggeduser } from "../Contexts";
 import Alert_box from "./alert_box";
 import Event from "./event";
 import Login from "./login";
+import Modal_form_title from "./modal_form_title";
 import Stretch_button from "./stretch_button";
 import Text_btn from "./text_btn";
 import Text_input from "./text_input";
@@ -82,25 +83,10 @@ class Verify_ticket extends React.Component {
                           </div>
                         </div>
 
-                        <div className="rcs_log_124">
-                          <div className="Lpo09">
-                            <h4>Verify Ticket</h4>
-                          </div>
-
-                          <div
-                            style={{
-                              width: "100%",
-                              display: "flex",
-                              justifyContent: "flex-end",
-                            }}
-                          >
-                            <Text_btn
-                              action={toggle}
-                              icon="fa-window-close"
-                              style={{ paddingRight: 15 }}
-                            />
-                          </div>
-                        </div>
+                        <Modal_form_title
+                          title="verify ticket"
+                          toggle={toggle}
+                        />
 
                         {verified ? (
                           <Event

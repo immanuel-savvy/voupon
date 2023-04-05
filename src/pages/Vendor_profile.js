@@ -104,7 +104,10 @@ class Vendor_profile extends React.Component {
                                       vendor={vendor}
                                     />
                                   ) : tab === "coupons" ? (
-                                    <Vendor_coupons vendor={vendor} />
+                                    <Vendor_coupons
+                                      vendor={vendor}
+                                      loggeduser={loggeduser}
+                                    />
                                   ) : tab === "tickets" ? (
                                     <Vendor_tickets
                                       loggeduser={loggeduser}

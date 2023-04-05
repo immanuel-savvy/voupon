@@ -6,6 +6,7 @@ import Form_divider from "./form_divider";
 import { Paystack_private_key } from "./get_voucher";
 import Listempty from "./listempty";
 import Loadindicator from "./loadindicator";
+import Modal_form_title from "./modal_form_title";
 import Stretch_button from "./stretch_button";
 import Text_btn from "./text_btn";
 import Text_input from "./text_input";
@@ -103,25 +104,10 @@ class Manage_bank_accounts extends React.Component {
                     </div>
                   </div>
 
-                  <div className="rcs_log_124">
-                    <div className="Lpo09">
-                      <h4>Manage Bank Accounts</h4>
-                    </div>
-
-                    <div
-                      style={{
-                        width: "100%",
-                        display: "flex",
-                        justifyContent: "flex-end",
-                      }}
-                    >
-                      <Text_btn
-                        action={toggle}
-                        icon="fa-window-close"
-                        style={{ paddingRight: 15 }}
-                      />
-                    </div>
-                  </div>
+                  <Modal_form_title
+                    title="manage bank accounts"
+                    toggle={toggle}
+                  />
 
                   <>
                     {accounts ? (
