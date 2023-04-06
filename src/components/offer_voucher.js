@@ -1,10 +1,7 @@
 import React from "react";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { Link } from "react-router-dom";
-import {
-  commalise_figures,
-  generate_random_string,
-} from "../assets/js/utils/functions";
+import { commalise_figures } from "../assets/js/utils/functions";
 import { save_to_session } from "../sections/footer";
 import { scroll_to_top } from "./explore_more";
 import Preview_image from "./preview_image";
@@ -57,7 +54,7 @@ class Offer_voucher extends React.Component {
             </Link>
 
             {edit ? (
-              <div className="crs_video_ico" onClick={edit}>
+              <div className="crs_video_ico cursor-pointer" onClick={edit}>
                 <i className={`fa fa-edit`}></i>
               </div>
             ) : null}

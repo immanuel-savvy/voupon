@@ -24,10 +24,24 @@ const categories = new Array(
   "Digital service",
   "Education",
   "Entertainment",
-  "Fashion and beauty",
+  "Construction and Engineering",
+  "Travel and Tourism",
+  "Housing",
+  "Groceries",
+  "Electronics",
+  "Household Item",
+  "Clothing and Fashion",
+  "Event and Movies",
+  "Spa and Relaxation",
+  "Transport",
+  "Health",
+  "Financial",
+  "Business Services",
   "Cooperate service",
   "Artisan service"
-).map((cat) => new Object({ _id: cat, title: cat }));
+)
+  .sort((a, b) => a > b)
+  .map((cat) => new Object({ _id: cat, title: cat }));
 
 class Become_a_vendor extends handle_file_upload {
   constructor(props) {

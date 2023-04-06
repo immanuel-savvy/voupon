@@ -39,7 +39,7 @@ class Event extends React.Component {
 
   render() {
     let { full } = this.state;
-    let { event, ticket, class_name, in_events, in_vendor, ticket_code } =
+    let { event, edit, ticket, class_name, in_events, in_vendor, ticket_code } =
       this.props;
     if (!event) return;
 
@@ -89,6 +89,12 @@ class Event extends React.Component {
                 class_name="img img-fluid rounded"
               />
             </Link>
+
+            {edit ? (
+              <div className="crs_video_ico cursor-pointer" onClick={edit}>
+                <i className={`fa fa-edit`}></i>
+              </div>
+            ) : null}
           </div>
           <div className="crs_grid_caption">
             <div className="crs_flex">

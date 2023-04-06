@@ -60,12 +60,7 @@ class Events extends React.Component {
                   {events ? (
                     events.length ? (
                       events.map((event, index) => (
-                        <Event
-                          // vendor={vendors[event.vendor]}
-                          event={event}
-                          in_events
-                          key={index}
-                        />
+                        <Event event={event} in_events key={index} />
                       ))
                     ) : (
                       <Listempty />

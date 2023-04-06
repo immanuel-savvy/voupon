@@ -2,16 +2,13 @@ import React from "react";
 import { get_request } from "../assets/js/utils/services";
 import Loadindicator from "./loadindicator";
 import Listempty from "./listempty";
-import Voucher from "./voucher";
 import { emitter } from "./../Voupon";
 import User_voucher_header from "./user_voucher_header";
 import Modal from "./modal";
-import Create_offer_voucher from "./create_offer_voucher";
 import Use_voucher from "./use_voucher";
 import Offer_voucher from "./offer_voucher";
 import { client_domain } from "../assets/js/utils/constants";
 import { save_to_session } from "../sections/footer";
-import { Loggeduser } from "../Contexts";
 
 class Vendor_vouchers extends React.Component {
   constructor(props) {
@@ -43,8 +40,6 @@ class Vendor_vouchers extends React.Component {
   componentWillUnmount = () => {
     emitter.remove_listener("new_offer_voucher", this.new_offer_voucher);
   };
-
-  on_use_voucher = () => {};
 
   toggle_create_voucher = () => this.create_offer?.toggle();
 

@@ -158,6 +158,14 @@ class Voupon extends React.Component {
         window.location.assign(`${client_domain}/edit_offer_voucher`);
       });
 
+    this.edit_event = ({ event, vendor }) =>
+      this.setState({ event_in_edit: event }, () => {
+        save_to_session("event_in_edit", event);
+        save_to_session("vendor", vendor);
+        window.location.assign(`${client_domain}/edit_event`);
+      });
+
+    emitter.listen("edit_event", this.edit_event);
     emitter.listen("edit_voucher", this.edit_voucher);
   };
 
@@ -225,8 +233,15 @@ class Voupon extends React.Component {
     });
 
   render = () => {
-    let { loggeduser, navs, subnavs, submenus, admin_logged, voucher_in_edit } =
-      this.state;
+    let {
+      loggeduser,
+      navs,
+      subnavs,
+      submenus,
+      admin_logged,
+      event_in_edit,
+      voucher_in_edit,
+    } = this.state;
 
     return (
       <Loggeduser.Provider
@@ -277,6 +292,10 @@ class Voupon extends React.Component {
                 <Route
                   path="edit_offer_voucher"
                   element={<Create_offer_voucher voucher={voucher_in_edit} />}
+                />
+                <Route
+                  path="edit_event"
+                  element={<Create_event event={event_in_edit} />}
                 />
                 <Route path="user_vouchers" element={<User_vouchers />} />
                 <Route path="become_a_vendor" element={<Become_a_vendor />} />

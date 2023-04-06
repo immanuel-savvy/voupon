@@ -11,10 +11,16 @@ import Vendor_header from "../components/vender_header";
 import Footer, { get_session } from "../sections/footer";
 import Custom_Nav from "../sections/nav";
 import { emitter } from "../Voupon";
+import { categories } from "./Become_a_vendor";
 
 class Create_event extends Handle_file_upload {
   constructor(props) {
     super(props);
+
+    let { event } = this.props;
+
+    if (window.location.pathname === "/edit_event")
+      event = event || get_session("event_in_edit");
 
     this.state = {
       current_pill: "basic",
@@ -23,6 +29,9 @@ class Create_event extends Handle_file_upload {
       learn_index: null,
       requirement_index: null,
       images: new Array(),
+      ...event,
+      price: (event && event.value) || "",
+      event_date_time: event && new Date(event.event_date_time),
     };
   }
 
@@ -48,29 +57,31 @@ class Create_event extends Handle_file_upload {
   render_tab_pills = () => {
     let { current_pill, _id } = this.state;
 
-    return this.tab_pills.map((pill) => (
-      <button
-        key={pill}
-        className={pill === current_pill ? "nav-link active" : "nav-link"}
-        id={`v-pills-${pill}-tab`}
-        data-toggle="pill"
-        data-target={`#v-pills-${pill}`}
-        type="button"
-        role="tab"
-        aria-controls={`v-pills-${pill}`}
-        aria-selected={pill === current_pill ? "true" : "false"}
-        onClick={() =>
-          this.setState(
-            { current_pill: pill },
-            pill === "finish" ? this.on_finish : null
-          )
-        }
-      >
-        {_id && pill === "finish"
-          ? "Finish Edit"
-          : to_title(pill.replace(/_/g, " "))}
-      </button>
-    ));
+    return this.tab_pills.map((pill) =>
+      _id && pill === this.tab_pills[1] ? null : (
+        <button
+          key={pill}
+          className={pill === current_pill ? "nav-link active" : "nav-link"}
+          id={`v-pills-${pill}-tab`}
+          data-toggle="pill"
+          data-target={`#v-pills-${pill}`}
+          type="button"
+          role="tab"
+          aria-controls={`v-pills-${pill}`}
+          aria-selected={pill === current_pill ? "true" : "false"}
+          onClick={() =>
+            this.setState(
+              { current_pill: pill },
+              pill === "finish" ? this.on_finish : null
+            )
+          }
+        >
+          {_id && pill === "finish"
+            ? "Finish Edit"
+            : to_title(pill.replace(/_/g, " "))}
+        </button>
+      )
+    );
   };
 
   handle_course = () => {
@@ -404,6 +415,27 @@ class Create_event extends Handle_file_upload {
           />
         </div>
 
+        <div className="form-group smalls">
+          <label>Category</label>
+
+          <div className="simple-input">
+            <select
+              id="Category"
+              onChange={({ target }) =>
+                this.setState({ category: target.value })
+              }
+              className="form-control"
+            >
+              <option value="">-- Select Offer Category --</option>
+              {categories.map((category) => (
+                <option key={category._id} value={category._id}>
+                  {to_title(category.title.replace(/_/g, " "))}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+
         {this.pill_nav("basic")}
       </div>
     );
@@ -543,7 +575,7 @@ class Create_event extends Handle_file_upload {
                   src={
                     url && url.startsWith("data")
                       ? url
-                      : `${domain}/Images/${url}`
+                      : `${domain}/images/${url}`
                   }
                 />
                 <a
@@ -583,6 +615,7 @@ class Create_event extends Handle_file_upload {
       what_to_expect,
       _id,
       quantity,
+      category,
       event_date_time,
       duration,
       images,
@@ -602,8 +635,9 @@ class Create_event extends Handle_file_upload {
       value: Number(price),
       video,
       images,
+      category,
       location,
-      event_date_time,
+      event_date_time: new Date(event_date_time).getTime(),
       quantity: Number(quantity) || null,
       vendor: vendor._id,
       duration: Number(duration),
@@ -639,9 +673,7 @@ class Create_event extends Handle_file_upload {
       price: "",
       title: "",
       uploading_voucher: false,
-      schools: new Array(),
       sections: new Array(),
-      certifications: new Array(),
       what_to_expect: new Array(),
       things_to_know: new Array(),
     });

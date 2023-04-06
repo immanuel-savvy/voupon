@@ -12,6 +12,7 @@ import { Loggeduser } from "../Contexts";
 import Footer, { get_session } from "../sections/footer";
 import Custom_Nav from "../sections/nav";
 import { emitter } from "../Voupon";
+import { categories } from "./Become_a_vendor";
 
 class Create_offer_voucher extends Handle_file_upload {
   constructor(props) {
@@ -21,13 +22,6 @@ class Create_offer_voucher extends Handle_file_upload {
 
     if (window.location.pathname === "/edit_offer_voucher")
       voucher = voucher || get_session("voucher_in_edit");
-
-    if (voucher) {
-      if (voucher.schools && voucher.schools.length)
-        voucher.schools = Array.from(
-          new Set(voucher.schools.map((m) => m._id || m))
-        );
-    }
 
     this.state = {
       current_pill: "basic",
@@ -43,7 +37,14 @@ class Create_offer_voucher extends Handle_file_upload {
     };
   }
 
-  tab_pills = new Array("basic", "pricing", "media", "meta_info", "finish");
+  tab_pills = new Array(
+    "basic",
+    "pricing",
+    "media",
+    "category",
+    "meta_info",
+    "finish"
+  );
 
   componentDidMount = async () => {
     this.loggeduser = this.loggeduser || get_session("loggeduser");
@@ -454,34 +455,31 @@ class Create_offer_voucher extends Handle_file_upload {
           />
         </div>
 
+        <div className="form-group smalls">
+          <label>Category</label>
+
+          <div className="simple-input">
+            <select
+              id="Category"
+              onChange={({ target }) =>
+                this.setState({ category: target.value })
+              }
+              className="form-control"
+            >
+              <option value="">-- Select Offer Category --</option>
+              {categories.map((category) => (
+                <option key={category._id} value={category._id}>
+                  {to_title(category.title.replace(/_/g, " "))}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+
         {this.pill_nav("basic")}
       </div>
     );
   };
-
-  handle_check = (value, state_prop) => {
-    let arr = this.state[state_prop];
-    if (arr.includes(value)) arr = arr.filter((val) => val !== value);
-    else arr.push(value);
-
-    this.setState({ [state_prop]: arr });
-  };
-
-  schools_checkbox = ({ title, _id }) => (
-    <div className="form-group smalls" key={_id}>
-      <input
-        id={_id}
-        className="checkbox-custom"
-        name="school"
-        type="checkbox"
-        checked={this.state.schools.includes(_id)}
-        onChange={() => this.handle_check(_id, "schools")}
-      />
-      <label for={_id} className="checkbox-custom-label">
-        {to_title(title.replace(/_/g, " "))}
-      </label>
-    </div>
-  );
 
   handle_price = ({ target }) => this.setState({ price: target.value });
 
@@ -639,6 +637,7 @@ class Create_offer_voucher extends Handle_file_upload {
       duration,
       quantities,
       images,
+      category,
       vendor,
     } = this.state;
 
@@ -652,6 +651,7 @@ class Create_offer_voucher extends Handle_file_upload {
       value: Number(price),
       video,
       images,
+      category,
       quantities,
       actual_price: Number(actual_price) || null,
       vendor: vendor._id,

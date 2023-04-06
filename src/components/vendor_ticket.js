@@ -2,6 +2,7 @@ import React from "react";
 import { client_domain } from "../assets/js/utils/constants";
 import { post_request } from "../assets/js/utils/services";
 import { save_to_session } from "../sections/footer";
+import { emitter } from "../Voupon";
 import Event from "./event";
 import Listempty from "./listempty";
 import Loadindicator from "./loadindicator";
@@ -29,6 +30,8 @@ class Vendor_tickets extends React.Component {
   toggle_use_ticket = () => this.use_ticket?.toggle();
 
   toggle_verify_ticket = () => this.verify_ticket?.toggle();
+
+  edit = (event, vendor) => emitter.emit("edit_event", { event, vendor });
 
   render() {
     let { vendor, loggeduser } = this.props;
@@ -73,6 +76,12 @@ class Vendor_tickets extends React.Component {
                 (!event.state && filter === "running") ? (
                   <Event
                     in_vendor
+                    edit={
+                      (loggeduser && loggeduser.vendor) ===
+                      (vendor && vendor._id)
+                        ? () => this.edit(event, vendor)
+                        : null
+                    }
                     vendor={vendor}
                     event={event}
                     key={event._id}
