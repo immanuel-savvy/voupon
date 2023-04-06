@@ -34,6 +34,7 @@ import { save_to_session } from "./sections/footer";
 import Search_results from "./pages/Search_results";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
+import Marketplace from "./pages/Marketplace";
 
 const emitter = new Emitter();
 
@@ -108,7 +109,10 @@ class Voupon extends React.Component {
             { title: "verify_ticket" }
           ),
         },
-
+        {
+          title: "marketplace",
+          path: "/marketplace",
+        },
         {
           title: "vendors",
           path: "",
@@ -284,6 +288,7 @@ class Voupon extends React.Component {
                 <Route path="login" element={<Login />} />
                 <Route path="signup" element={<Signup />} />
                 <Route path="signup/:referral" element={<Signup />} />
+                <Route path="marketplace" element={<Marketplace />} />
                 <Route path="search_result" element={<Search_results />} />
                 <Route
                   path="create_offer_voucher"

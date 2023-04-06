@@ -44,7 +44,7 @@ class Search_results extends React.Component {
                 if (!results[res].length) return null;
 
                 return (
-                  <span key={res}>
+                  <span key={res} className="mb-3">
                     <Section_header title={res} />
                     <div class="row justify-content-center">
                       {res === "vouchers"

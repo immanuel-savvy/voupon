@@ -65,6 +65,7 @@ class Vendor_profile extends React.Component {
         {({ loggeduser }) => {
           this.loggeduser = loggeduser;
 
+          console.log(vendor);
           return (
             <div id="main-wrapper">
               <Nav page="vendor" />
@@ -85,14 +86,22 @@ class Vendor_profile extends React.Component {
                             id="uncontrolled-tab-example"
                             className="mb-3"
                           >
-                            {vendor_tabs.map((tab) =>
-                              (new Array(
-                                vendor_tabs[3],
-                                vendor_tabs[4]
-                              ).includes(tab) &&
-                                (loggeduser && loggeduser.vendor) !==
-                                  vendor?._id) ||
-                              !loggeduser ? null : (
+                            {vendor_tabs.map((tab) => {
+                              if (
+                                new Array(
+                                  vendor_tabs[3],
+                                  vendor_tabs[4]
+                                ).includes(tab)
+                              ) {
+                                if (
+                                  !loggeduser ||
+                                  (loggeduser &&
+                                    loggeduser.vendor !== vendor._id)
+                                )
+                                  return;
+                              }
+
+                              return (
                                 <Tab
                                   eventKey={tab}
                                   title={to_title(tab)}
@@ -119,8 +128,8 @@ class Vendor_profile extends React.Component {
                                     <Transactions wallet={vendor.wallet} />
                                   )}
                                 </Tab>
-                              )
-                            )}
+                              );
+                            })}
                           </Tabs>
                         ) : (
                           <div style={{ textAlign: "center" }}>

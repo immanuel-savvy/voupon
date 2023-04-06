@@ -90,7 +90,7 @@ class Coupon extends React.Component {
                         justifyContent: "space-between",
                       }}
                     >
-                      <a href="#">{title}</a>{" "}
+                      <a>{title}</a>{" "}
                       {state === "closed" ? (
                         <div className="ml-2 crs_cates cl_1">
                           <span>{to_title(state)}</span>
@@ -100,10 +100,16 @@ class Coupon extends React.Component {
                         loggeduser.vendor === _id ? (
                         <Dropdown_menu
                           items={
-                            new Array({
-                              title: "update coupon",
-                              action: this.update_coupon,
-                            })
+                            new Array(
+                              {
+                                title: "update coupon",
+                                action: this.update_coupon,
+                              },
+                              {
+                                title: "delete coupon",
+                                action: this.delete_coupon,
+                              }
+                            )
                           }
                         />
                       ) : null}

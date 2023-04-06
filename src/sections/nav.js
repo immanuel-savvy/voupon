@@ -435,15 +435,6 @@ class Custom_nav extends React.Component {
                                     autoFocus
                                     placeholder="Search Voucher Africa"
                                     value={search_param}
-                                    onKeyUp={async (e) => {
-                                      if (
-                                        e.target.value ===
-                                          this.previous_value &&
-                                        this.previous_value
-                                      )
-                                        return this.search(e);
-                                      this.previous_value = e.target.value;
-                                    }}
                                     onChange={({ target }) =>
                                       this.setState({
                                         search_param: target.value,
