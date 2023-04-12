@@ -27,6 +27,7 @@ import { Loggeduser, Nav_context } from "../Contexts";
 import { emitter } from "../Voupon";
 import { scroll_to_top } from "./footer";
 import Small_btn from "../components/small_btn";
+import Wishlist from "../components/wishlist";
 
 class Custom_nav extends React.Component {
   constructor(props) {
@@ -61,6 +62,10 @@ class Custom_nav extends React.Component {
   verify_ticket = () => this.verify_ticket_?.toggle();
 
   verify_coupon = () => this.verify_coupon_?.toggle();
+
+  marketplace = () => window.location.assign(`${client_domain}/marketplace`);
+
+  wishlist = () => this.wishlist_.toggle();
 
   quick_paths = new Object({
     all_vendors: "/vendors",
@@ -189,18 +194,13 @@ class Custom_nav extends React.Component {
                                             subnav = { ...subnav };
 
                                             if (
-                                              subnav.title === "my_vouchers" &&
-                                              !loggeduser
-                                            )
-                                              return;
-                                            if (
-                                              subnav.title === "my_coupons" &&
-                                              !loggeduser
-                                            )
-                                              return;
-                                            if (
-                                              subnav.title === "my_tickets" &&
-                                              !loggeduser
+                                              !loggeduser &&
+                                              new Array(
+                                                "my_vouchers",
+                                                "my_coupons",
+                                                "my_tickets",
+                                                "wishlist"
+                                              ).includes(subnav.title)
                                             )
                                               return;
 
@@ -511,6 +511,10 @@ class Custom_nav extends React.Component {
                         vendor={loggeduser?.vendor}
                         toggle={this.create_coupon}
                       />
+                    </Modal>
+
+                    <Modal ref={(wishlist_) => (this.wishlist_ = wishlist_)}>
+                      <Wishlist user={loggeduser} toggle={this.wishlist} />
                     </Modal>
                   </div>
                 );

@@ -8,6 +8,7 @@ import { post_request } from "../assets/js/utils/services";
 import Login from "./login";
 import Voucher_purchase_details from "./voucher_purchase_details";
 import { Paystack_public_key } from "./get_voucher";
+import Modal_form_title from "./modal_form_title";
 
 class Buy_ticket extends React.Component {
   constructor(props) {
@@ -101,11 +102,8 @@ class Buy_ticket extends React.Component {
                           </div>
                         </div>
                       </div>
-                      <div className="rcs_log_124">
-                        <div className="Lpo09">
-                          <h4>Buy Ticket</h4>
-                        </div>
-                      </div>
+
+                      <Modal_form_title toggle={toggle} title="Buy Ticket" />
 
                       {ticket_code ? (
                         <Voucher_purchase_details

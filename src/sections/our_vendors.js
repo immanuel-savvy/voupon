@@ -12,7 +12,7 @@ class Our_vendors extends React.Component {
   }
 
   componentDidMount = async () => {
-    let vendors = await get_request("vendors/10");
+    let vendors = await get_request("top_vendors");
     this.setState({ vendors });
   };
 

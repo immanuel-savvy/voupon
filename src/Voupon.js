@@ -114,9 +114,14 @@ class Voupon extends React.Component {
         {
           title: "marketplace",
           path: "/marketplace",
-          submenu: new Array({
-            title: "wishlist",
-          }),
+          submenu: new Array(
+            {
+              title: "marketplace",
+            },
+            {
+              title: "wishlist",
+            }
+          ),
         },
         {
           title: "vendors",
