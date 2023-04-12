@@ -55,6 +55,10 @@ class Custom_nav extends React.Component {
     window.location.assign(`${client_domain}/create_offer_voucher`);
   };
 
+  create_event = () => {
+    window.location.assign(`${client_domain}/create_event`);
+  };
+
   create_coupon = () => this.create_coupon_.toggle();
 
   verify_voucher = () => this.verify_voucher_?.toggle();
@@ -199,8 +203,15 @@ class Custom_nav extends React.Component {
                                                 "my_vouchers",
                                                 "my_coupons",
                                                 "my_tickets",
-                                                "wishlist"
+                                                "wishlist",
+                                                "create_event"
                                               ).includes(subnav.title)
+                                            )
+                                              return;
+
+                                            if (
+                                              subnav.title === "create_event" &&
+                                              !loggeduser.vendor
                                             )
                                               return;
 

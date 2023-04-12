@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { to_title } from "../assets/js/utils/functions";
-import { domain, post_request } from "../assets/js/utils/services";
+import { domain, get_request, post_request } from "../assets/js/utils/services";
 import Alert_box from "../components/alert_box";
 import Handle_file_upload from "../components/handle_file_upload";
 import Loadindicator from "../components/loadindicator";
@@ -38,7 +38,19 @@ class Create_event extends Handle_file_upload {
   tab_pills = new Array("basic", "pricing", "media", "meta_info", "finish");
 
   componentDidMount = async () => {
-    this.setState({ vendor: get_session("vendor") });
+    this.loggeduser = this.loggeduser || get_session("loggeduser");
+
+    if (!this.loggeduser || (this.loggeduser && !this.loggeduser.vendor))
+      return window.history.go(-1);
+
+    let vendor = get_session("vendor");
+    if (!vendor || (vendor && vendor._id !== this.loggeduser.vendor)) {
+      vendor = await get_request(`vendor/${this.loggeduser.vendor}`);
+
+      if (!vendor || (vendor && vendor._id)) return window.history.go(-1);
+    }
+
+    this.setState({ vendor });
   };
 
   important_fields = new Array(

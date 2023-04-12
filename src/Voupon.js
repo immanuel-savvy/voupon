@@ -107,6 +107,7 @@ class Voupon extends React.Component {
           path: "/events",
           submenu: new Array(
             { title: "events", path: "/events" },
+            { title: "create_event" },
             { title: "my_tickets", path: "/my_tickets" },
             { title: "verify_ticket" }
           ),
