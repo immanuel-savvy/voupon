@@ -22,7 +22,7 @@ class Wallet extends React.Component {
       user: vendor ? vendor._id : user._id,
     });
 
-    console.log(wallet, "HELLO");
+    console.log(wallet);
     this.setState({ wallet });
   };
 
@@ -30,6 +30,14 @@ class Wallet extends React.Component {
     let { wallet } = this.state;
     wallet[balance] -= Number(amount);
     this.setState({ wallet }, this.toggle_withdraw);
+  };
+
+  on_topup = (value) => {
+    let { wallet } = this.state;
+
+    wallet.balance += value;
+
+    this.setState({ wallet });
   };
 
   net_balance = () => {
@@ -220,7 +228,11 @@ class Wallet extends React.Component {
         </Modal>
 
         <Modal ref={(topup) => (this.topup = topup)}>
-          <Topup wallet={wallet} toggle={this.toggle_topup} />
+          <Topup
+            on_topup={this.on_topup}
+            wallet={wallet}
+            toggle={this.toggle_topup}
+          />
         </Modal>
       </div>
     );

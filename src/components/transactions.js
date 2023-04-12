@@ -9,7 +9,7 @@ class Transactions extends React.Component {
     super(props);
 
     this.state = {
-      limit: 10,
+      limit: 20,
       page: 1,
     };
   }
@@ -19,8 +19,7 @@ class Transactions extends React.Component {
     let { limit, page } = this.state;
 
     let transactions = await post_request("transactions", {
-      user: user && user._id,
-      wallet: wallet,
+      wallet: user.wallet || wallet,
       limit,
       skip: limit * (page - 1),
     });
