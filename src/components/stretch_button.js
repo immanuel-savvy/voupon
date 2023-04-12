@@ -15,7 +15,7 @@ class Stretch_button extends React.Component {
   };
 
   render() {
-    let { title, action, loading, disabled } = this.props;
+    let { title, action, class_name, loading, disabled } = this.props;
 
     if (loading) disabled = loading;
 
@@ -23,7 +23,9 @@ class Stretch_button extends React.Component {
       <button
         type="button"
         className={
-          disabled
+          class_name
+            ? `${class_name} full-width`
+            : disabled
             ? "btn full-width btn-md gray text-dark"
             : "btn full-width btn-md theme-bg text-white"
         }

@@ -35,6 +35,8 @@ import Search_results from "./pages/Search_results";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Marketplace from "./pages/Marketplace";
+import Add_product_et_service from "./pages/Add_product_et_service";
+import Product from "./pages/Product";
 
 const emitter = new Emitter();
 
@@ -112,6 +114,9 @@ class Voupon extends React.Component {
         {
           title: "marketplace",
           path: "/marketplace",
+          submenu: new Array({
+            title: "wishlist",
+          }),
         },
         {
           title: "vendors",
@@ -288,6 +293,10 @@ class Voupon extends React.Component {
                 <Route path="login" element={<Login />} />
                 <Route path="signup" element={<Signup />} />
                 <Route path="signup/:referral" element={<Signup />} />
+                <Route
+                  path="new_product_et_service"
+                  element={<Add_product_et_service />}
+                />
                 <Route path="marketplace" element={<Marketplace />} />
                 <Route path="search_result" element={<Search_results />} />
                 <Route
@@ -305,6 +314,7 @@ class Voupon extends React.Component {
                 <Route path="user_vouchers" element={<User_vouchers />} />
                 <Route path="become_a_vendor" element={<Become_a_vendor />} />
                 <Route path="voucher" element={<Voucher />} />
+                <Route path="product" element={<Product />} />
                 <Route path="developer" element={<Developer />} />
                 <Route path="forgot_password" element={<Forgot_password />} />
                 <Route path="adminstrator" element={<Adminstrator />} />

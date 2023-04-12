@@ -9,6 +9,7 @@ import Use_voucher from "./use_voucher";
 import Offer_voucher from "./offer_voucher";
 import { client_domain } from "../assets/js/utils/constants";
 import { save_to_session } from "../sections/footer";
+import Section_header from "./section_headers";
 
 class Vendor_vouchers extends React.Component {
   constructor(props) {
@@ -53,16 +54,11 @@ class Vendor_vouchers extends React.Component {
 
     return (
       <div className="container">
-        <div class="row justify-content-center">
-          <div class="col-lg-7 col-md-8">
-            <div class="sec-heading center">
-              <h2>
-                Offer <span class="theme-cl">Vouchers</span>
-              </h2>
-              <p>Vouchers that are service specific.</p>
-            </div>
-          </div>
-        </div>
+        <Section_header
+          title="offer"
+          color_title="vouchers"
+          description="Eu eu minim magna esse."
+        />
         {vendor._id === loggeduser?.vendor ? (
           <User_voucher_header
             voucher_filters={this.voucher_states}

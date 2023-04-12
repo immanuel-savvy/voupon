@@ -1,13 +1,32 @@
 import React from "react";
+import { encode } from "blurhash";
 
 class Handle_file_upload extends React.Component {
-  constructor(props) {
-    super(props);
+  load_image = async (src) =>
+    new Promise((resolve, reject) => {
+      const img = new Image();
+      img.setAttribute("crossOrigin", "Anonymous");
+      img.onload = () => resolve(img);
+      img.onerror = (...args) => reject(args);
+      img.src = src;
+    });
 
-    this.state = {};
-  }
+  get_image_data = (image) => {
+    const canvas = document.createElement("canvas");
+    canvas.width = image.width;
+    canvas.height = image.height;
+    const context = canvas.getContext("2d");
+    context.drawImage(image, 0, 0);
+    return context.getImageData(0, 0, image.width, image.height);
+  };
 
-  handle_file = ({ target }, prefix, maxsize, cb) => {
+  encode_image_to_blurhash = async (image_url) => {
+    const image = await this.load_image(image_url);
+    const image_data = this.get_image_data(image);
+    return encode(image_data.data, image_data.width, image_data.height, 4, 4);
+  };
+
+  handle_file = ({ target }, prefix, maxsize, cb, file_hash) => {
     let file = target.files[0];
     let reader = new FileReader();
     reader.readAsDataURL(file);
@@ -28,7 +47,12 @@ class Handle_file_upload extends React.Component {
     }
     this.setState({ [prop_loading]: true });
 
-    reader.onloadend = async (e) =>
+    reader.onloadend = async (e) => {
+      file_hash &&
+        (await this.encode_image_to_blurhash(reader.result)
+          .then((res) => this.setState({ [prop_hash]: res }))
+          .catch((err) => console.log(err)));
+
       this.setState(
         {
           file,
@@ -40,6 +64,7 @@ class Handle_file_upload extends React.Component {
         },
         cb
       );
+    };
   };
 }
 

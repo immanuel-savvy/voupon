@@ -8,14 +8,14 @@ class Section_header extends React.Component {
   }
 
   render() {
-    let { title, description } = this.props;
+    let { title, description, color_title } = this.props;
 
     return (
       <div class="row justify-content-center">
         <div class="col-lg-7 col-md-8">
           <div class="sec-heading center">
             <h2>
-              {title} <span class="theme-cl"></span>
+              {title} <span class="theme-cl">{color_title}</span>
             </h2>
             <p>{description}</p>
           </div>

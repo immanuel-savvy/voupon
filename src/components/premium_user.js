@@ -7,6 +7,7 @@ import Stretch_button from "./stretch_button";
 import { post_request } from "../assets/js/utils/services";
 import Alert_box from "./alert_box";
 import { rewards } from "../sections/footer";
+import Modal_form_title from "./modal_form_title";
 
 class Premium_user extends React.Component {
   constructor(props) {
@@ -43,6 +44,7 @@ class Premium_user extends React.Component {
   cancel = () => {};
 
   render() {
+    let { toggle } = this.props;
     let { message } = this.state;
 
     return (
@@ -86,9 +88,10 @@ class Premium_user extends React.Component {
                         </div>
 
                         <div className="rcs_log_124">
-                          <div className="Lpo09">
-                            <h4>Premium User</h4>
-                          </div>
+                          <Modal_form_title
+                            title="Premium user"
+                            toggle={toggle}
+                          />
 
                           <div className="mb-5">
                             <p className="text-center">

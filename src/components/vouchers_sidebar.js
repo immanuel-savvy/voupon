@@ -62,7 +62,7 @@ class Vouchers_sidebar extends React.Component {
               </div>
 
               <div class="form-group">
-                <h6>Top Vendor</h6>
+                <h6>Top Vendors</h6>
                 <ul class="no-ul-list mb-3">
                   {top_vendors ? (
                     top_vendors.map((vendor) => (

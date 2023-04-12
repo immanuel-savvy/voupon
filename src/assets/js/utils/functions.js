@@ -123,7 +123,7 @@ const _id = (prefix) => {
   return `${prefix}~${random_value}~${Date.now()}`;
 };
 
-const commalise_figures = (figure) => {
+const commalise_figures_ = (figure) => {
   if (typeof figure !== "number") {
     return figure;
   }
@@ -145,6 +145,24 @@ const commalise_figures = (figure) => {
   if (ff.startsWith(",")) ff = ff.slice(1);
 
   return ff.slice(0, -1);
+};
+
+const commalise_figures = (value) => {
+  if (typeof value !== "number") {
+    if (typeof value === "string") {
+      if (/[A-Za-z]\-/.test(value)) return value;
+      else value = Number(value);
+
+      if (!value) return;
+    } else return value;
+  }
+
+  let integer = Math.floor(value);
+  let decimal = (value - integer).toFixed(2).toString();
+
+  let commalised = commalise_figures_(integer);
+
+  return `${commalised}${decimal.slice(decimal.indexOf("."))}`;
 };
 
 const mask_id = (_id) => {

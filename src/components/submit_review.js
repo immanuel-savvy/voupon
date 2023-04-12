@@ -12,11 +12,13 @@ class Submit_review extends React.Component {
   submit = async (e) => {
     e.preventDefault();
 
-    let { voucher, on_comment, comment: comm } = this.props;
+    let { voucher, on_comment, item, comment: comm } = this.props;
     let { name, text, email } = this.state;
 
+    item = item || voucher;
+
     let comment = { name, email, text };
-    if (voucher) comment.item = voucher._id;
+    if (item) comment.item = item._id;
     else comment.comment = comm._id;
 
     let result = await post_request(

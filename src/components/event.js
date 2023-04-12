@@ -109,11 +109,7 @@ class Event extends React.Component {
                   style={in_vendor ? { cursor: "pointer" } : null}
                   className="crs_inrolled"
                 >
-                  <strong>
-                    {commalise_figures(
-                      total_sales || Number(generate_random_string(5, "num"))
-                    )}
-                  </strong>
+                  <strong>{commalise_figures(total_sales || 0)}</strong>
                   Tickets sold
                 </div>
               </div>

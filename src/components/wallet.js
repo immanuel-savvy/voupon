@@ -1,11 +1,12 @@
 import React from "react";
-import { get_request } from "../assets/js/utils/services";
+import { get_request, post_request } from "../assets/js/utils/services";
 import Alert_box from "./alert_box";
 import Dropdown_menu from "./dropdown_menu";
 import Loadindicator from "./loadindicator";
 import Manage_bank_accounts from "./manage_bank_accounts";
 import Modal from "./modal";
 import Small_btn from "./small_btn";
+import Topup from "./topup";
 import Withdraw_wallet from "./withdraw_wallet";
 
 class Wallet extends React.Component {
@@ -17,9 +18,11 @@ class Wallet extends React.Component {
 
   componentDidMount = async () => {
     let { vendor, user } = this.props;
-    let wallet = await get_request(
-      `vendor_wallet/${vendor ? vendor._id : user._id}`
-    );
+    let wallet = await post_request(`wallet`, {
+      user: vendor ? vendor._id : user._id,
+    });
+
+    console.log(wallet, "HELLO");
     this.setState({ wallet });
   };
 
@@ -30,7 +33,11 @@ class Wallet extends React.Component {
   };
 
   net_balance = () => {
+    let { user } = this.props;
+
     let { wallet } = this.state;
+
+    if (user) return wallet.balance;
 
     let { vouchers, coupons, tickets } = wallet;
 
@@ -40,6 +47,8 @@ class Wallet extends React.Component {
   toggle_bank_accounts = () => this.bank_accounts?.toggle();
 
   toggle_withdraw = () => this.withdraw?.toggle();
+
+  toggle_topup = () => this.topup?.toggle();
 
   render() {
     let { vendor, user } = this.props;
@@ -80,8 +89,14 @@ class Wallet extends React.Component {
               <i className="fas fa-dollar"></i>
             </div>
           </div>
-          <div className="dashboard_stats_wrap_content text-light">
-            <h3 className="text-light">NGN {this.net_balance()}</h3>
+          <div
+            className={`dashboard_stats_wrap_content text-${
+              user ? "dark" : "light"
+            }`}
+          >
+            <h3 className="text-${user?'dark':'light'}">
+              NGN {this.net_balance()}
+            </h3>
             <span>Net value</span>
           </div>
           <br />
@@ -93,7 +108,7 @@ class Wallet extends React.Component {
               fontWeight: "bold",
               textDecoration: "underline",
             }}
-            className="text-light"
+            className={`text-${user ? "dark" : "light"}`}
           >
             Revenues
           </span>
@@ -107,19 +122,58 @@ class Wallet extends React.Component {
               alignItems: "center",
             }}
           >
-            <div className="dashboard_stats_wrap_content text-light">
-              <h6 className="text-light">
-                NGN {(wallet.vouchers || 0).toFixed(2)}
-              </h6>
-              <span>Vouchers</span>
-            </div>
-            &nbsp;&nbsp;&nbsp;&nbsp;
-            <div className="dashboard_stats_wrap_content text-light">
-              <h6 className="text-light">
-                NGN {(wallet.tickets || 0).toFixed(2)}
-              </h6>
-              <span>Tickets</span>
-            </div>
+            {vendor ? (
+              <>
+                <div
+                  className={`dashboard_stats_wrap_content text-${
+                    user ? "dark" : "light"
+                  }`}
+                >
+                  <h6 className="text-${user?'dark':'light'}">
+                    NGN {(wallet.vouchers || 0).toFixed(2)}
+                  </h6>
+                  <span>Vouchers</span>
+                </div>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <div
+                  className={`dashboard_stats_wrap_content text-${
+                    user ? "dark" : "light"
+                  }`}
+                >
+                  <h6 className="text-${user?'dark':'light'}">
+                    NGN {(wallet.tickets || 0).toFixed(2)}
+                  </h6>
+                  <span>Tickets</span>
+                </div>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+              </>
+            ) : (
+              <>
+                <div
+                  className={`dashboard_stats_wrap_content text-${
+                    user ? "dark" : "light"
+                  }`}
+                >
+                  <h6 className="text-${user?'dark':'light'}">
+                    NGN {(wallet.total_earning || 0).toFixed(2)}
+                  </h6>
+                  <span>Total Earnings</span>
+                </div>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+              </>
+            )}
+            {user ? (
+              <div
+                className={`dashboard_stats_wrap_content text-${
+                  user ? "dark" : "light"
+                }`}
+              >
+                <h6 className={`text-${user ? "dark" : "light"}`}>
+                  RWT {(wallet.reward_token || 0).toFixed(2)}
+                </h6>
+                <span>Reward Token</span>
+              </div>
+            ) : null}
           </div>
 
           <div
@@ -130,11 +184,14 @@ class Wallet extends React.Component {
               alignItems: "center",
             }}
           >
+            <Small_btn title="Topup" action={this.toggle_topup} />
+
             <Small_btn
               title="Withdraw"
               action={this.toggle_withdraw}
               disabled={wallet.value > 0}
             />
+
             <Dropdown_menu
               items={
                 new Array({
@@ -160,6 +217,10 @@ class Wallet extends React.Component {
             wallet={wallet}
             toggle={this.toggle_bank_accounts}
           />
+        </Modal>
+
+        <Modal ref={(topup) => (this.topup = topup)}>
+          <Topup wallet={wallet} toggle={this.toggle_topup} />
         </Modal>
       </div>
     );

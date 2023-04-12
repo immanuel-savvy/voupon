@@ -1,8 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { to_title } from "../assets/js/utils/functions";
+import { commalise_figures, to_title } from "../assets/js/utils/functions";
 import { domain, get_request, post_request } from "../assets/js/utils/services";
 import Alert_box from "../components/alert_box";
+import Checkbox from "../components/checkbox";
+import Form_divider from "../components/form_divider";
 import Handle_file_upload from "../components/handle_file_upload";
 import Loadindicator from "../components/loadindicator";
 import Padder from "../components/padder";
@@ -14,26 +16,35 @@ import Custom_Nav from "../sections/nav";
 import { emitter } from "../Voupon";
 import { categories } from "./Become_a_vendor";
 
-class Create_offer_voucher extends Handle_file_upload {
+const installments = new Array(
+  "daily",
+  "weekly",
+  "monthly",
+  "quarterly",
+  "annually"
+);
+
+class Add_product_et_service extends Handle_file_upload {
   constructor(props) {
     super(props);
 
-    let { voucher } = this.props;
+    let { product } = this.props;
 
-    if (window.location.pathname === "/edit_offer_voucher")
-      voucher = voucher || get_session("voucher_in_edit");
+    if (window.location.pathname === "/edit_product_et_service")
+      product = product || get_session("product_in_edit");
 
     this.state = {
       current_pill: "basic",
       what_to_expect: new Array(),
       things_to_know: new Array(),
+      installments: new Array(),
       images: new Array(),
-      ...voucher,
+      ...product,
       learn_index: null,
       requirement_index: null,
       vendor: null,
-      duration: voucher && new Date(voucher.duration),
-      price: (voucher && voucher.value) || "",
+      duration: product && new Date(product.duration),
+      price: (product && product.value) || "",
     };
   }
 
@@ -57,10 +68,11 @@ class Create_offer_voucher extends Handle_file_upload {
 
   important_fields = new Array(
     "title",
-    "category",
     "price",
     "short_description",
-    "images"
+    "description",
+    "images",
+    "category"
   );
 
   is_set = () => {
@@ -99,12 +111,12 @@ class Create_offer_voucher extends Handle_file_upload {
   };
 
   handle_course = () => {
-    let { new_voucher: voucher } = this.state;
-    window.sessionStorage.setItem("voucher", JSON.stringify(voucher));
+    let { new_product: product } = this.state;
+    window.sessionStorage.setItem("product", JSON.stringify(product));
   };
 
   finish_tab_panel = () => {
-    let { uploading_voucher, new_voucher } = this.state;
+    let { uploading_voucher, new_product } = this.state;
 
     return (
       <div
@@ -117,7 +129,7 @@ class Create_offer_voucher extends Handle_file_upload {
         role="tabpanel"
         aria-labelledby="v-pills-finish-tab"
       >
-        {!this.is_set() && !new_voucher ? (
+        {!this.is_set() && !new_product ? (
           <>
             {this.important_fields.map((field_prop) => {
               let field = this.state[field_prop];
@@ -146,16 +158,16 @@ class Create_offer_voucher extends Handle_file_upload {
               <i className="fas fa-thumbs-up"></i>
             </div>
             <div className="succ_122">
-              <h4>Voucher Successfully Added</h4>
-              <p>{new_voucher?.short_description}</p>
+              <h4>Product Successfully Added</h4>
+              <p>{new_product?.short_description}</p>
             </div>
             <div className="succ_123">
-              <Link to="/voucher">
+              <Link to={`/product?${new_product?._id}`}>
                 <span
                   onClick={this.handle_course}
                   className="btn theme-bg text-white"
                 >
-                  View Voucher
+                  View Product
                 </span>
               </Link>
             </div>
@@ -287,11 +299,8 @@ class Create_offer_voucher extends Handle_file_upload {
       things_to_know,
       what_to_expect,
       what_you_will_learn_in_edit,
-      requirement_in_edit,
-      requirement_index,
       learn_index,
       quantities,
-      duration,
     } = this.state;
 
     return (
@@ -306,17 +315,6 @@ class Create_offer_voucher extends Handle_file_upload {
         aria-labelledby="v-pills-meta_info-tab"
       >
         <div className="form-group smalls">
-          <label>Voucher Duration</label>
-          <input
-            type="date"
-            className="form-control"
-            placeholder="Select"
-            value={duration}
-            onChange={({ target }) => this.setState({ duration: target.value })}
-          />
-        </div>
-
-        <div className="form-group smalls">
           <label>Quantities</label>
           <input
             type="number"
@@ -329,27 +327,6 @@ class Create_offer_voucher extends Handle_file_upload {
           />
         </div>
 
-        <div className="form-group smalls">
-          <label>What to Expect</label>
-          <input
-            type="text"
-            className="form-control"
-            placeholder="Type..."
-            value={requirement_in_edit}
-            onChange={({ target }) =>
-              this.setState({ requirement_in_edit: target.value })
-            }
-          />
-          {requirement_in_edit ? (
-            <a
-              onClick={this.add_requirement}
-              href="#"
-              class="btn theme-bg text-light mt-2"
-            >
-              {requirement_index === null ? "Add" : "Update"}
-            </a>
-          ) : null}
-        </div>
         {what_to_expect.length ? (
           <ul class="simple-list p-0">
             {what_to_expect.map((requirement, i) => (
@@ -432,11 +409,11 @@ class Create_offer_voucher extends Handle_file_upload {
         aria-labelledby="v-pills-basic-tab"
       >
         <div className="form-group smalls">
-          <label>Voucher Title*</label>
+          <label>Product Title*</label>
           <input
             type="text"
             className="form-control"
-            placeholder="Enter Voucher Title"
+            placeholder="Enter Product Title"
             onChange={({ target }) => this.setState({ title: target.value })}
             value={this.state.title}
           />
@@ -455,6 +432,19 @@ class Create_offer_voucher extends Handle_file_upload {
         </div>
 
         <div className="form-group smalls">
+          <label>Description*</label>
+          <textarea
+            onChange={({ target }) =>
+              this.setState({ description: target.value })
+            }
+            value={this.state.description}
+            type="text"
+            className="form-control"
+            rows="10"
+          ></textarea>
+        </div>
+
+        <div className="form-group smalls">
           <label>Category</label>
 
           <div className="simple-input">
@@ -465,7 +455,7 @@ class Create_offer_voucher extends Handle_file_upload {
               }
               className="form-control"
             >
-              <option value="">-- Select Offer Category --</option>
+              <option value="">-- Select Product Category --</option>
               {categories.map((category) => (
                 <option key={category._id} value={category._id}>
                   {to_title(category.title.replace(/_/g, " "))}
@@ -480,10 +470,41 @@ class Create_offer_voucher extends Handle_file_upload {
     );
   };
 
-  handle_price = ({ target }) => this.setState({ price: target.value });
+  handle_installments = (i) => {
+    let { installments } = this.state;
+
+    installments.includes(i)
+      ? installments.splice(installments.indexOf(i), 1)
+      : installments.push(i);
+
+    this.setState({ installments });
+  };
+
+  installments = installments;
+
+  i_days = new Object({
+    [this.installments[0]]: 1,
+    [this.installments[1]]: 7,
+    [this.installments[2]]: 30,
+    [this.installments[3]]: 90,
+    [this.installments[4]]: 365,
+  });
+
+  calc_payments = (total, days, i) => {
+    total = Number(total);
+    if (!total) return "";
+
+    days = Number(days);
+
+    if (days < this.i_days[i]) return;
+
+    let fracs = total / days;
+
+    return (this.i_days[i] * fracs).toFixed(2);
+  };
 
   pricing_tab_panel = () => {
-    let { price, actual_price } = this.state;
+    let { price, installments, down_payment, payment_duration } = this.state;
 
     return (
       <div
@@ -497,27 +518,78 @@ class Create_offer_voucher extends Handle_file_upload {
         aria-labelledby="v-pills-pricing-tab"
       >
         <div className="form-group smalls">
-          <label>Voucher Price(&#8358;) *</label>
+          <label>Product Price(&#8358;) *</label>
           <input
             type="number"
             className="form-control"
-            placeholder="Enter Voucher Price"
+            placeholder="Enter Product Price"
             value={price}
-            onChange={this.handle_price}
+            onChange={({ target }) => this.setState({ price: target.value })}
+          />
+        </div>
+
+        <Form_divider text="Pay-Small-Small" />
+
+        <div className="form-group smalls">
+          <label>Down Payment</label>
+          <input
+            type="number"
+            className="form-control"
+            max={price}
+            min="0"
+            placeholder="Payment Duration"
+            value={down_payment}
+            onChange={({ target }) =>
+              this.setState({ down_payment: target.value })
+            }
           />
         </div>
 
         <div className="form-group smalls">
-          <label>Service Actual Price(&#8358;)</label>
+          <label>Payment Duration (Days)</label>
           <input
             type="number"
             className="form-control"
-            placeholder="Enter Voucher Price"
-            value={actual_price}
+            placeholder="Payment Duration"
+            value={payment_duration}
             onChange={({ target }) =>
-              this.setState({ actual_price: target.value })
+              this.setState({ payment_duration: target.value })
             }
           />
+        </div>
+
+        <div className="form-group smalls">
+          <label>Installment Packages</label>
+
+          {this.installments.map((i) => {
+            let checked = installments.includes(i);
+
+            return (
+              <Checkbox
+                key={i}
+                title={`${i} ${
+                  Number(payment_duration) > 0 &&
+                  Number(price) > 0 &&
+                  this.calc_payments(
+                    price - (down_payment || 0),
+                    payment_duration,
+                    i
+                  )
+                    ? `- (# ${commalise_figures(
+                        this.calc_payments(
+                          price - (down_payment || 0),
+                          payment_duration,
+                          i
+                        )
+                      )})`
+                    : ""
+                }`}
+                _id={i}
+                checked={checked}
+                action={this.handle_installments}
+              />
+            );
+          })}
         </div>
 
         {this.pill_nav("pricing")}
@@ -526,13 +598,22 @@ class Create_offer_voucher extends Handle_file_upload {
   };
 
   handle_images = async (e) => {
-    this.handle_file(e, null, null, () => {
-      let { file, images, filename, file_hash } = this.state;
+    this.handle_file(
+      e,
+      null,
+      null,
+      () => {
+        let { file, images, filename, file_hash } = this.state;
 
-      images = new Array({ url: file, file_hash, filename }, ...images);
+        images = new Array(
+          { url: file, image_hash: file_hash, filename },
+          ...images
+        );
 
-      this.setState({ images });
-    });
+        this.setState({ images });
+      },
+      true
+    );
   };
 
   remove_image = (img) => {
@@ -629,52 +710,54 @@ class Create_offer_voucher extends Handle_file_upload {
       title,
       price,
       video,
-      what_to_expect,
       things_to_know,
       _id,
-      actual_price,
-      duration,
       quantities,
       images,
       category,
+      payment_duration,
+      down_payment,
       vendor,
+      description,
+      installments,
     } = this.state;
 
     if (!this.is_set()) return;
 
     this.setState({ loading: true });
 
-    let voucher = {
+    let product = {
       short_description,
       title,
       value: Number(price),
       video,
+      payment_duration: Number(payment_duration) || 0,
+      description,
+      down_payment: Number(down_payment) || 0,
       images,
       category,
-      quantities,
-      actual_price: Number(actual_price) || null,
+      quantities: Number(quantities) || 0,
+      installments,
       vendor: vendor._id,
-      duration: new Date(duration || Date.now()).getTime(),
     };
-    if (things_to_know.length) voucher.things_to_know = things_to_know;
-    if (what_to_expect.length) voucher.what_to_expect = what_to_expect;
+    if (things_to_know.length) product.things_to_know = things_to_know;
 
     let response;
     if (_id) {
-      voucher._id = _id;
-      response = await post_request("update_voucher", voucher);
-      voucher.images = response.images;
+      product._id = _id;
+      response = await post_request("update_product", product);
+      product.images = response.images;
     } else {
-      response = await post_request("create_offer_voucher", voucher);
-      voucher.images = response.images;
-      voucher._id = response._id;
-      voucher.created = response.created;
+      response = await post_request("create_product_et_service", product);
+      product.images = response.images;
+      product._id = response._id;
+      product.created = response.created;
     }
     if (response?._id) {
-      this.setState({ new_voucher: voucher });
+      this.setState({ new_product: product });
 
-      emitter.emit(_id ? "voucher_updated" : "new_voucher", {
-        ...voucher,
+      emitter.emit(_id ? "product_updated" : "new_product", {
+        ...product,
       });
       this.reset_state();
     }
@@ -711,8 +794,9 @@ class Create_offer_voucher extends Handle_file_upload {
               <Vendor_header vendor={vendor} />
               <div className="container">
                 <Section_header
-                  title="Create Offer Voucher"
-                  description="Allow customers access to your service(s) and keep track of sales record all by yourself"
+                  title="Product /"
+                  color_title="Service"
+                  description="Deserunt aute proident excepteur duis officia eiusmod sit do duis commodo fugiat nisi est cillum."
                 />
 
                 <div className="row">
@@ -764,4 +848,5 @@ class Create_offer_voucher extends Handle_file_upload {
   }
 }
 
-export default Create_offer_voucher;
+export default Add_product_et_service;
+export { installments };

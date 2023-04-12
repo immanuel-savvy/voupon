@@ -16,11 +16,13 @@ import Vendor_settings from "../components/vendor_settings";
 import { client_domain, organisation_name } from "../assets/js/utils/constants";
 import Text_btn from "../components/text_btn";
 import Transactions from "../components/transactions";
+import Vendor_marketplace from "../components/vendor_marketplace";
 
 const vendor_tabs = new Array(
   "vouchers",
   "coupons",
   "tickets",
+  "marketplace",
   "transactions",
   "settings"
 );
@@ -119,6 +121,11 @@ class Vendor_profile extends React.Component {
                                     />
                                   ) : tab === "tickets" ? (
                                     <Vendor_tickets
+                                      loggeduser={loggeduser}
+                                      vendor={vendor}
+                                    />
+                                  ) : tab === "marketplace" ? (
+                                    <Vendor_marketplace
                                       loggeduser={loggeduser}
                                       vendor={vendor}
                                     />

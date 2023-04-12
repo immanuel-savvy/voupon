@@ -44,6 +44,7 @@ class Create_event extends Handle_file_upload {
   important_fields = new Array(
     "title",
     "event_date_time",
+    "category",
     "duration",
     "short_description",
     "images"
