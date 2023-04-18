@@ -147,7 +147,7 @@ const commalise_figures_ = (figure) => {
   return ff.slice(0, -1);
 };
 
-const commalise_figures = (value) => {
+const commalise_figures = (value, no_fixed) => {
   if (typeof value !== "number") {
     if (typeof value === "string") {
       if (/[A-Za-z]\-/.test(value)) return value;
@@ -162,7 +162,9 @@ const commalise_figures = (value) => {
 
   let commalised = commalise_figures_(integer);
 
-  return `${commalised}${decimal.slice(decimal.indexOf("."))}`;
+  return no_fixed
+    ? commalised
+    : `${commalised}${decimal.slice(decimal.indexOf("."))}`;
 };
 
 const mask_id = (_id) => {

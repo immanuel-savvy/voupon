@@ -18,6 +18,19 @@ class Wishlist extends React.Component {
     this.setState({ list });
   };
 
+  remove_from_wishlist = async (product) => {
+    let { user } = this.props;
+
+    await post_request("remove_from_wishlist", {
+      user: user._id,
+      product: product._id,
+    });
+    let { list } = this.state;
+
+    list = list.filter((item) => item.product._id !== product._id);
+    this.setState({ list });
+  };
+
   render() {
     let { toggle } = this.props;
     let { list } = this.state;
@@ -44,7 +57,12 @@ class Wishlist extends React.Component {
               {list ? (
                 list.length ? (
                   list.map((p) => (
-                    <Product_alt product={p.product} key={p._id} />
+                    <Product_alt
+                      remove_wishlist={this.remove_from_wishlist}
+                      wished
+                      product={p.product}
+                      key={p._id}
+                    />
                   ))
                 ) : (
                   <Listempty />

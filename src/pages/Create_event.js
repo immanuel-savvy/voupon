@@ -418,14 +418,15 @@ class Create_event extends Handle_file_upload {
 
         <div className="form-group smalls">
           <label>More Description*</label>
-          <input
+          <textarea
+            rows="6"
             onChange={({ target }) =>
               this.setState({ more_description: target.value })
             }
             value={this.state.more_description}
             type="text"
             className="form-control"
-          />
+          ></textarea>
         </div>
 
         <div className="form-group smalls">

@@ -35,6 +35,19 @@ class Event extends React.Component {
     return `${date_string(date)}, ${time_string(date)}`;
   };
 
+  save_to_wishlist = async (loggeduser) => {
+    if (!loggeduser)
+      return <Login no_redirect action={this.save_to_wishlist} />;
+
+    let { product } = this.props;
+
+    await post_request("add_to_wishlist", {
+      product: product._id,
+      user: loggeduser._id,
+    });
+    return;
+  };
+
   toggle_ticket_codes = () => this.codes?.toggle();
 
   render() {
@@ -109,7 +122,7 @@ class Event extends React.Component {
                   style={in_vendor ? { cursor: "pointer" } : null}
                   className="crs_inrolled"
                 >
-                  <strong>{commalise_figures(total_sales || 0)}</strong>
+                  <strong>{commalise_figures(total_sales || 0, true)}</strong>
                   Tickets sold
                 </div>
               </div>
@@ -226,7 +239,7 @@ class Event extends React.Component {
                   <h2>
                     <span className="currency">&#8358;</span>
                     <span className="theme-cl">
-                      {commalise_figures(Number(value))}
+                      {commalise_figures(Number(value), true)}
                     </span>
                   </h2>
                 </div>

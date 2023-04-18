@@ -177,7 +177,7 @@ class Voucher extends React.Component {
                     {in_vendor ? (
                       <li className="video">
                         <span>Total Sales:</span>
-                        {total_sales}
+                        {commalise_figures(total_sales, true)}
                       </li>
                     ) : null}
                     <li className="video">

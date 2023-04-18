@@ -8,7 +8,11 @@ class Product_alt extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    let { wished } = this.props;
+
+    this.state = {
+      wished,
+    };
   }
 
   handle_product = () => {
@@ -18,7 +22,8 @@ class Product_alt extends React.Component {
   };
 
   render() {
-    let { class_name, product } = this.props;
+    let { wished } = this.state;
+    let { class_name, product, remove_wishlist } = this.props;
     let { vendor, title, images, value, _id } = product;
 
     return (
@@ -67,9 +72,15 @@ class Product_alt extends React.Component {
                   Add To Cart
                 </a>
               </div>
-              <div class="prd_shaved">
+              <div
+                class="prd_shaved"
+                onClick={() => remove_wishlist && remove_wishlist(product)}
+              >
                 <div class="prt_saveed_12lk">
-                  <label class="toggler toggler-danger">
+                  <label
+                    class="toggler toggler-danger"
+                    style={{ color: wished ? "#198754" : null }}
+                  >
                     <input type="checkbox" />
                     <i class="fas fa-heart"></i>
                   </label>
