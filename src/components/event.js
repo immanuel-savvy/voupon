@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import {
   commalise_figures,
   date_string,
-  generate_random_string,
   time_string,
 } from "../assets/js/utils/functions";
 import { save_to_session, scroll_to_top } from "../sections/footer";
