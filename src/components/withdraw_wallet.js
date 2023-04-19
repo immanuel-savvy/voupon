@@ -17,7 +17,7 @@ class Withdraw_wallet extends React.Component {
     this.state = {};
   }
 
-  balances = new Array("vouchers", "tickets");
+  balances = new Array("vouchers", "tickets", "balance");
 
   set_bank = (bank) => this.setState({ bank }, this.toggle_select_bank);
 
@@ -114,6 +114,11 @@ class Withdraw_wallet extends React.Component {
                           amount,
                           message: "",
                         })
+                      }
+                      info={
+                        wallet[balance] < Number(amount)
+                          ? `Insufficient balance`
+                          : ""
                       }
                       important
                     />

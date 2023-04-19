@@ -84,7 +84,6 @@ class User_vouchers extends React.Component {
                             vouchers ? (
                               vouchers.length ? (
                                 vouchers.map((voucher, index) => {
-                                  console.log(voucher);
                                   if (!voucher.state) voucher.state = "unused";
 
                                   return voucher.state === filter ? (

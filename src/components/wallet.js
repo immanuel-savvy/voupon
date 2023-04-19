@@ -22,7 +22,6 @@ class Wallet extends React.Component {
       user: vendor ? vendor._id : user._id,
     });
 
-    console.log(wallet);
     this.setState({ wallet });
   };
 
@@ -47,9 +46,14 @@ class Wallet extends React.Component {
 
     if (user) return wallet.balance;
 
-    let { vouchers, coupons, tickets } = wallet;
+    let { vouchers, coupons, tickets, balance } = wallet;
 
-    return ((vouchers || 0) + (coupons || 0) + (tickets || 0)).toFixed(2);
+    return (
+      (vouchers || 0) +
+      (coupons || 0) +
+      (tickets || 0) +
+      (balance || 0)
+    ).toFixed(2);
   };
 
   toggle_bank_accounts = () => this.bank_accounts?.toggle();

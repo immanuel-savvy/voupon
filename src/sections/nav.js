@@ -387,7 +387,10 @@ class Custom_nav extends React.Component {
                                       </Link>
                                     </li>
                                   ) : nav.title === "get_started" ? (
-                                    <ul className="nav-menu nav-menu-social align-to-right mb-3">
+                                    <ul
+                                      className="nav-menu nav-menu-social align-to-right mb-3"
+                                      style={{ width: 150 || "100%" }}
+                                    >
                                       <li className="add-listing theme-bg">
                                         <Link
                                           to={

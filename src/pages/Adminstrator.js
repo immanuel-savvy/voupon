@@ -14,6 +14,7 @@ import Footer, { scroll_to_top } from "../sections/footer";
 import Nav from "../sections/nav";
 import { emitter } from "../Voupon";
 import About_statement from "../sections/dashboard/about_statement";
+import Pending_users_verification from "../sections/dashboard/pending_users_verification";
 
 class Adminstrator extends React.Component {
   constructor(props) {
@@ -66,6 +67,7 @@ class Adminstrator extends React.Component {
       unverified_vendors: <Unverified_vendors />,
       coupons: <D_coupons />,
       users: <D_users />,
+      pending_users_verification: <Pending_users_verification />,
       about_statement: <About_statement />,
     });
 

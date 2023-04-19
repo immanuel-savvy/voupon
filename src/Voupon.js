@@ -37,6 +37,7 @@ import Contact from "./pages/Contact";
 import Marketplace from "./pages/Marketplace";
 import Add_product_et_service from "./pages/Add_product_et_service";
 import Product from "./pages/Product";
+import User_verification from "./pages/User_verification";
 
 const emitter = new Emitter();
 
@@ -296,6 +297,10 @@ class Voupon extends React.Component {
                 <Route path="verify_email" element={<Verify_email />} />
                 <Route path="about" element={<About />} />
                 <Route path="contact" element={<Contact />} />
+                <Route
+                  path="get_verified/:user_id"
+                  element={<User_verification />}
+                />
                 <Route path="login" element={<Login />} />
                 <Route path="signup" element={<Signup />} />
                 <Route path="signup/:referral" element={<Signup />} />

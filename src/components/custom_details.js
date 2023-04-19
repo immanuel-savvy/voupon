@@ -1,6 +1,8 @@
 import React from "react";
 import { commalise_figures, to_title } from "../assets/js/utils/functions";
 import { installments as installments_ } from "../pages/Add_product_et_service";
+import Installment_application from "./installment_aplication";
+import Modal from "./modal";
 import Small_btn from "./small_btn";
 
 class Custom_details extends React.Component {
@@ -31,7 +33,18 @@ class Custom_details extends React.Component {
     return (this.i_days[i] * fracs).toFixed(2);
   };
 
+  toggle_apply = (i) => {
+    if (this.apply?.state.show) {
+      this.setState({ installment: null }, this.apply.toggle);
+    } else {
+      this.setState({ installment: i }, this.apply.toggle);
+    }
+
+    this.setState({ installment: i });
+  };
+
   render() {
+    let { installment } = this.state;
     let { product } = this.props;
     let { installments, value, down_payment, payment_duration } = product;
     down_payment = down_payment || 0;
@@ -61,13 +74,24 @@ class Custom_details extends React.Component {
                     )}
                   </td>
                   <td>
-                    <Small_btn title="Apply" />
+                    <Small_btn
+                      title="Apply"
+                      action={() => this.toggle_apply(i)}
+                    />
                   </td>
                 </tr>
               );
             })}
           </tbody>
         </table>
+
+        <Modal ref={(apply) => (this.apply = apply)}>
+          <Installment_application
+            product={product}
+            installment={installment}
+            toggle={this.toggle_apply}
+          />
+        </Modal>
       </div>
     );
   }

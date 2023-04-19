@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { commalise_figures } from "../assets/js/utils/functions";
+import { commalise_figures, to_title } from "../assets/js/utils/functions";
 import { save_to_session } from "../sections/footer";
 import Preview_image from "./preview_image";
 
@@ -39,12 +39,12 @@ class Product_alt extends React.Component {
           </div>
           <div class="prd_grid_caption">
             <div class="prd_center_capt">
-              <div class="tag_shby">
+              <div class="tag_shby mb-2">
                 <Link
                   to={`/vendor?${vendor._id}`}
                   onClick={() => save_to_session("vendor", vendor)}
                 >
-                  <span>By {vendor.name}</span>
+                  <span>By {to_title(vendor.name)}</span>
                 </Link>
               </div>
               <div class="prd_title">

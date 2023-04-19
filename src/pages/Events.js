@@ -23,12 +23,10 @@ class Events extends React.Component {
   componentDidMount = async () => {
     let { limit, page } = this.state;
 
-    let { events, vendors, total } = await post_request(`events`, {
+    let { events, total } = await post_request(`events`, {
       limit,
       skip: limit * (page - 1),
     });
-
-    console.log(events);
 
     this.setState({ events, total });
   };

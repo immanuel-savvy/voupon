@@ -606,4 +606,4 @@ class Become_a_vendor extends handle_file_upload {
 }
 
 export default Become_a_vendor;
-export { categories };
+export { categories, means_of_id };

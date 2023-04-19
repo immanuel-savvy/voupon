@@ -34,7 +34,6 @@ class Modal extends React.Component {
         centered={centered}
         backdrop={no_drop_on_backdrop ? "static" : backdrop}
         keyboard={keyboard !== null ? keyboard : null}
-        fullscreen="sm-down"
         aria-labelledby={aria_labelled_by}
         onHide={() => {
           this.toggle();

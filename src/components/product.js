@@ -5,6 +5,7 @@ import { post_request } from "../assets/js/utils/services";
 import { Loggeduser } from "../Contexts";
 import { save_to_session } from "../sections/footer";
 import Login from "./login";
+import Modal from "./modal";
 import Preview_image from "./preview_image";
 
 class Product extends React.Component {
@@ -15,8 +16,7 @@ class Product extends React.Component {
   }
 
   save_to_wishlist = async (loggeduser) => {
-    if (!loggeduser)
-      return <Login no_redirect action={this.save_to_wishlist} />;
+    if (!loggeduser) return this.login?.toggle();
 
     let { product } = this.props;
 
@@ -93,6 +93,10 @@ class Product extends React.Component {
                   </div>
                 </div>
               </div>
+
+              <Modal ref={(login) => (this.login = login)}>
+                <Login no_redirect action={this.save_to_wishlist} />
+              </Modal>
             </div>
           );
         }}

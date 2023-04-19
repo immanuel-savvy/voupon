@@ -19,18 +19,15 @@ class Dashboard_nav_menu extends React.Component {
           title: "users",
           icon: "fa-th",
         },
+        { title: "pending_users_verification" },
         {
           title: "vendors",
         },
         { title: "unverified_vendors" },
-        {
-          title: "vouchers",
-          icon: "fa-th",
-          subnav: new Array(
-            { title: "running_vouchers" },
-            { title: "redeemed_vouchers" }
-          ),
-        },
+
+        { title: "running_vouchers" },
+        { title: "redeemed_vouchers" },
+
         {
           title: "about_statement",
         }
