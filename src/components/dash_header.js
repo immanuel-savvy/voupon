@@ -1,5 +1,9 @@
 import React from "react";
+import { client_domain } from "../assets/js/utils/constants";
 import { to_title } from "../assets/js/utils/functions";
+import Kyc_docs from "./kyc_docs";
+import Modal from "./modal";
+import Text_btn from "./text_btn";
 
 const panels = new Array("vouchers", "coupons", "tickets", "transactions");
 
@@ -10,9 +14,17 @@ class Dash_header extends React.Component {
     this.state = {};
   }
 
+  get_verified = () => {
+    let { user } = this.props;
+
+    window.location.assign(`${client_domain}/get_verified/${user._id}`);
+  };
+
+  toggle_kyc_docs = () => this.kyc_docs?.toggle();
+
   render() {
     let { user, set_panel } = this.props;
-    let { firstname, lastname, email, premium } = user;
+    let { firstname, lastname, email, premium, kyc_verified } = user;
 
     return (
       <div className="d-user-avater">
@@ -28,8 +40,26 @@ class Dash_header extends React.Component {
               <i className="fas fa-star"></i>
             </span>
           ) : null}
+          {Number(kyc_verified) ? (
+            <span className="theme-cl">
+              <i className="fas fa-shield-alt"></i>
+            </span>
+          ) : null}
         </h4>
         <span>{email}</span>
+        <br />
+        {kyc_verified === "pending" ? (
+          <span>
+            <Text_btn
+              style={{ fontStyle: "italic" }}
+              text="Pending Verification"
+              action={this.toggle_kyc_docs}
+            />
+          </span>
+        ) : (
+          <Text_btn text="Get Verified" action={this.get_verified} />
+        )}
+
         <div className="elso_syu89"></div>
         <div className="elso_syu77 mx-5">
           {panels.map((panel) => (
@@ -45,6 +75,10 @@ class Dash_header extends React.Component {
             </div>
           ))}
         </div>
+
+        <Modal ref={(kyc_docs) => (this.kyc_docs = kyc_docs)}>
+          <Kyc_docs user={user} toggle={this.toggle_kyc_docs} />
+        </Modal>
       </div>
     );
   }

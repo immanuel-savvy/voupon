@@ -118,8 +118,8 @@ class Event extends React.Component {
               </div>
               <div className="crs_fl_last">
                 <div
-                  onClick={in_vendor ? this.toggle_tickets : null}
-                  style={in_vendor ? { cursor: "pointer" } : null}
+                  onClick={edit ? this.toggle_tickets : null}
+                  style={edit ? { cursor: "pointer" } : null}
                   className="crs_inrolled"
                 >
                   <strong>{commalise_figures(total_sales || 0, true)}</strong>

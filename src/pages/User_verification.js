@@ -167,20 +167,27 @@ class User_verification extends handle_file_upload {
                                   </h4>
                                 </div>
 
-                                <Text_input
-                                  value={bio}
-                                  title="about yourself"
-                                  placeholder="Write here..."
-                                  action={(bio) =>
-                                    this.setState({
-                                      bio,
-                                      message: "",
-                                    })
-                                  }
-                                  error_message="Tell us about yourself"
-                                  important
-                                />
+                                <div className="form-group mx-3 mt-3">
+                                  <label>
+                                    About Yourself
+                                    <span className="text-danger"> *</span>
+                                  </label>
 
+                                  <textarea
+                                    value={bio}
+                                    rows="10"
+                                    className="form-control"
+                                    placeholder="Write here..."
+                                    onChange={({ target }) =>
+                                      this.setState({
+                                        bio: target.value,
+                                        message: "",
+                                      })
+                                    }
+                                    // error_message="Tell us about yourself"
+                                    important
+                                  ></textarea>
+                                </div>
                                 <Text_input
                                   value={address}
                                   title="address"

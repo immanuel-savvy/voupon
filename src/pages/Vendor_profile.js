@@ -89,12 +89,7 @@ class Vendor_profile extends React.Component {
                             className="mb-3"
                           >
                             {vendor_tabs.map((tab) => {
-                              if (
-                                new Array(
-                                  vendor_tabs[3],
-                                  vendor_tabs[4]
-                                ).includes(tab)
-                              ) {
+                              if (vendor_tabs.slice(-2).includes(tab)) {
                                 if (
                                   !loggeduser ||
                                   (loggeduser &&

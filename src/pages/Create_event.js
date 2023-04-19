@@ -70,31 +70,29 @@ class Create_event extends Handle_file_upload {
   render_tab_pills = () => {
     let { current_pill, _id } = this.state;
 
-    return this.tab_pills.map((pill) =>
-      _id && pill === this.tab_pills[1] ? null : (
-        <button
-          key={pill}
-          className={pill === current_pill ? "nav-link active" : "nav-link"}
-          id={`v-pills-${pill}-tab`}
-          data-toggle="pill"
-          data-target={`#v-pills-${pill}`}
-          type="button"
-          role="tab"
-          aria-controls={`v-pills-${pill}`}
-          aria-selected={pill === current_pill ? "true" : "false"}
-          onClick={() =>
-            this.setState(
-              { current_pill: pill },
-              pill === "finish" ? this.on_finish : null
-            )
-          }
-        >
-          {_id && pill === "finish"
-            ? "Finish Edit"
-            : to_title(pill.replace(/_/g, " "))}
-        </button>
-      )
-    );
+    return this.tab_pills.map((pill) => (
+      <button
+        key={pill}
+        className={pill === current_pill ? "nav-link active" : "nav-link"}
+        id={`v-pills-${pill}-tab`}
+        data-toggle="pill"
+        data-target={`#v-pills-${pill}`}
+        type="button"
+        role="tab"
+        aria-controls={`v-pills-${pill}`}
+        aria-selected={pill === current_pill ? "true" : "false"}
+        onClick={() =>
+          this.setState(
+            { current_pill: pill },
+            pill === "finish" ? this.on_finish : null
+          )
+        }
+      >
+        {_id && pill === "finish"
+          ? "Finish Edit"
+          : to_title(pill.replace(/_/g, " "))}
+      </button>
+    ));
   };
 
   handle_course = () => {
@@ -482,7 +480,7 @@ class Create_event extends Handle_file_upload {
   handle_price = ({ target }) => this.setState({ price: target.value });
 
   pricing_tab_panel = () => {
-    let { price, quantity } = this.state;
+    let { price, quantity, _id } = this.state;
 
     return (
       <div
@@ -502,6 +500,7 @@ class Create_event extends Handle_file_upload {
             className="form-control"
             placeholder="Enter Ticket Price"
             value={price}
+            disabled={!!_id}
             onChange={this.handle_price}
           />
         </div>

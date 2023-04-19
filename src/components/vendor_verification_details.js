@@ -3,6 +3,7 @@ import { domain } from "../assets/js/utils/constants";
 import { post_request } from "../assets/js/utils/services";
 import Alert_box from "./alert_box";
 import Form_divider from "./form_divider";
+import Modal_form_title from "./modal_form_title";
 import Preview_image from "./preview_image";
 import Stretch_button from "./stretch_button";
 import Text_btn from "./text_btn";
@@ -54,12 +55,7 @@ class Vendor_verification_details extends React.Component {
         <form>
           <div className="crs_log_wrap">
             <div className="crs_log__caption">
-              <div className="rcs_log_124">
-                <div className="Lpo09">
-                  <h4>Register your brand</h4>
-                  <Text_btn action={toggle} icon="fa-window-close" />
-                </div>
-              </div>
+              <Modal_form_title title="Register your brand" toggle={toggle} />
 
               <div style={{ display: "flex", justifyContent: "center" }}>
                 <Preview_image image={logo} style={{ height: 50 }} />

@@ -19,8 +19,7 @@ class Voucher_header extends React.Component {
   };
 
   parse_duration = (duration) => {
-    duration = duration / 1000;
-    let hours = Math.floor(duration / (60 * 60));
+    let hours = Math.floor(duration / 60);
     let minutes = duration - hours * 60;
 
     let str = "";
