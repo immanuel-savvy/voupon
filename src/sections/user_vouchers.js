@@ -57,8 +57,8 @@ class User_vouchers extends React.Component {
         {({ loggeduser }) => {
           this.loggeduser = loggeduser;
           return (
-            <section class="min" style={{ ...style }}>
-              <div class="container">
+            <section className="min" style={{ ...style }}>
+              <div className="container">
                 <Tabs
                   defaultActiveKey={active_tab}
                   id="uncontrolled-tab-example"
@@ -79,7 +79,26 @@ class User_vouchers extends React.Component {
                           voucher_type={tab}
                         />
 
-                        <div class="row justify-content-center">
+                        <div className="row justify-content-center">
+                          <div className="col-lg-7 col-md-8">
+                            <div className="sec-heading center">
+                              {tab === voucher_tabs[0] ? (
+                                <p>
+                                  Voucher that can be used for any service a
+                                  partner, channel, platform or shop provides.
+                                </p>
+                              ) : (
+                                <p>
+                                  Voucher that can be used specifically for a
+                                  particular service a partner, channel,
+                                  platform or shop provides.
+                                </p>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="row justify-content-center">
                           {((vouchers) =>
                             vouchers ? (
                               vouchers.length ? (

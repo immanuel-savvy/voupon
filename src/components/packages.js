@@ -25,9 +25,8 @@ class Packages extends React.Component {
                   Become a Premium <span className="theme-cl">User</span>
                 </h2>
                 <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                  Ut enim ad minim veniam.
+                  Get verified, enjoy access to premium coupons and get 20%
+                  discount on transaction fee
                 </p>
               </div>
             </div>

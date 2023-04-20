@@ -43,7 +43,7 @@ class Vendor_marketplace extends React.Component {
         <Section_header
           title="marketplace"
           // color_title="vouchers"
-          description="Eu eu minim magna esse."
+          description="Subscribe, deal, sell, buy and transact products and offerings with desirable payment plan."
         />
 
         {vendor._id === loggeduser?.vendor ? (

@@ -57,7 +57,7 @@ class Vendor_vouchers extends React.Component {
         <Section_header
           title="offer"
           color_title="vouchers"
-          description="Eu eu minim magna esse."
+          description="Voucher that can be used specifically for a particular service a partner, channel, platform or shop provides."
         />
         {vendor._id === loggeduser?.vendor ? (
           <User_voucher_header
