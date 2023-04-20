@@ -15,7 +15,7 @@ class Stretch_button extends React.Component {
   };
 
   render() {
-    let { title, action, class_name, loading, disabled } = this.props;
+    let { title, action, class_name, style, loading, disabled } = this.props;
 
     if (loading) disabled = loading;
 
@@ -31,7 +31,7 @@ class Stretch_button extends React.Component {
         }
         disabled={disabled}
         onClick={() => !disabled && action()}
-        style={{ textTransform: "capitalize" }}
+        style={{ textTransform: "capitalize", ...style }}
       >
         {title}
 

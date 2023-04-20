@@ -71,7 +71,7 @@ class Vendors extends React.Component {
                 <div class="container">
                   <Section_header
                     title="Vendors"
-                    description="Find your favorite vendors here. "
+                    description="Search vendors & Top Brands by location and industry"
                   />
 
                   <div class="row">

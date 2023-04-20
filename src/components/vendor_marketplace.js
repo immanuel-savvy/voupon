@@ -4,9 +4,11 @@ import { post_request } from "../assets/js/utils/services";
 import { save_to_session } from "../sections/footer";
 import Listempty from "./listempty";
 import Loadindicator from "./loadindicator";
+import Modal from "./modal";
 import Product from "./product";
 import Section_header from "./section_headers";
 import User_voucher_header from "./user_voucher_header";
+import Vendor_subscribers from "./vendor_subscribers";
 
 class Vendor_marketplace extends React.Component {
   constructor(props) {
@@ -29,6 +31,8 @@ class Vendor_marketplace extends React.Component {
 
     this.setState({ products_et_services });
   };
+
+  toggle_vendor_subscribers = () => this.vendor_subscribers?.toggle();
 
   render() {
     let { vendor, loggeduser } = this.props;
@@ -57,8 +61,11 @@ class Vendor_marketplace extends React.Component {
                     );
                     save_to_session("vendor", vendor);
                   },
+                },
+                {
+                  title: "product subscribers",
+                  action: this.toggle_vendor_subscribers,
                 }
-                // { title: "use voucher", action: this.toggle_use_voucher }
               )
             }
           />
@@ -67,7 +74,11 @@ class Vendor_marketplace extends React.Component {
         {products_et_services ? (
           products_et_services.length ? (
             products_et_services.map((p) => (
-              <Product product={p.product} key={p._id} />
+              <Product
+                product={p.product}
+                in_vendor={p.product?.vendor?._id === loggeduser?.vendor}
+                key={p._id}
+              />
             ))
           ) : (
             <Listempty />
@@ -75,6 +86,17 @@ class Vendor_marketplace extends React.Component {
         ) : (
           <Loadindicator />
         )}
+
+        <Modal
+          ref={(vendor_subscribers) =>
+            (this.vendor_subscribers = vendor_subscribers)
+          }
+        >
+          <Vendor_subscribers
+            vendor={vendor}
+            toggle={this.toggle_vendor_subscribers}
+          />
+        </Modal>
       </div>
     );
   }

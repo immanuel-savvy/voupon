@@ -31,7 +31,9 @@ class Featured_vouchers extends React.Component {
                 <h2>
                   explore Offer <span class="theme-cl">Vouchers</span>
                 </h2>
-                <p>Buy vouchers from some of your favourite stores in naira.</p>
+                <p>
+                  Get access to your favourite vendors & Top Brands vouchers
+                </p>
               </div>
             </div>
           </div>

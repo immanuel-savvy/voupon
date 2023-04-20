@@ -44,6 +44,8 @@ class Vendor_profile extends React.Component {
         vendor = await get_request(`vendor/${vendor_id[1]}`);
     }
 
+    document.title = `${to_title(vendor.name)} | ${organisation_name}`;
+
     this.setState({ vendor });
   };
 
@@ -51,8 +53,6 @@ class Vendor_profile extends React.Component {
     let vendor = get_session("vendor");
 
     if (vendor) {
-      document.title = `${vendor.name} | ${organisation_name}`;
-
       await this.get_vendor(vendor);
     } else {
       await this.get_vendor(vendor);

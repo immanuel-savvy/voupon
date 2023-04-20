@@ -56,9 +56,9 @@ class Dash_header extends React.Component {
               action={this.toggle_kyc_docs}
             />
           </span>
-        ) : (
+        ) : !kyc_verified ? (
           <Text_btn text="Get Verified" action={this.get_verified} />
-        )}
+        ) : null}
 
         <div className="elso_syu89"></div>
         <div className="elso_syu77 mx-5">

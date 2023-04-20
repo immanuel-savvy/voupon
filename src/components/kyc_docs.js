@@ -1,6 +1,6 @@
 import React from "react";
 import { to_title } from "../assets/js/utils/functions";
-import { domain, get_request } from "../assets/js/utils/services";
+import { domain, get_request, post_request } from "../assets/js/utils/services";
 import Alert_box from "./alert_box";
 import Checkbox from "./checkbox";
 import Form_divider from "./form_divider";
@@ -31,7 +31,21 @@ class Kyc_docs extends React.Component {
     });
   };
 
-  verify = () => {};
+  verify = async () => {
+    let { user, on_verify } = this.props;
+
+    this.setState({ loading: true });
+
+    let res = await post_request(`verify_user/${user._id}`);
+
+    if (res?.verified) {
+      on_verify && on_verify(user);
+    } else
+      this.setState({
+        message: res?.message || "Cannot verify user at the moment",
+        loading: false,
+      });
+  };
 
   render() {
     let { user, toggle, admin } = this.props;
@@ -138,6 +152,7 @@ class Kyc_docs extends React.Component {
 
                   {admin ? (
                     <Stretch_button
+                      style={{ marginTop: 20 }}
                       title={"verify"}
                       loading={loading}
                       action={this.verify}

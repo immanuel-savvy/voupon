@@ -1,6 +1,9 @@
 import React from "react";
 import { commalise_figures, to_title } from "../assets/js/utils/functions";
 import { installments as installments_ } from "../pages/Add_product_et_service";
+import Alert_box from "./alert_box";
+import Loadindicator from "./loadindicator";
+import Product_subscription from "./product_subscription";
 
 class Installment_summary extends React.Component {
   constructor(props) {
@@ -55,7 +58,8 @@ class Installment_summary extends React.Component {
 
   render = () => {
     let { part_payments, number_of_payments } = this.state;
-    let { product, installment, proceed, what_to_do_next } = this.props;
+    let { product, installment, proceed, what_to_do_next, subscribed } =
+      this.props;
     let { value, down_payment } = product;
     down_payment = down_payment || 0;
 
@@ -87,8 +91,20 @@ class Installment_summary extends React.Component {
               <div class="flex_cart_1">Total Cost</div>
               <div class="flex_cart_2">&#8358; {commalise_figures(value)}</div>
             </div>
-            {proceed ? (
-              <button type="button" class="btn checkout_btn">
+            {subscribed === "loading" ? (
+              <Loadindicator />
+            ) : subscribed?._id ? (
+              <>
+                <Alert_box type="info" message="Subscription is running..." />
+
+                <Product_subscription subscription={subscribed} />
+              </>
+            ) : proceed ? (
+              <button
+                type="button"
+                onClick={proceed}
+                class="btn theme-bg text-light checkout_btn"
+              >
                 Proceed To Apply
               </button>
             ) : (

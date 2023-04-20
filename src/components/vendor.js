@@ -27,22 +27,22 @@ class Vendor extends React.Component {
       vendor;
 
     return (
-      <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
-        <div class="crs_trt_grid">
-          <div class="crs_trt_thumb circle">
+      <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+        <div className="crs_trt_grid">
+          <div className="crs_trt_thumb circle">
             <Link
               to={`/vendor?${_id}`}
               onClick={this.save_vendor}
-              class="crs_trt_thum_link"
+              className="crs_trt_thum_link"
             >
               <Preview_image style={{ height: 60 }} image={logo} />
             </Link>
           </div>
-          <div class="crs_trt_caption">
-            <div class="instructor_tag dark">
+          <div className="crs_trt_caption">
+            <div className="instructor_tag dark">
               <span>{category || "Ecommerce"}</span>
             </div>
-            <div class="instructor_title">
+            <div className="instructor_title">
               <h4>
                 <Link to={`/vendor?${_id}`} onClick={this.save_vendor}>
                   {name}
@@ -53,15 +53,15 @@ class Vendor extends React.Component {
             {/* <p>{description}</p> */}
             <p>{address}</p>
           </div>
-          <div class="crs_trt_footer">
+          <div className="crs_trt_footer">
             {verified ? (
-              <div class="crs_trt_ent">
+              <div className="crs_trt_ent">
                 <Link to={`/vendor?${_id}`} onClick={this.save_vendor}>
                   <Text_btn text="View vendor" />
                 </Link>
               </div>
             ) : (
-              <div class="crs_trt_ent">
+              <div className="crs_trt_ent">
                 <Text_btn
                   text="Registration Details"
                   action={this.toggle_verification_details}

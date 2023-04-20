@@ -2,11 +2,11 @@ const DEV = true;
 
 const hostname = DEV
   ? `http://${"localhost"}`
-  : "https://dev.voucherafrica.com:2555";
+  : "https://api.voucherafrica.com:2559";
 
 const client_domain = DEV ? `${hostname}:3000` : `https://voucherafrica.com`;
 
-const domain = DEV ? `${hostname}:1449` : `https://dev.voucherafrica.com:2555`;
+const domain = DEV ? `${hostname}:1449` : `https://api.voucherafrica.com:2559`;
 
 const developer_domain = `${domain}/docs`;
 

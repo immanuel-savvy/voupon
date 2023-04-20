@@ -22,7 +22,7 @@ class Home extends React.Component {
     let heros = new Array(
       {
         main_text:
-          "We've Got Your Coupon, Vouchers, Gift Cards And Favorite Events All In One Place",
+          "We've Got Your Coupon, Vouchers, Favorite Events and Access to Products and Services All In One Place",
         sub_text: "",
         bg: require("../assets/img/hero1.png"),
       },

@@ -29,10 +29,7 @@ class Our_vendors extends React.Component {
                 <h2>
                   explore <span className="theme-cl">Vendors</span>
                 </h2>
-                <p>
-                  In dolore sint duis in est et. Exercitation do ex proident
-                  occaecat.
-                </p>
+                <p>Search vendors & Top Brands by location and industry</p>
               </div>
             </div>
           </div>

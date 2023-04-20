@@ -7,6 +7,7 @@ import { save_to_session } from "../sections/footer";
 import Login from "./login";
 import Modal from "./modal";
 import Preview_image from "./preview_image";
+import Product_subscribers from "./product_subscribers";
 
 class Product extends React.Component {
   constructor(props) {
@@ -27,10 +28,12 @@ class Product extends React.Component {
     return;
   };
 
+  toggle_product_subscribers = () => this.product_subscribers?.toggle();
+
   handle_product = () => save_to_session("product", this.props.product);
 
   render() {
-    let { class_name, product } = this.props;
+    let { class_name, product, in_vendor } = this.props;
 
     let { title, images, value, _id } = product;
 
@@ -90,9 +93,32 @@ class Product extends React.Component {
                         Add To Cart
                       </a>
                     </div>
+
+                    {in_vendor ? (
+                      <div className="prd_button mt-2">
+                        <a
+                          href="#"
+                          onClick={this.toggle_product_subscribers}
+                          className="bth bth_prd"
+                        >
+                          Subscribers
+                        </a>
+                      </div>
+                    ) : null}
                   </div>
                 </div>
               </div>
+
+              <Modal
+                ref={(product_subscribers) =>
+                  (this.product_subscribers = product_subscribers)
+                }
+              >
+                <Product_subscribers
+                  product={product}
+                  toggle={this.toggle_product_subscribers}
+                />
+              </Modal>
 
               <Modal ref={(login) => (this.login = login)}>
                 <Login no_redirect action={this.save_to_wishlist} />

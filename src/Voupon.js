@@ -99,7 +99,13 @@ class Voupon extends React.Component {
             {
               title: "coupons",
             },
-            { title: "create_coupon" },
+            {
+              title: "create_coupon",
+              submenu: new Array(
+                { title: "open_coupons", path: "" },
+                { title: "premium_coupons", path: "" }
+              ),
+            },
             { title: "verify_coupon" }
           ),
         },

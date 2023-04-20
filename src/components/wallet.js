@@ -17,12 +17,12 @@ class Wallet extends React.Component {
   }
 
   componentDidMount = async () => {
-    let { vendor, user } = this.props;
+    let { vendor, user, on_wallet } = this.props;
     let wallet = await post_request(`wallet`, {
-      user: vendor ? vendor._id : user._id,
+      user: vendor ? vendor._id || vendor : user._id || user,
     });
 
-    this.setState({ wallet });
+    this.setState({ wallet }, () => on_wallet && on_wallet(wallet));
   };
 
   on_withdraw = ({ amount, balance }) => {

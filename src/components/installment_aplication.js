@@ -1,5 +1,6 @@
 import React from "react";
 import { client_domain } from "../assets/js/utils/constants";
+import { post_request } from "../assets/js/utils/services";
 import { Loggeduser } from "../Contexts";
 import Installment_summary from "./installment_summary";
 import Login from "./login";
@@ -12,23 +13,42 @@ class Installment_application extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      subscribed: "loading",
+    };
   }
 
-  proceed = () => {};
+  componentDidMount = async () => {
+    let { product, installment } = this.props;
 
-  get_verified = () => {
+    if (!this.loggeduser) return;
+
+    let subscribed = await post_request("product_subscription", {
+      user: this.loggeduser._id,
+      product: product._id,
+      installment,
+    });
+
+    this.setState({ subscribed });
+  };
+
+  proceed = () => this.make_payment && this.make_payment?.toggle();
+
+  on_payment = (subscribed) => this.setState({ subscribed });
+
+  get_verified = () =>
     window.location.assign(
       `${client_domain}/get_verified/${this.loggeduser?._id}`
     );
-  };
 
   toggle_login = () => this.login?.toggle();
 
   render() {
-    let { part_payment } = this.state;
+    let { part_payment, subscribed } = this.state;
     let { toggle, product, installment } = this.props;
     let { vendor, down_payment } = product;
+
+    console.log(installment);
 
     return (
       <Loggeduser.Consumer>
@@ -55,14 +75,16 @@ class Installment_application extends React.Component {
                             this.setState({ part_payment })
                           }
                           product={product}
+                          subscribed={subscribed}
                           proceed={
-                            loggeduser && loggeduser.kyc_verified
+                            loggeduser && Number(loggeduser.kyc_verified)
                               ? this.proceed
                               : null
                           }
                           what_to_do_next={
                             <>
-                              {loggeduser && !loggeduser.kyc_verified ? (
+                              {loggeduser &&
+                              !Number(loggeduser.kyc_verified) ? (
                                 <p className="alert alert-info">
                                   Only applicable to verified users
                                 </p>
@@ -71,7 +93,8 @@ class Installment_application extends React.Component {
                                 onClick={
                                   !loggeduser
                                     ? this.toggle_login
-                                    : loggeduser && !loggeduser.kyc_verified
+                                    : loggeduser &&
+                                      !Number(loggeduser.kyc_verified)
                                     ? this.get_verified
                                     : null
                                 }
@@ -80,7 +103,8 @@ class Installment_application extends React.Component {
                               >
                                 {!loggeduser
                                   ? "Login to Proceed"
-                                  : loggeduser && !loggeduser.kyc_verified
+                                  : loggeduser &&
+                                    !Number(loggeduser.kyc_verified)
                                   ? "Get Verified"
                                   : null}
                               </button>
@@ -99,12 +123,20 @@ class Installment_application extends React.Component {
 
               <Modal ref={(make_payment) => (this.make_payment = make_payment)}>
                 <Make_payment
+                  on_payment={this.on_payment}
                   details={{
                     to: vendor._id,
+                    total: product.value,
+                    part_payments: part_payment,
+                    installment,
                     user: loggeduser._id,
-                    value: down_payment + (part_payment || 0),
+                    type: "pay_small_small",
+                    title: "Installmental Payment Initiation",
+                    data: product,
+                    value:
+                      (Number(down_payment) || 0) + (Number(part_payment) || 0),
                   }}
-                  toggle={this.toggle_make_payment}
+                  toggle={this.proceed}
                 />
               </Modal>
             </section>

@@ -50,7 +50,7 @@ class Voucher_reviews extends React.Component {
           <div class="list-single-main-item-title fl-wrap">
             {comments && comments.length ? (
               <h3>
-                Item Reviews - <span> {comments.length} </span>
+                Reviews - <span> {comments.length} </span>
               </h3>
             ) : null}
           </div>
