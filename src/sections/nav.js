@@ -83,11 +83,6 @@ class Custom_nav extends React.Component {
 
   componentDidMount = () => {};
 
-  handle_course = (course) => {
-    window.sessionStorage.setItem("course", JSON.stringify(course));
-    emitter.emit("push_course", course);
-  };
-
   search = () => {
     let { search_param } = this.state;
     if (!search_param.trim()) return;
@@ -99,8 +94,7 @@ class Custom_nav extends React.Component {
   };
 
   render() {
-    let { subnavs, current_subnav, current_nav, show_search, search_param } =
-      this.state;
+    let { current_subnav, current_nav, show_search, search_param } = this.state;
 
     return (
       <Loggeduser.Consumer>
