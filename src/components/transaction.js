@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import {
+  commalise_figures,
   date_string,
   time_string,
   to_title,
@@ -96,7 +97,9 @@ class Transaction extends React.Component {
             ) : null}
 
             <b>
-              <small class="text-fade">&#8358; {value}</small>
+              <small class="text-fade">
+                &#8358; {commalise_figures(value)}
+              </small>
             </b>
             <span class="small">
               {time_string(created)}, {date_string(created)}

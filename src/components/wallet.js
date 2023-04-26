@@ -1,4 +1,5 @@
 import React from "react";
+import { commalise_figures } from "../assets/js/utils/functions";
 import { get_request, post_request } from "../assets/js/utils/services";
 import Alert_box from "./alert_box";
 import Dropdown_menu from "./dropdown_menu";
@@ -48,12 +49,14 @@ class Wallet extends React.Component {
 
     let { vouchers, coupons, tickets, balance } = wallet;
 
-    return (
-      (vouchers || 0) +
-      (coupons || 0) +
-      (tickets || 0) +
-      (balance || 0)
-    ).toFixed(2);
+    return commalise_figures(
+      (
+        (vouchers || 0) +
+        (coupons || 0) +
+        (tickets || 0) +
+        (balance || 0)
+      ).toFixed(2)
+    );
   };
 
   toggle_bank_accounts = () => this.bank_accounts?.toggle();
@@ -142,7 +145,7 @@ class Wallet extends React.Component {
                   }`}
                 >
                   <h6 className="text-${user?'dark':'light'}">
-                    NGN {(wallet.vouchers || 0).toFixed(2)}
+                    NGN {commalise_figures((wallet.vouchers || 0).toFixed(2))}
                   </h6>
                   <span>Vouchers</span>
                 </div>
@@ -153,7 +156,7 @@ class Wallet extends React.Component {
                   }`}
                 >
                   <h6 className="text-${user?'dark':'light'}">
-                    NGN {(wallet.tickets || 0).toFixed(2)}
+                    NGN {commalise_figures((wallet.tickets || 0).toFixed(2))}
                   </h6>
                   <span>Tickets</span>
                 </div>
@@ -167,7 +170,8 @@ class Wallet extends React.Component {
                   }`}
                 >
                   <h6 className="text-${user?'dark':'light'}">
-                    NGN {(wallet.total_earning || 0).toFixed(2)}
+                    NGN{" "}
+                    {commalise_figures((wallet.total_earning || 0).toFixed(2))}
                   </h6>
                   <span>Total Earnings</span>
                 </div>
@@ -181,7 +185,7 @@ class Wallet extends React.Component {
                 }`}
               >
                 <h6 className={`text-${user ? "dark" : "light"}`}>
-                  RWT {(wallet.reward_token || 0).toFixed(2)}
+                  RWT {commalise_figures((wallet.reward_token || 0).toFixed(2))}
                 </h6>
                 <span>Reward Token</span>
               </div>

@@ -55,7 +55,10 @@ class Custom_details extends React.Component {
           <tbody>
             <tr>
               <th scope="row">Intervals</th>
-              <td>Payments</td>
+              <td>Down Payment</td>
+              <td>Payments unit</td>
+              <td>Number of Payments</td>
+              <td>Total</td>
               <td></td>
             </tr>
 
@@ -63,6 +66,7 @@ class Custom_details extends React.Component {
               return (
                 <tr key={index}>
                   <td scope="row">{to_title(i)}</td>
+                  <td>&#8358; {down_payment}</td>
                   <td>
                     &#8358;{" "}
                     {commalise_figures(
@@ -72,6 +76,11 @@ class Custom_details extends React.Component {
                         i
                       )
                     )}
+                  </td>
+
+                  <td>{product[`number_of_${i}_payments`]}</td>
+                  <td>
+                    &#8358; {commalise_figures(product[`${i}_product_price`])}
                   </td>
                   <td>
                     <Small_btn

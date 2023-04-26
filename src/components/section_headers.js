@@ -14,9 +14,11 @@ class Section_header extends React.Component {
       <div class="row justify-content-center">
         <div class="col-lg-7 col-md-8">
           <div class="sec-heading center">
-            <h2>
-              {title} <span class="theme-cl">{color_title}</span>
-            </h2>
+            {title || color_title ? (
+              <h2>
+                {title} <span class="theme-cl">{color_title}</span>
+              </h2>
+            ) : null}
             <p>{description}</p>
           </div>
         </div>

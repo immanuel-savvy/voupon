@@ -59,6 +59,8 @@ class Custom_nav extends React.Component {
     window.location.assign(`${client_domain}/create_event`);
   };
 
+  create_coupon = () => this.create_coupon_?.toggle();
+
   verify_voucher = () => this.verify_voucher_?.toggle();
 
   verify_ticket = () => this.verify_ticket_?.toggle();
@@ -125,13 +127,13 @@ class Custom_nav extends React.Component {
                         >
                           <Navbar light expand="lg">
                             <NavbarBrand href="/" className="nav-brand">
-                              {/* <img
-                                    src={require(`assets/img/logo.png`)}
-                                    className="logo"
-                                    id="logo_white"
-                                    alt=""
-                                  /> */}
-                              <h2 className="text-dark">Voucher Africa</h2>
+                              <img
+                                src={require(`../assets/img/logo_dark.png`)}
+                                className="logo"
+                                id="logo_white"
+                                alt=""
+                              />
+                              {/* <h2 className="text-dark">Voucher Africa</h2> */}
                             </NavbarBrand>
                             <NavbarToggler
                               style={{ color: "#000" }}

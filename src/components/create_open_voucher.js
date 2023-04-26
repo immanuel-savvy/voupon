@@ -7,7 +7,6 @@ import { rewards } from "../sections/footer";
 import Alert_box from "./alert_box";
 import Form_divider from "./form_divider";
 import { Paystack_public_key } from "./get_voucher";
-import Icon_btn from "./icon_btn";
 import Login from "./login";
 import Modal_form_title from "./modal_form_title";
 import Stretch_button from "./stretch_button";
@@ -138,6 +137,9 @@ class Create_open_voucher extends React.Component {
                         <Modal_form_title
                           title="open voucher"
                           toggle={toggle}
+                          text={
+                            "Voucher that can be used for any service a partner, channel, platform or shop provides."
+                          }
                         />
                         {voucher_code ? (
                           <Voucher_purchase_details

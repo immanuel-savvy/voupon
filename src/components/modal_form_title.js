@@ -10,24 +10,28 @@ class Modal_form_title extends React.Component {
   }
 
   render() {
-    let { toggle, title } = this.props;
+    let { toggle, title, text } = this.props;
 
     return (
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          marginRight: 10,
-        }}
-      >
-        <div>&nbsp;</div>
-        <div className="rcs_log_124">
-          <div className="Lpo09">
-            <h4>{to_title(title)}</h4>
+      <div>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            marginRight: 10,
+          }}
+        >
+          <div>&nbsp;</div>
+          <div className="rcs_log_124">
+            <div className="Lpo09">
+              <h4>{to_title(title)}</h4>
+            </div>
           </div>
+
+          <Icon_btn toggle={toggle} />
         </div>
 
-        <Icon_btn toggle={toggle} />
+        {text ? <p className="text-center mb-4">{text}</p> : null}
       </div>
     );
   }

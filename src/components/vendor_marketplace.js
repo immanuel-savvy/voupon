@@ -2,6 +2,7 @@ import React from "react";
 import { client_domain } from "../assets/js/utils/constants";
 import { post_request } from "../assets/js/utils/services";
 import { save_to_session } from "../sections/footer";
+import { emitter } from "../Voupon";
 import Listempty from "./listempty";
 import Loadindicator from "./loadindicator";
 import Modal from "./modal";
@@ -30,6 +31,10 @@ class Vendor_marketplace extends React.Component {
     );
 
     this.setState({ products_et_services });
+  };
+
+  edit_product = (product, vendor) => {
+    emitter.emit("edit_product", { product, vendor });
   };
 
   toggle_vendor_subscribers = () => this.vendor_subscribers?.toggle();
@@ -75,6 +80,7 @@ class Vendor_marketplace extends React.Component {
           products_et_services.length ? (
             products_et_services.map((p) => (
               <Product
+                edit={() => this.edit_product(p.product, vendor)}
                 product={p.product}
                 in_vendor={p.product?.vendor?._id === loggeduser?.vendor}
                 key={p._id}

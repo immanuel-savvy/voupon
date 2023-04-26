@@ -4,6 +4,7 @@ import Listempty from "../components/listempty";
 import Loadindicator from "../components/loadindicator";
 import Market_sidebar from "../components/market_sidebar";
 import Padder from "../components/padder";
+import Section_header from "../components/section_headers";
 import Breadcrumb_banner from "../sections/breadcrumb_banner";
 import Footer from "../sections/footer";
 import Custom_nav from "../sections/nav";
@@ -48,6 +49,8 @@ class Marketplace extends React.Component {
               <Market_sidebar />
 
               <div class="col-xl-8 col-lg-8 col-md-12 order-lg-1">
+                <Section_header description="Explore, manage subscription and trade product listings with best price and plan" />
+
                 <div class="row">
                   {products ? (
                     products.length ? (

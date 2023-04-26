@@ -101,10 +101,10 @@ class Voupon extends React.Component {
             },
             {
               title: "create_coupon",
-              submenu: new Array(
-                { title: "open_coupons", path: "" },
-                { title: "premium_coupons", path: "" }
-              ),
+              // submenu: new Array(
+              //   { title: "open_coupons", path: "" },
+              //   { title: "premium_coupons", path: "" }
+              // ),
             },
             { title: "verify_coupon" }
           ),
@@ -187,7 +187,15 @@ class Voupon extends React.Component {
         window.location.assign(`${client_domain}/edit_event`);
       });
 
+    this.edit_product = ({ product, vendor }) =>
+      this.setState({ product_in_edit: product }, () => {
+        save_to_session("product_in_edit", product);
+        save_to_session("vendor", vendor);
+        window.location.assign(`${client_domain}/edit_product_et_service`);
+      });
+
     emitter.listen("edit_event", this.edit_event);
+    emitter.listen("edit_product", this.edit_product);
     emitter.listen("edit_voucher", this.edit_voucher);
   };
 
@@ -263,6 +271,7 @@ class Voupon extends React.Component {
       admin_logged,
       event_in_edit,
       voucher_in_edit,
+      product_in_edit,
     } = this.state;
 
     return (
@@ -313,6 +322,10 @@ class Voupon extends React.Component {
                 <Route
                   path="new_product_et_service"
                   element={<Add_product_et_service />}
+                />
+                <Route
+                  path="edit_product_et_service"
+                  element={<Add_product_et_service product={product_in_edit} />}
                 />
                 <Route path="marketplace" element={<Marketplace />} />
                 <Route path="search_result" element={<Search_results />} />

@@ -39,6 +39,7 @@ class Add_product_et_service extends Handle_file_upload {
       things_to_know: new Array(),
       installments: new Array(),
       images: new Array(),
+      payment_types: new Array(this.payment_types[0]),
       ...product,
       learn_index: null,
       requirement_index: null,
@@ -83,31 +84,29 @@ class Add_product_et_service extends Handle_file_upload {
   render_tab_pills = () => {
     let { current_pill, _id } = this.state;
 
-    return this.tab_pills.map((pill) =>
-      pill === "pricing" && _id ? null : (
-        <button
-          key={pill}
-          className={pill === current_pill ? "nav-link active" : "nav-link"}
-          id={`v-pills-${pill}-tab`}
-          data-toggle="pill"
-          data-target={`#v-pills-${pill}`}
-          type="button"
-          role="tab"
-          aria-controls={`v-pills-${pill}`}
-          aria-selected={pill === current_pill ? "true" : "false"}
-          onClick={() =>
-            this.setState(
-              { current_pill: pill },
-              pill === "finish" ? this.on_finish : null
-            )
-          }
-        >
-          {_id && pill === "finish"
-            ? "Finish Edit"
-            : to_title(pill.replace(/_/g, " "))}
-        </button>
-      )
-    );
+    return this.tab_pills.map((pill) => (
+      <button
+        key={pill}
+        className={pill === current_pill ? "nav-link active" : "nav-link"}
+        id={`v-pills-${pill}-tab`}
+        data-toggle="pill"
+        data-target={`#v-pills-${pill}`}
+        type="button"
+        role="tab"
+        aria-controls={`v-pills-${pill}`}
+        aria-selected={pill === current_pill ? "true" : "false"}
+        onClick={() =>
+          this.setState(
+            { current_pill: pill },
+            pill === "finish" ? this.on_finish : null
+          )
+        }
+      >
+        {_id && pill === "finish"
+          ? "Finish Edit"
+          : to_title(pill.replace(/_/g, " "))}
+      </button>
+    ));
   };
 
   handle_course = () => {
@@ -397,10 +396,13 @@ class Add_product_et_service extends Handle_file_upload {
   };
 
   basic_tab_panel = () => {
+    let { category, title, short_description, current_pill, description } =
+      this.state;
+
     return (
       <div
         className={
-          this.state.current_pill === "basic"
+          current_pill === "basic"
             ? "tab-pane fade show active"
             : "tab-pane fade"
         }
@@ -415,7 +417,7 @@ class Add_product_et_service extends Handle_file_upload {
             className="form-control"
             placeholder="Enter Product Title"
             onChange={({ target }) => this.setState({ title: target.value })}
-            value={this.state.title}
+            value={title}
           />
         </div>
 
@@ -425,7 +427,7 @@ class Add_product_et_service extends Handle_file_upload {
             onChange={({ target }) =>
               this.setState({ short_description: target.value })
             }
-            value={this.state.short_description}
+            value={short_description}
             type="text"
             className="form-control"
           />
@@ -437,7 +439,7 @@ class Add_product_et_service extends Handle_file_upload {
             onChange={({ target }) =>
               this.setState({ description: target.value })
             }
-            value={this.state.description}
+            value={description}
             type="text"
             className="form-control"
             rows="10"
@@ -449,6 +451,7 @@ class Add_product_et_service extends Handle_file_upload {
 
           <div className="simple-input">
             <select
+              defaultValue={category}
               id="Category"
               onChange={({ target }) =>
                 this.setState({ category: target.value })
@@ -503,8 +506,30 @@ class Add_product_et_service extends Handle_file_upload {
     return (this.i_days[i] * fracs).toFixed(2);
   };
 
+  handle_payment_types = (payment_type) => {
+    let { payment_types } = this.state;
+
+    if (payment_types.includes(payment_type)) {
+      if (payment_types.length > 1)
+        payment_types = payment_types.filter((type) => type !== payment_type);
+    } else payment_types.push(payment_type);
+
+    this.setState({ payment_types });
+  };
+
+  payment_types = new Array("outright", "installment");
+
+  calculate_payments = (installment) => {
+    let { payment_duration } = this.state;
+
+    if (!payment_duration) return;
+
+    return Math.round(payment_duration / this.i_days[installment]);
+  };
+
   pricing_tab_panel = () => {
-    let { price, installments, down_payment, payment_duration } = this.state;
+    let { price, installments, payment_types, down_payment, payment_duration } =
+      this.state;
 
     return (
       <div
@@ -518,80 +543,157 @@ class Add_product_et_service extends Handle_file_upload {
         aria-labelledby="v-pills-pricing-tab"
       >
         <div className="form-group smalls">
-          <label>Product Price(&#8358;) *</label>
-          <input
-            type="number"
-            className="form-control"
-            placeholder="Enter Product Price"
-            value={price}
-            onChange={({ target }) => this.setState({ price: target.value })}
-          />
-        </div>
+          <label>Payment Types</label>
 
-        <Form_divider text="Pay-Small-Small" />
-
-        <div className="form-group smalls">
-          <label>Down Payment</label>
-          <input
-            type="number"
-            className="form-control"
-            max={price}
-            min="0"
-            placeholder="Payment Duration"
-            value={down_payment}
-            onChange={({ target }) =>
-              this.setState({ down_payment: target.value })
-            }
-          />
-        </div>
-
-        <div className="form-group smalls">
-          <label>Payment Duration (Days)</label>
-          <input
-            type="number"
-            className="form-control"
-            placeholder="Payment Duration"
-            value={payment_duration}
-            onChange={({ target }) =>
-              this.setState({ payment_duration: target.value })
-            }
-          />
-        </div>
-
-        <div className="form-group smalls">
-          <label>Installment Packages</label>
-
-          {this.installments.map((i) => {
-            let checked = installments.includes(i);
-
+          {this.payment_types.map((payment_type_) => {
             return (
               <Checkbox
-                key={i}
-                title={`${i} ${
-                  Number(payment_duration) > 0 &&
-                  Number(price) > 0 &&
-                  this.calc_payments(
-                    price - (down_payment || 0),
-                    payment_duration,
-                    i
-                  )
-                    ? `- (# ${commalise_figures(
-                        this.calc_payments(
-                          price - (down_payment || 0),
-                          payment_duration,
-                          i
-                        )
-                      )})`
-                    : ""
-                }`}
-                _id={i}
-                checked={checked}
-                action={this.handle_installments}
+                title={to_title(payment_type_.replace(/_/g, " "))}
+                key={payment_type_}
+                _id={payment_type_}
+                checked={payment_types.includes(payment_type_)}
+                action={(_id) => this.handle_payment_types(_id)}
+                name="payment_type"
               />
             );
           })}
         </div>
 
+        {
+          <div className="form-group smalls">
+            <label>Product Outright Price(&#8358;) *</label>
+            <input
+              type="number"
+              min="0"
+              className="form-control"
+              placeholder="Enter Product Price"
+              value={price}
+              onChange={({ target }) => this.setState({ price: target.value })}
+            />
+          </div>
+        }
+
+        {payment_types.includes(this.payment_types[1]) ? (
+          <>
+            <Form_divider text="Pay small small / Subscriptions" />
+
+            <div className="form-group smalls">
+              <label>Down Payment</label>
+              <input
+                type="number"
+                className="form-control"
+                max={price}
+                min="0"
+                placeholder="Down Payment"
+                value={down_payment}
+                onChange={({ target }) =>
+                  this.setState({ down_payment: target.value })
+                }
+              />
+            </div>
+
+            <div className="form-group smalls">
+              <label>Payment Duration (Days)</label>
+              <input
+                type="number"
+                min="0"
+                className="form-control"
+                placeholder="Payment Duration"
+                value={payment_duration}
+                onChange={({ target }) =>
+                  this.setState({ payment_duration: target.value })
+                }
+              />
+            </div>
+
+            <div className="form-group smalls">
+              <label>Installment Packages</label>
+
+              {this.installments.map((i) => {
+                let checked = installments.includes(i);
+
+                return (
+                  <>
+                    <Checkbox
+                      key={i}
+                      title={`${i} ${
+                        Number(payment_duration) > 0 &&
+                        Number(price) > 0 &&
+                        this.calc_payments(
+                          price - (down_payment || 0),
+                          payment_duration,
+                          i
+                        )
+                          ? `- (# ${commalise_figures(
+                              this.calc_payments(
+                                price - (down_payment || 0),
+                                payment_duration,
+                                i
+                              )
+                            )})`
+                          : ""
+                      }`}
+                      _id={i}
+                      checked={checked}
+                      action={this.handle_installments}
+                    />
+                    {checked ? (
+                      <form>
+                        <div className="row">
+                          <div className="col-xl-6 col-lg-12 col-md-12 col-sm-12">
+                            <div className="form-group">
+                              <label>
+                                Product Price{" "}
+                                <span className="text-danger">*</span>
+                              </label>
+                              <input
+                                type="number"
+                                className="form-control"
+                                min="0"
+                                placeholder="Payment Duration"
+                                value={
+                                  this.state[`${i}_product_price`] || price
+                                }
+                                onChange={({ target }) =>
+                                  this.setState({
+                                    [`${i}_product_price`]: target.value,
+                                  })
+                                }
+                              />
+                            </div>
+                          </div>
+                          <div className="col-xl-6 col-lg-12 col-md-12 col-sm-12">
+                            <div className="form-group">
+                              <label>
+                                Number of Payments{" "}
+                                <span className="text-danger">*</span>
+                              </label>
+                              <input
+                                type="number"
+                                className="form-control"
+                                placeholder="Number of Payments"
+                                min="0"
+                                value={
+                                  this.state[`number_of_${i}_payments`] ||
+                                  this.calculate_payments(i)
+                                }
+                                onChange={({ target }) =>
+                                  this.setState({
+                                    [`number_of_${i}_payments`]: target.value,
+                                  })
+                                }
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+                    ) : null}
+                  </>
+                );
+              })}
+            </div>
+          </>
+        ) : null}
         {this.pill_nav("pricing")}
       </div>
     );
@@ -719,6 +821,7 @@ class Add_product_et_service extends Handle_file_upload {
       down_payment,
       vendor,
       description,
+      payment_types,
       installments,
     } = this.state;
 
@@ -729,18 +832,30 @@ class Add_product_et_service extends Handle_file_upload {
     let product = {
       short_description,
       title,
-      value: Number(price),
+      value: Math.abs(Number(price)),
       video,
       payment_duration: Number(payment_duration) || 0,
       description,
       down_payment: Number(down_payment) || 0,
+      payment_types,
       images,
       category,
       quantities: Number(quantities) || 0,
-      installments,
       vendor: vendor._id,
     };
     if (things_to_know.length) product.things_to_know = things_to_know;
+
+    if (payment_types.includes(this.payment_types[1])) {
+      product.installments = installments;
+      installments.map((installment) => {
+        product[`${installment}_product_price`] =
+          Math.abs(Number(this.state[`${installment}_product_price`])) ||
+          Math.abs(Number(price));
+        product[`number_of_${installment}_payments`] =
+          Math.abs(Number(this.state[`number_of_${installment}_payments`])) ||
+          this.calculate_payments(installment);
+      });
+    }
 
     let response;
     if (_id) {

@@ -33,7 +33,7 @@ class Product extends React.Component {
   handle_product = () => save_to_session("product", this.props.product);
 
   render() {
-    let { class_name, product, in_vendor } = this.props;
+    let { class_name, product, in_vendor, edit } = this.props;
 
     let { title, images, value, _id } = product;
 
@@ -47,6 +47,18 @@ class Product extends React.Component {
               <div className="prd_grid_box">
                 {/* <div className="prd_label hot">Hot</div> */}
                 <div className="shd_142">
+                  {edit ? (
+                    <div
+                      className="prt_saveed_12lk pr-3"
+                      onClick={() => edit()}
+                    >
+                      <label className="toggler toggler-danger">
+                        <input type="checkbox" />
+                        <i className="fas fa-edit"></i>
+                      </label>
+                    </div>
+                  ) : null}
+
                   <div
                     className="prt_saveed_12lk"
                     onClick={() => this.save_to_wishlist(loggeduser)}
@@ -67,14 +79,6 @@ class Product extends React.Component {
                 </div>
                 <div className="prd_grid_caption">
                   <div className="prd_center_capt">
-                    {/* <div className="prd_review">
-                <i className="fa fa-star filled"></i>
-                <i className="fa fa-star filled"></i>
-                <i className="fa fa-star filled"></i>
-                <i className="fa fa-star filled"></i>
-                <i className="fa fa-star"></i>
-                <span>(34)</span>
-              </div> */}
                     <Link to={`/product?${_id}`} onClick={this.handle_product}>
                       <div className="prd_title">
                         <h4>{title}</h4>

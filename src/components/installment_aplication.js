@@ -18,10 +18,10 @@ class Installment_application extends React.Component {
     };
   }
 
-  componentDidMount = async () => {
-    let { product, installment } = this.props;
+  check_product_subscription = async (loggeduser) => {
+    if (!this.loggeduser) this.loggeduser = loggeduser;
 
-    if (!this.loggeduser) return;
+    let { product, installment } = this.props;
 
     let subscribed = await post_request("product_subscription", {
       user: this.loggeduser._id,
@@ -30,6 +30,10 @@ class Installment_application extends React.Component {
     });
 
     this.setState({ subscribed });
+  };
+
+  componentDidMount = async () => {
+    this.loggeduser && this.check_product_subscription();
   };
 
   proceed = () => this.make_payment && this.make_payment?.toggle();
@@ -48,11 +52,16 @@ class Installment_application extends React.Component {
     let { toggle, product, installment } = this.props;
     let { vendor, down_payment } = product;
 
-    console.log(installment);
+    let number_of_payments = product[`number_of_${installment}_payments`];
 
     return (
       <Loggeduser.Consumer>
         {({ loggeduser }) => {
+          if (!loggeduser)
+            return (
+              <Login no_redirect action={this.check_product_subscription} />
+            );
+
           this.loggeduser = loggeduser;
 
           return (
@@ -129,6 +138,7 @@ class Installment_application extends React.Component {
                     total: product.value,
                     part_payments: part_payment,
                     installment,
+                    number_of_payments,
                     user: loggeduser._id,
                     type: "pay_small_small",
                     title: "Installmental Payment Initiation",

@@ -18,24 +18,31 @@ class Make_payment extends React.Component {
 
   make_payment = async () => {
     let { details, on_payment, toggle } = this.props;
-    let { user, to, value, title, installment, total, part_payments, data } =
-      details;
+    let {
+      user,
+      to,
+      value,
+      number_of_payments,
+      title,
+      installment,
+      total,
+      part_payments,
+      data,
+    } = details;
 
     this.setState({ loading: true });
-    console.log(details);
 
     let res = await post_request("subscribe_to_product" || "make_payment", {
       value,
       part_payments: Number(part_payments),
       payer: user,
+      number_of_payments,
       recipient: to,
       total,
       installment,
       title,
       product: data?._id || data,
     });
-
-    console.log(res);
 
     if (res?._id) {
       on_payment && on_payment(res);
