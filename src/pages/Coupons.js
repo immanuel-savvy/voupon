@@ -62,7 +62,7 @@ class Coupons extends React.Component {
                   <h2>
                     Coupons <span className="theme-cl"></span>
                   </h2>
-                  <p>Find coupons to your favorite vendors here. </p>
+                  <p>Find coupons to your favorite vendors here.</p>
                 </div>
               </div>
             </div>

@@ -704,7 +704,7 @@ class Create_event extends Handle_file_upload {
         <div className="container">
           <Section_header
             title="Create Event"
-            description="Deserunt aute proident excepteur duis officia eiusmod sit do duis commodo fugiat nisi est cillum."
+            description="Explore, manage subscription and trade product listings with best price and plan"
           />
 
           <div className="row">

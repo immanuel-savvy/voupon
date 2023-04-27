@@ -7,6 +7,7 @@ import {
   to_title,
 } from "../assets/js/utils/functions";
 import { save_to_session } from "../sections/footer";
+import Text_btn from "./text_btn";
 
 class Transaction extends React.Component {
   constructor(props) {
@@ -35,6 +36,8 @@ class Transaction extends React.Component {
         ? "event"
         : data._id?.startsWith("vouchers")
         ? "voucher"
+        : data._id?.startsWith("products")
+        ? "product"
         : "";
 
     return (
@@ -68,12 +71,17 @@ class Transaction extends React.Component {
             </h6>
 
             {data && data._id ? (
-              <Link
-                onClick={() => this.handle_click(routename, data, vendor)}
-                to={`/${routename}`}
-              >
-                <h5 style={{ marginBottom: 0 }}>{data.title}</h5>
-              </Link>
+              <>
+                <Link
+                  onClick={() => this.handle_click(routename, data, vendor)}
+                  to={`/${routename}`}
+                >
+                  <h5 style={{ marginBottom: 0 }}>{data.title}</h5>
+                </Link>
+
+                <Text_btn text="View details" action={this.handle_details} />
+                <br />
+              </>
             ) : null}
 
             {(customer && in_vendor) || (vendor && !in_vendor) ? (

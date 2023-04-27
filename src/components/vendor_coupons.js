@@ -9,7 +9,7 @@ import Coupon from "./coupon";
 import { Tab, Tabs } from "react-bootstrap";
 import { to_title } from "../assets/js/utils/functions";
 import Create_coupon from "./create_coupon";
-import { Loggeduser } from "../Contexts";
+import Section_header from "./section_headers";
 
 const coupon_types = new Array("open", "premium");
 
@@ -80,6 +80,9 @@ class Vendor_coupons extends React.Component {
                   }
                   set_voucher_filter={(filter) => this.setState({ filter })}
                 />
+
+                <Section_header description="Pariatur dolor nostrud Lorem culpa excepteur sint." />
+
                 <div className="row align-items-center">
                   {this.state[`${type}_coupons`] ? (
                     this.state[`${type}_coupons`].length ? (

@@ -69,7 +69,7 @@ class Packages extends React.Component {
                 </div>
                 <div className="prt_price">
                   <h2>
-                    <span>$</span>20
+                    <span>&#8358;</span>10,000
                   </h2>
                   <span>per user, per year</span>
                 </div>
@@ -79,11 +79,11 @@ class Packages extends React.Component {
                     <li>Unlock Access to All Premium and Open Coupons</li>
                     <li>50% Discount on Transaction FEE</li>
                     <li>Share in Platform Revenue</li>
-                    <li>
+                    {/* <li>
                       Only Premium Users can get verified and thus would be able
                       to explore Pay Small Small (Minimum of 1M Reward Token as
                       collateral)
-                    </li>
+                    </li> */}
                   </ul>
                 </div>
                 <div className="prt_footer">
