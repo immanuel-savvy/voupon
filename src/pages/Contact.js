@@ -2,7 +2,6 @@ import React from "react";
 import { email_regex } from "../assets/js/utils/functions";
 import { post_request } from "../assets/js/utils/services";
 import Contact_sidebar from "../components/contact_sidebar";
-import Loadindicator from "../components/loadindicator";
 import Padder from "../components/padder";
 import Stretch_button from "../components/stretch_button";
 import Breadcrumb_banner from "../sections/breadcrumb_banner";
