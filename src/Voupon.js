@@ -128,6 +128,9 @@ class Voupon extends React.Component {
             },
             {
               title: "wishlist",
+            },
+            {
+              title: "my_subcriptions",
             }
           ),
         },

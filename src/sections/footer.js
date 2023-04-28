@@ -1,6 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { developer_domain } from "../assets/js/utils/constants";
+import {
+  developer_domain,
+  organisation_name,
+} from "../assets/js/utils/constants";
 import Toaster from "../components/toast";
 import { emitter } from "../Voupon";
 let navs = new Array("vouchers", "events", "coupons", "vendors");
@@ -133,7 +136,8 @@ class Footer extends React.Component {
             <div className="row align-items-center">
               <div className="col-lg-12 col-md-12 text-center">
                 <p className="mb-0">
-                  © {new Date().getFullYear()} Voupon. All rights reserved.
+                  © {new Date().getFullYear()} {organisation_name}. All rights
+                  reserved.
                 </p>
               </div>
             </div>

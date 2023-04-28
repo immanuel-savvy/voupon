@@ -28,6 +28,7 @@ import { emitter } from "../Voupon";
 import { scroll_to_top } from "./footer";
 import Small_btn from "../components/small_btn";
 import Wishlist from "../components/wishlist";
+import User_subscriptions from "../components/user_subscriptions";
 
 class Custom_nav extends React.Component {
   constructor(props) {
@@ -66,6 +67,8 @@ class Custom_nav extends React.Component {
   verify_ticket = () => this.verify_ticket_?.toggle();
 
   verify_coupon = () => this.verify_coupon_?.toggle();
+
+  my_subcriptions = () => this.user_subcriptions?.toggle();
 
   marketplace = () => window.location.assign(`${client_domain}/marketplace`);
 
@@ -198,6 +201,7 @@ class Custom_nav extends React.Component {
                                                 "my_coupons",
                                                 "my_tickets",
                                                 "wishlist",
+                                                "my_subcriptions",
                                                 "create_event"
                                               ).includes(subnav.title)
                                             )
@@ -523,6 +527,17 @@ class Custom_nav extends React.Component {
 
                     <Modal ref={(wishlist_) => (this.wishlist_ = wishlist_)}>
                       <Wishlist user={loggeduser} toggle={this.wishlist} />
+                    </Modal>
+
+                    <Modal
+                      ref={(user_subcriptions) =>
+                        (this.user_subcriptions = user_subcriptions)
+                      }
+                    >
+                      <User_subscriptions
+                        user={loggeduser}
+                        toggle={this.my_subcriptions}
+                      />
                     </Modal>
                   </div>
                 );

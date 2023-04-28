@@ -4,7 +4,7 @@ import Listempty from "./listempty";
 import Loadindicator from "./loadindicator";
 import Product_subscription from "./product_subscription";
 
-class Product_subscribers extends React.Component {
+class User_subscriptions extends React.Component {
   constructor(props) {
     super(props);
 
@@ -12,10 +12,10 @@ class Product_subscribers extends React.Component {
   }
 
   componentDidMount = async () => {
-    let { product } = this.props;
+    let { user } = this.props;
 
-    let subscribers = await post_request("product_subcribers", {
-      product: product._id,
+    let subscribers = await post_request("user_subscriptions", {
+      user: user._id,
     });
 
     this.setState({ subscribers });
@@ -29,7 +29,7 @@ class Product_subscribers extends React.Component {
       <div>
         <div class="modal-content overli" id="loginmodal">
           <div class="modal-header">
-            <h5 class="modal-title">Product Subscribers</h5>
+            <h5 class="modal-title">Your Subscriptions</h5>
             <button
               type="button"
               class="close"
@@ -63,4 +63,4 @@ class Product_subscribers extends React.Component {
   }
 }
 
-export default Product_subscribers;
+export default User_subscriptions;
