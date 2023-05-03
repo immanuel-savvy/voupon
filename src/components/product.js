@@ -93,9 +93,13 @@ class Product extends React.Component {
                   </div>
                   <div className="prd_bot_capt">
                     <div className="prd_button">
-                      <a href="product-detail.html" className="bth bth_prd">
-                        Add To Cart
-                      </a>
+                      <Link
+                        to={`/product?${_id}`}
+                        onClick={this.handle_product}
+                        className="bth bth_prd"
+                      >
+                        View Product
+                      </Link>
                     </div>
 
                     {in_vendor ? (

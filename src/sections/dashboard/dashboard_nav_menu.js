@@ -27,9 +27,11 @@ class Dashboard_nav_menu extends React.Component {
 
         { title: "running_vouchers" },
         { title: "redeemed_vouchers" },
-
         {
           title: "about_statement",
+        },
+        {
+          title: "FAQS",
         }
       ),
     };

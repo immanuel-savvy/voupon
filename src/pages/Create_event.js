@@ -11,7 +11,8 @@ import Vendor_header from "../components/vender_header";
 import Footer, { get_session } from "../sections/footer";
 import Custom_Nav from "../sections/nav";
 import { emitter } from "../Voupon";
-import { categories } from "./Become_a_vendor";
+
+const ticket_categories = new Array("events", "movies", "concert", "admission");
 
 class Create_event extends Handle_file_upload {
   constructor(props) {
@@ -47,7 +48,7 @@ class Create_event extends Handle_file_upload {
     if (!vendor || (vendor && vendor._id !== this.loggeduser.vendor)) {
       vendor = await get_request(`vendor/${this.loggeduser.vendor}`);
 
-      if (!vendor || (vendor && vendor._id)) return window.history.go(-1);
+      if (!vendor || (vendor && !vendor._id)) return window.history.go(-1);
     }
 
     this.setState({ vendor });
@@ -438,10 +439,10 @@ class Create_event extends Handle_file_upload {
               }
               className="form-control"
             >
-              <option value="">-- Select Offer Category --</option>
-              {categories.map((category) => (
-                <option key={category._id} value={category._id}>
-                  {to_title(category.title.replace(/_/g, " "))}
+              <option value="">-- Select Category --</option>
+              {ticket_categories.map((category) => (
+                <option key={category} value={category}>
+                  {to_title(category.replace(/_/g, " "))}
                 </option>
               ))}
             </select>
@@ -703,7 +704,7 @@ class Create_event extends Handle_file_upload {
         <Vendor_header vendor={vendor} />
         <div className="container">
           <Section_header
-            title="Create Event"
+            title="Create Ticketing"
             description="Explore, manage subscription and trade product listings with best price and plan"
           />
 
@@ -754,3 +755,4 @@ class Create_event extends Handle_file_upload {
 }
 
 export default Create_event;
+export { ticket_categories };

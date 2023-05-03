@@ -49,7 +49,7 @@ class Create_offer_voucher extends Handle_file_upload {
     if (!vendor || (vendor && vendor._id !== this.loggeduser.vendor)) {
       vendor = await get_request(`vendor/${this.loggeduser.vendor}`);
 
-      if (!vendor || (vendor && vendor._id)) return window.history.go(-1);
+      if (!vendor || (vendor && !vendor._id)) return window.history.go(-1);
     }
 
     this.setState({ vendor });

@@ -4,6 +4,7 @@ import Loadindicator from "../components/loadindicator";
 import Packages from "../components/packages";
 import Upcoming_events from "../components/upcoming_events";
 import { Loggeduser } from "../Contexts";
+import Faqs from "../sections/faqs";
 import Featured_coupons from "../sections/featured_coupons";
 import Featured_vouchers from "../sections/featured_vouchers";
 import Footer from "../sections/footer";
@@ -91,6 +92,8 @@ class Home extends React.Component {
                 <Our_vendors />
 
                 {loggeduser && loggeduser.premium ? null : <Packages />}
+
+                <Faqs />
               </div>
               <Footer />
             </div>

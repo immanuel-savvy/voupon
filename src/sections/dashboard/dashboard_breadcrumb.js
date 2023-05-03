@@ -41,12 +41,13 @@ class Dashboard_breadcrumb extends React.Component {
                   <ol class="breadcrumb">
                     <li class="breadcrumb-item">
                       <Link
+                        to="/adminstrator"
                         onClick={() =>
                           emitter.emit("dash_nav_click", "dashboard")
                         }
                         style={{ color: "#000132" }}
                       >
-                        Home
+                        Dashbords
                       </Link>
                     </li>
                     <li class="breadcrumb-item active" aria-current="page">

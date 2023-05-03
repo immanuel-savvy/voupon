@@ -20,31 +20,47 @@ class Events extends React.Component {
     };
   }
 
-  componentDidMount = async () => {
-    let { limit, page } = this.state;
+  fetch_tickets = async (category) => {
+    let { limit, page, category: cat } = this.state;
+    if (!category) category = cat;
+    this.setState({ fetching: true });
 
     let { events, total } = await post_request(`events`, {
       limit,
       skip: limit * (page - 1),
+      query: category ? { category } : null,
     });
 
-    this.setState({ events, total });
+    this.setState({ events, total, category, fetching: false });
   };
 
+  componentDidMount = async () => {
+    let search = window.location.search;
+
+    if (search) search = search.slice(1);
+
+    await this.fetch_tickets(search);
+  };
+
+  set_category = (category) => this.setState({ category }, this.fetch_tickets);
+
   render() {
-    let { events, total, page, limit } = this.state;
+    let { events, total, fetching, page, limit, category } = this.state;
 
     return (
       <div>
-        <Nav page="events" />
+        <Nav page="tickets" />
 
         <Padder />
-        <Breadcrumb_banner page="events" />
+        <Breadcrumb_banner page="Tickets" />
 
         <section className="gray">
           <div className="container">
             <div className="row">
-              <Events_sidebar />
+              <Events_sidebar
+                set_category={this.set_category}
+                category={category}
+              />
 
               <div class="col-xl-8 col-lg-8 col-md-12 col-sm-12">
                 <Vouchers_header
@@ -55,7 +71,7 @@ class Events extends React.Component {
                 />
 
                 <div class="row justify-content-center">
-                  {events ? (
+                  {events && !fetching ? (
                     events.length ? (
                       events.map((event, index) => (
                         <Event event={event} in_events key={index} />

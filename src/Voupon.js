@@ -25,7 +25,7 @@ import Vendors from "./pages/Vendors";
 import Create_offer_voucher from "./pages/Create_offer_voucher";
 import Voucher from "./pages/Voucher";
 import Developer from "./pages/Developer";
-import Create_event from "./pages/Create_event";
+import Create_event, { ticket_categories } from "./pages/Create_event";
 import Events from "./pages/Events";
 import Event from "./pages/Event";
 import User_tickets_dash from "./pages/User_tickets";
@@ -63,6 +63,22 @@ class Voupon extends React.Component {
           path: "/",
         },
         {
+          title: "create",
+          submenu: new Array(
+            {
+              title: "vouchers",
+              submenu: new Array(
+                { title: "open_vouchers", path: "" },
+                { title: "offer_vouchers", path: "" }
+              ),
+            },
+            {
+              title: "create_coupon",
+            },
+            { title: "create_event" }
+          ),
+        },
+        {
           title: "vouchers",
           path: "/vouchers",
           submenu: new Array(
@@ -78,16 +94,6 @@ class Voupon extends React.Component {
               // on_click: () => {},
               path: "/user_vouchers",
             },
-            {
-              title: "create_voucher",
-              _id: "create_voucher",
-              // on_click: () => {},
-              submenu: new Array(
-                { title: "open_vouchers", path: "" },
-                { title: "offer_vouchers", path: "" }
-              ),
-              path: "",
-            },
             { title: "redeem_voucher", _id: 4, path: "" },
             { title: "verify_voucher", _id: 5, path: "" }
           ),
@@ -99,28 +105,25 @@ class Voupon extends React.Component {
             {
               title: "coupons",
             },
-            {
-              title: "create_coupon",
-              // submenu: new Array(
-              //   { title: "open_coupons", path: "" },
-              //   { title: "premium_coupons", path: "" }
-              // ),
-            },
             { title: "verify_coupon" }
           ),
         },
         {
           title: "tickets",
-          path: "/events",
+          path: "/tickets",
           submenu: new Array(
-            { title: "events", path: "/events" },
-            { title: "create_event" },
+            {
+              title: "categories",
+              submenu: ticket_categories.map(
+                (c) => new Object({ title: c, path: `tickets?${c}` })
+              ),
+            },
             { title: "my_tickets", path: "/my_tickets" },
             { title: "verify_ticket" }
           ),
         },
         {
-          title: "marketplace",
+          title: "ENPL",
           path: "/marketplace",
           submenu: new Array(
             {
@@ -142,8 +145,6 @@ class Voupon extends React.Component {
             { title: "all_vendors" }
           ),
         },
-        { title: "developer", path: "/developer" },
-
         {
           title: "login",
           path: "",
@@ -305,7 +306,7 @@ class Voupon extends React.Component {
                 <Route path="vouchers" element={<Vouchers />} />
                 <Route path="vendors" element={<Vendors />} />
                 <Route path="create_event" element={<Create_event />} />
-                <Route path="events" element={<Events />} />
+                <Route path="tickets" element={<Events />} />
                 <Route path="event" element={<Event />} />
                 <Route path="gift_cards" element={<Giftcards />} />
                 <Route path="coupons" element={<Coupons />} />

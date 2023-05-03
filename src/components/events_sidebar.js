@@ -1,7 +1,7 @@
 import React from "react";
 import { to_title } from "../assets/js/utils/functions";
 import { get_request } from "../assets/js/utils/services";
-import { categories } from "../pages/Become_a_vendor";
+import { ticket_categories } from "../pages/Create_event";
 import Loadindicator from "./loadindicator";
 
 class Events_sidebar extends React.Component {
@@ -18,6 +18,7 @@ class Events_sidebar extends React.Component {
   };
 
   render() {
+    let { category, set_category } = this.props;
     let { top_vendors } = this.state;
 
     return (
@@ -48,13 +49,18 @@ class Events_sidebar extends React.Component {
 
               <div class="form-group">
                 <div class="simple-input">
-                  <select id="cates" class="form-control">
-                    <option disabled selected value="">
-                      --Select Categories--
-                    </option>
-                    {categories.map((cat) => (
-                      <option value={cat._id} key={cat._id}>
-                        {to_title(cat.title)}
+                  <select
+                    id="cates"
+                    defaultValue={category}
+                    onChange={({ target }) => {
+                      set_category && set_category(target.value);
+                    }}
+                    class="form-control"
+                  >
+                    <option value="">--Select Categories--</option>
+                    {ticket_categories.map((cat) => (
+                      <option value={cat} key={cat}>
+                        {to_title(cat)}
                       </option>
                     ))}
                   </select>

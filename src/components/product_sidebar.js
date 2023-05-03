@@ -135,9 +135,6 @@ class Product_sidebar extends React.Component {
                     </div>
                   </div>
                   <div class="woo_buttons">
-                    <button type="submit" class="btn btn-theme2">
-                      Add to cart
-                    </button>
                     <a
                       onClick={(e) => {
                         e.preventDefault();

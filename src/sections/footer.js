@@ -4,9 +4,10 @@ import {
   developer_domain,
   organisation_name,
 } from "../assets/js/utils/constants";
+import Socials from "../components/socials";
 import Toaster from "../components/toast";
 import { emitter } from "../Voupon";
-let navs = new Array("vouchers", "events", "coupons", "vendors");
+let navs = new Array("vouchers", "tickets", "coupons", "vendors");
 
 const rewards = new Object({
   create_voucher: 100,
@@ -64,6 +65,8 @@ class Footer extends React.Component {
         style={{ backgroundColor: "#000" }}
       >
         <div className="footer-middle">
+          <Socials />
+
           <div className="container">
             <div className="row">
               <div className="col-lg-5 col-md-5">

@@ -8,6 +8,14 @@
   scroll-snap-align: start;
 }
 
+.fixed_on_page_box {
+  position: fixed;
+  bottom: 15px;
+  right: 15px;
+  cursor: pointer;
+  z-index: 99999999;
+}
+
 .nav-menu li {
   text-transform: capitalize;
 }
