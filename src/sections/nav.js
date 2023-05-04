@@ -248,7 +248,18 @@ class Custom_nav extends React.Component {
                                                           " "
                                                         )
                                                       )}
+                                                  {subnav.title ===
+                                                  "Enjoy_Now_Pay_Later" ? (
+                                                    <>
+                                                      <br />
+                                                      <small>
+                                                        Subscriptions,
+                                                        Installments
+                                                      </small>
+                                                    </>
+                                                  ) : null}
                                                 </Link>
+
                                                 {subnav.submenu &&
                                                 subnav.submenu.length &&
                                                 current_subnav ===

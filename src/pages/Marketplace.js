@@ -39,7 +39,7 @@ class Marketplace extends React.Component {
         <Custom_nav page="marketplace" />
         <Padder />
         <Breadcrumb_banner
-          page="marketplace"
+          page="Enjoy Now, Pay Later"
           bg={require("../assets/img/coupons1.jpg")}
         />
 
