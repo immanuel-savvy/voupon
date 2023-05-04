@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { client_domain } from "../assets/js/utils/constants";
 import { to_title } from "../assets/js/utils/functions";
 import { domain, get_request, post_request } from "../assets/js/utils/services";
 import Alert_box from "../components/alert_box";
@@ -43,13 +44,14 @@ class Create_offer_voucher extends Handle_file_upload {
     this.loggeduser = this.loggeduser || get_session("loggeduser");
 
     if (!this.loggeduser || (this.loggeduser && !this.loggeduser.vendor))
-      return window.history.go(-1);
+      return window.location.assign(`${client_domain}/become_a_vendor`);
 
     let vendor = get_session("vendor");
     if (!vendor || (vendor && vendor._id !== this.loggeduser.vendor)) {
       vendor = await get_request(`vendor/${this.loggeduser.vendor}`);
 
-      if (!vendor || (vendor && !vendor._id)) return window.history.go(-1);
+      if (!vendor || (vendor && !vendor._id))
+        return window.location.assign(`${client_domain}/become_a_vendor`);
     }
 
     this.setState({ vendor });

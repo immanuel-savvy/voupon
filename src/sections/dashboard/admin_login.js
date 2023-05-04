@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { to_title } from "../../assets/js/utils/functions";
 import { post_request } from "../../assets/js/utils/services";
+import Loadindicator from "../../components/loadindicator";
 import Padder from "../../components/padder";
 import Footer from "../../sections/footer";
 import Nav from "../../sections/nav";
@@ -19,18 +20,25 @@ class Admin_login extends React.Component {
   set_password = ({ target }) =>
     this.setState({ password: target.value, message: "" });
 
+  toggle_reveal_password = () => this.setState({ reveal: !this.state.reveal });
+
   login = async () => {
     let { email, password } = this.state;
+    this.setState({ loading: true });
 
     let response = await post_request("admin_login", { email, password });
 
     response && response.admin
       ? this.props.log_admin(response.admin)
-      : this.setState({ password: "", message: response.message });
+      : this.setState({
+          password: "",
+          message: response.message,
+          loading: false,
+        });
   };
 
   render() {
-    let { email, password, message } = this.state;
+    let { email, password, message, reveal, loading } = this.state;
 
     return (
       <div id="main-wrapper">
@@ -74,21 +82,33 @@ class Admin_login extends React.Component {
                         <div className="form-group">
                           <label>Password</label>
                           <input
-                            type="password"
+                            type={reveal ? "text" : "password"}
                             className="form-control"
                             value={password}
                             onChange={this.set_password}
                             placeholder="*******"
                           />
+
+                          <a
+                            onClick={this.toggle_reveal_password}
+                            style={{ cursor: "pointer" }}
+                            className="text-dark"
+                          >
+                            {`${reveal ? "Hide" : "Show"}`}
+                          </a>
                         </div>
                         <div className="form-group">
-                          <button
-                            type="button"
-                            className="btn full-width btn-md theme-bg text-white"
-                            onClick={this.login}
-                          >
-                            Login
-                          </button>
+                          {loading ? (
+                            <Loadindicator />
+                          ) : (
+                            <button
+                              type="button"
+                              className="btn full-width btn-md theme-bg text-white"
+                              onClick={this.login}
+                            >
+                              Login
+                            </button>
+                          )}
                         </div>
                       </div>
                       {message ? (

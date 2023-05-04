@@ -16,6 +16,7 @@ import { emitter } from "../Voupon";
 import About_statement from "../sections/dashboard/about_statement";
 import Pending_users_verification from "../sections/dashboard/pending_users_verification";
 import Manage_faqs from "../sections/dashboard/manage_faqs";
+import Manage_subscribers from "../sections/dashboard/manage_subscribers";
 
 class Adminstrator extends React.Component {
   constructor(props) {
@@ -71,6 +72,7 @@ class Adminstrator extends React.Component {
       pending_users_verification: <Pending_users_verification />,
       about_statement: <About_statement />,
       FAQS: <Manage_faqs />,
+      subscribers: <Manage_subscribers />,
     });
 
   render() {

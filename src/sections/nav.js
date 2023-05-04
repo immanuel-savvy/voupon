@@ -24,7 +24,6 @@ import Verify_voucher from "../components/verify_voucher";
 import Verify_coupon from "../components/verify_coupon";
 import Verify_ticket from "../components/verify_ticket";
 import { Loggeduser, Nav_context } from "../Contexts";
-import { emitter } from "../Voupon";
 import { scroll_to_top } from "./footer";
 import Small_btn from "../components/small_btn";
 import Wishlist from "../components/wishlist";
@@ -56,7 +55,14 @@ class Custom_nav extends React.Component {
     window.location.assign(`${client_domain}/create_offer_voucher`);
   };
 
-  create_event = () => {
+  create_ticket = (loggeduser) => {
+    if (!this.loggeduser) this.loggeduser = loggeduser;
+
+    if (!this.loggeduser) {
+      this.login_redirect = this.create_ticket;
+      return this.login();
+    }
+
     window.location.assign(`${client_domain}/create_event`);
   };
 
@@ -70,7 +76,8 @@ class Custom_nav extends React.Component {
 
   my_subcriptions = () => this.user_subcriptions?.toggle();
 
-  marketplace = () => window.location.assign(`${client_domain}/marketplace`);
+  Enjoy_Now_Pay_Later = () =>
+    window.location.assign(`${client_domain}/marketplace`);
 
   wishlist = () => this.wishlist_.toggle();
 
@@ -86,7 +93,7 @@ class Custom_nav extends React.Component {
 
   redeem_voucher = () => this.redeem_voucher_?.toggle();
 
-  componentDidMount = () => {};
+  toggle_login = () => this.login_modal?.toggle();
 
   search = () => {
     let { search_param } = this.state;
@@ -104,6 +111,7 @@ class Custom_nav extends React.Component {
     return (
       <Loggeduser.Consumer>
         {({ loggeduser, logout }) => {
+          this.loggeduser = loggeduser;
           this.logout = logout;
 
           return (
@@ -201,15 +209,8 @@ class Custom_nav extends React.Component {
                                                 "my_coupons",
                                                 "my_tickets",
                                                 "wishlist",
-                                                "my_subcriptions",
-                                                "create_event"
+                                                "my_subcriptions"
                                               ).includes(subnav.title)
-                                            )
-                                              return;
-
-                                            if (
-                                              subnav.title === "create_event" &&
-                                              !loggeduser.vendor
                                             )
                                               return;
 
@@ -293,17 +294,6 @@ class Custom_nav extends React.Component {
                                                           .length ? (
                                                           subnav.submenu.map(
                                                             (sub_nav) => {
-                                                              if (
-                                                                sub_nav.title ===
-                                                                "offer_vouchers"
-                                                              )
-                                                                if (
-                                                                  !loggeduser ||
-                                                                  (loggeduser &&
-                                                                    !loggeduser.vendor)
-                                                                )
-                                                                  return;
-
                                                               return (
                                                                 <li
                                                                   onClick={
@@ -471,7 +461,10 @@ class Custom_nav extends React.Component {
                     <Modal
                       ref={(login_modal) => (this.login_modal = login_modal)}
                     >
-                      <Login toggle={() => this.login_modal?.toggle()} />
+                      <Login
+                        action={this.login_redirect}
+                        toggle={this.toggle_login}
+                      />
                     </Modal>
 
                     <Modal

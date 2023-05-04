@@ -68,7 +68,7 @@ class Offer_voucher extends React.Component {
               </div>
               <div className="crs_fl_last">
                 <div className="crs_inrolled">
-                  <strong>{commalise_figures(total_sales || 0)}</strong>
+                  <strong>{commalise_figures(total_sales || 0, true)}</strong>
                   Purchased
                 </div>
               </div>

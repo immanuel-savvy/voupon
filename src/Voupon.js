@@ -66,7 +66,7 @@ class Voupon extends React.Component {
           title: "create",
           submenu: new Array(
             {
-              title: "vouchers",
+              title: "create vouchers",
               submenu: new Array(
                 { title: "open_vouchers", path: "" },
                 { title: "offer_vouchers", path: "" }
@@ -75,7 +75,7 @@ class Voupon extends React.Component {
             {
               title: "create_coupon",
             },
-            { title: "create_event" }
+            { title: "create_ticket" }
           ),
         },
         {
@@ -127,7 +127,7 @@ class Voupon extends React.Component {
           path: "/marketplace",
           submenu: new Array(
             {
-              title: "marketplace",
+              title: "Enjoy_Now_Pay_Later",
             },
             {
               title: "wishlist",
@@ -351,7 +351,7 @@ class Voupon extends React.Component {
                 <Route path="product" element={<Product />} />
                 <Route path="developer" element={<Developer />} />
                 <Route path="forgot_password" element={<Forgot_password />} />
-                <Route path="adminstrator" element={<Adminstrator />} />
+                <Route path="administrator" element={<Adminstrator />} />
                 <Route path="*" element={<Page_not_found />} />
               </Routes>
             </BrowserRouter>

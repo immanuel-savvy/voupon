@@ -32,7 +32,8 @@ class Dashboard_nav_menu extends React.Component {
         },
         {
           title: "FAQS",
-        }
+        },
+        { title: "subscribers" }
       ),
     };
   }
