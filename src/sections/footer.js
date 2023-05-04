@@ -4,6 +4,9 @@ import {
   developer_domain,
   organisation_name,
 } from "../assets/js/utils/constants";
+import { email_regex } from "../assets/js/utils/functions";
+import { post_request } from "../assets/js/utils/services";
+import Loadindicator from "../components/loadindicator";
 import Socials from "../components/socials";
 import Toaster from "../components/toast";
 import { emitter } from "../Voupon";
@@ -56,8 +59,18 @@ class Footer extends React.Component {
     emitter.remove_listener("toggle_toast", this.toggle_toast);
   };
 
+  subscribe_newsletter = async () => {
+    let { email, subscribing } = this.state;
+    if (!email || (email && !email_regex.test(email)) || subscribing) return;
+
+    this.setState({ subscribing: true });
+
+    await post_request("subscribe_newsletter", { email });
+    this.setState({ subscribing: false, subscribed: true });
+  };
+
   render() {
-    let { message, title } = this.state;
+    let { message, title, email, subscribed, subscribing } = this.state;
 
     return (
       <footer
@@ -84,6 +97,46 @@ class Footer extends React.Component {
                     18, Afolabi Aina Street, Allen Avenue, <br />
                     Ikeja, Lagos state.
                   </p>
+
+                  <hr />
+
+                  <h4 className="extream mb-3">
+                    Do you need help with
+                    <br />
+                    anything?
+                  </h4>
+                  <p>
+                    Receive updates, hot deals, tutorials, discounts sent
+                    straight in your inbox every week
+                  </p>
+                  <div className="foot-news-last">
+                    <div className="input-group">
+                      <input
+                        type="text"
+                        value={email}
+                        disabled={!!subscribed}
+                        className="form-control"
+                        placeholder="Email Address"
+                        onChange={({ target }) =>
+                          this.setState({ email: target.value })
+                        }
+                      />
+                      <div className="input-group-append">
+                        {subscribing ? (
+                          <Loadindicator />
+                        ) : (
+                          <button
+                            type="button"
+                            onClick={this.subscribe_newsletter}
+                            className="input-group-text theme-bg b-0 text-light"
+                          >
+                            Subscribe
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                    {subscribed ? <p>Email subscribed to newsletter!</p> : null}
+                  </div>
                 </div>
               </div>
 
