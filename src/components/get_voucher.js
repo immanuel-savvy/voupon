@@ -8,9 +8,14 @@ import { email_regex } from "../assets/js/utils/functions";
 import { post_request } from "../assets/js/utils/services";
 import Login from "./login";
 import Voucher_purchase_details from "./voucher_purchase_details";
+import { PAYMENT_LIVE } from "../assets/js/utils/constants";
 
-const Paystack_public_key = "pk_test_88c19524a2abc3ad156a72952316e0f77ca87f4e";
-const Paystack_private_key = "sk_test_8f53d8f0d9303a18a856d4aeba97603d0795fdcb";
+const Paystack_public_key = PAYMENT_LIVE
+  ? "pk_live_6cd13fb4fd5c17c366bbd44862d639aea71e5670"
+  : "pk_test_bb18a2e51d82edaf36aa443679756267d6fef396";
+const Paystack_private_key = PAYMENT_LIVE
+  ? "sk_live_195a61d2e959c741a42ca1b9eafeb35d53b4e169"
+  : "sk_test_3937d46911e47f3c6609c40f79b5f4dbef1210f6";
 
 class Get_voucher extends React.Component {
   constructor(props) {

@@ -38,6 +38,7 @@ import Marketplace from "./pages/Marketplace";
 import Add_product_et_service from "./pages/Add_product_et_service";
 import Product from "./pages/Product";
 import User_verification from "./pages/User_verification";
+import Reset_password from "./pages/Reset_password";
 
 const emitter = new Emitter();
 
@@ -115,10 +116,18 @@ class Voupon extends React.Component {
             {
               title: "categories",
               submenu: ticket_categories.map(
-                (c) => new Object({ title: c, path: `tickets?${c}` })
+                (c) =>
+                  new Object({
+                    title: c,
+                    path: `/tickets?${c}`,
+                    action: () => window.location.reload(),
+                  })
               ),
             },
-            { title: "my_tickets", path: "/my_tickets" },
+            {
+              title: "my_tickets",
+              path: "/my_tickets",
+            },
             { title: "verify_ticket" }
           ),
         },
@@ -312,6 +321,7 @@ class Voupon extends React.Component {
                 <Route path="coupons" element={<Coupons />} />
                 <Route path="dashboard" element={<Dashboard />} />
                 <Route path="vendor" element={<Vendor_profile />} />
+                <Route path="reset_password" element={<Reset_password />} />
                 <Route path="my_tickets" element={<User_tickets_dash />} />
                 <Route path="verify_email" element={<Verify_email />} />
                 <Route path="about" element={<About />} />

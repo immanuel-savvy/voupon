@@ -26,7 +26,11 @@ class Login extends React.Component {
     if (res && res._id) {
       action && action(res);
       this.login(res, this.props.no_redirect);
-    } else this.setState({ message: res, logging_in: false });
+    } else
+      this.setState({
+        message: res?.message || "Cannot login at the moment",
+        logging_in: false,
+      });
   };
 
   render() {

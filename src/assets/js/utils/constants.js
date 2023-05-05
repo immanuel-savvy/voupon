@@ -1,5 +1,7 @@
 const DEV = false;
 
+const PAYMENT_LIVE = true;
+
 const hostname = DEV
   ? `http://${"localhost"}`
   : "https://api.voucherafrica.com:2559";
@@ -57,6 +59,7 @@ export {
   default_admin,
   organisation_name,
   DEV,
+  PAYMENT_LIVE,
   dow_index,
   dow_index_inverse,
   developer_domain,

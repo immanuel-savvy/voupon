@@ -237,7 +237,10 @@ class Custom_nav extends React.Component {
                                                 }}
                                               >
                                                 <Link
-                                                  onClick={this[subnav.title]}
+                                                  onClick={
+                                                    this[subnav.title] ||
+                                                    subnav.action
+                                                  }
                                                   to={subnav.path || ""}
                                                 >
                                                   {subnav.view_all
@@ -311,7 +314,8 @@ class Custom_nav extends React.Component {
                                                                     this[
                                                                       sub_nav
                                                                         .title
-                                                                    ]
+                                                                    ] ||
+                                                                    sub_nav.action
                                                                   }
                                                                   style={{
                                                                     backgroundColor:

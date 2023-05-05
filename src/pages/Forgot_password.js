@@ -1,6 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { client_domain } from "../assets/js/utils/constants";
+import { email_regex } from "../assets/js/utils/functions";
+import { post_request } from "../assets/js/utils/services";
 import Padder from "../components/padder";
+import Stretch_button from "../components/stretch_button";
 import Footer from "../sections/footer";
 import Nav from "../sections/nav";
 
@@ -11,7 +15,24 @@ class Forgot_password extends React.Component {
     this.state = {};
   }
 
+  proceed = async () => {
+    let { email } = this.state;
+
+    this.setState({ loading: true });
+
+    let res = await post_request("request_password_otp", { email });
+
+    if (!res?._id)
+      this.setState({
+        message: res?.message || "Could not reset your password.",
+        loading: true,
+      });
+    else window.location.assign(`${client_domain}/reset_password?${email}`);
+  };
+
   render() {
+    let { email, message, loading } = this.state;
+
     return (
       <div id="main-wrapper">
         <Nav page="forgot_password" />
@@ -44,17 +65,29 @@ class Forgot_password extends React.Component {
                           <label>Enter Email</label>
                           <input
                             type="text"
+                            value={email}
+                            onChange={({ target }) =>
+                              this.setState({
+                                email: target.value,
+                                message: "",
+                              })
+                            }
                             className="form-control"
                             placeholder="you@mail.com"
                           />
                         </div>
+
+                        {message ? (
+                          <p className="text-danger">{message}</p>
+                        ) : null}
+
                         <div className="form-group">
-                          <button
-                            type="button"
-                            className="btn full-width btn-md theme-bg text-white"
-                          >
-                            Forgot password
-                          </button>
+                          <Stretch_button
+                            title="Forgot Password"
+                            loading={loading}
+                            action={this.proceed}
+                            disabled={!email_regex.test(email)}
+                          />
                         </div>
                       </div>
                     </div>
