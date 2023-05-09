@@ -498,7 +498,7 @@ class Become_a_vendor extends handle_file_upload {
                                     }
                                     filename={ID_filename}
                                     important
-                                    accept=".doc,.pdf,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                                    accept="image/*,.doc,.pdf,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                                     info="Type: PDF, Maxsize: 3MB"
                                     error_message={
                                       this.state[`${ID_type}_oversize`]
@@ -536,7 +536,7 @@ class Become_a_vendor extends handle_file_upload {
                                   }
                                   filename={cac_filename}
                                   important
-                                  accept=".doc,.pdf,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                                  accept="image/*,.doc,.pdf,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                                   info="Type: PDF, Maxsize: 3MB"
                                   error_message={
                                     cac_oversize ? "Too large" : ""
