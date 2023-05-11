@@ -61,7 +61,7 @@ class Voucher_reviews extends React.Component {
                   <Comment comment={comment} key={comment._id} />
                 ))
               ) : (
-                <Listempty text="Be the first to review this voucher" />
+                <Listempty text={`Be the first to post a review`} />
               )
             ) : (
               <Loadindicator />
