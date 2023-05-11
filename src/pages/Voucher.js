@@ -1,5 +1,7 @@
 import React from "react";
 import { organisation_name } from "../assets/js/utils/constants";
+import { to_title } from "../assets/js/utils/functions";
+import { get_request } from "../assets/js/utils/services";
 import Loadindicator from "../components/loadindicator";
 import Padder from "../components/padder";
 import Voucher_overview from "../components/voucher_overview";
@@ -15,12 +17,28 @@ class Voucher extends React.Component {
     this.state = {};
   }
 
-  componentDidMount = () => {
+  componentDidMount = async () => {
     let voucher = get_session("voucher");
+    let vendor = get_session("vendor");
 
-    if (voucher) document.title = `${voucher.title} | ${organisation_name}`;
+    if (!voucher) {
+      let href = window.location.href.split("?").slice(-1)[0].split("&");
+      vendor = href[1];
+      href = href[0];
 
-    this.setState({ voucher, vendor: get_session("vendor") });
+      if (!href || (href && !href.startsWith("offer_voucher")))
+        return window.history.go(-1);
+
+      let details = await get_request(`voucher_page/${href}/${vendor}`);
+      voucher = details?.voucher;
+      vendor = details?.vendor;
+    }
+
+    if (voucher)
+      document.title = `${to_title(voucher.title)} | ${organisation_name}`;
+    else return window.history.go(-1);
+
+    this.setState({ voucher, vendor });
   };
 
   on_transfer = () => this.setState({ transferred: true });

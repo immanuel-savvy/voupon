@@ -53,7 +53,7 @@ class Event extends React.Component {
 
   render() {
     let { full } = this.state;
-    let { event, edit, ticket, class_name, in_events, in_vendor, ticket_code } =
+    let { event, edit, ticket, class_name, in_events, ticket_code } =
       this.props;
     if (!event) return;
 
@@ -67,6 +67,7 @@ class Event extends React.Component {
       value,
       location,
       event_date_time,
+      _id,
     } = event;
     if (!vendor) return;
 
@@ -84,7 +85,7 @@ class Event extends React.Component {
         <div className="crs_grid">
           <div className="crs_grid_thumb">
             <Link
-              to="/event"
+              to={`/event?${_id}`}
               onClick={() => {
                 save_to_session("event", {
                   ...event,
@@ -131,7 +132,7 @@ class Event extends React.Component {
             <div className="crs_title">
               <h4>
                 <Link
-                  to="/event"
+                  to={`/event?${_id}`}
                   onClick={() => {
                     save_to_session("event", {
                       ...event,

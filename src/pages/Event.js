@@ -1,5 +1,7 @@
 import React from "react";
 import { organisation_name } from "../assets/js/utils/constants";
+import { to_title } from "../assets/js/utils/functions";
+import { get_request } from "../assets/js/utils/services";
 import Loadindicator from "../components/loadindicator";
 import Padder from "../components/padder";
 import Voucher_overview from "../components/voucher_overview";
@@ -15,12 +17,25 @@ class Event extends React.Component {
     this.state = {};
   }
 
-  componentDidMount = () => {
+  componentDidMount = async () => {
     let event = get_session("event");
+    let vendor = get_session("vendor");
 
-    if (event) document.title = `${event.title} | ${organisation_name}`;
+    if (!event) {
+      let href = window.location.href.split("?").slice(-1)[0];
+      if (!href || (href && !href.startsWith("event")))
+        return window.history.go(-1);
 
-    this.setState({ event, vendor: get_session("vendor") });
+      let details = await get_request(`event_page/${href}`);
+      event = details?.event;
+      vendor = details?.vendor;
+    }
+
+    if (event)
+      document.title = `${to_title(event.title)} | ${organisation_name}`;
+    else return window.history.go(-1);
+
+    this.setState({ event, vendor });
 
     scroll_to_top();
   };

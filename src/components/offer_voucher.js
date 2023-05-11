@@ -21,8 +21,8 @@ class Offer_voucher extends React.Component {
 
   render() {
     let { voucher, vendor, in_vouchers, voucher_code, edit } = this.props;
-    let { title, images, total_sales, state, value } = voucher;
-    let { category, name, logo, logo_hash } = vendor;
+    let { title, images, total_sales, state, value, _id } = voucher;
+    let { category, name, logo, logo_hash, _id: vendor_id } = vendor;
 
     return (
       <div
@@ -35,7 +35,7 @@ class Offer_voucher extends React.Component {
         <div className="crs_grid">
           <div className="crs_grid_thumb">
             <Link
-              to="/voucher"
+              to={`/voucher?${_id}&${vendor_id}`}
               onClick={() => {
                 save_to_session("voucher", {
                   ...voucher,
@@ -76,7 +76,7 @@ class Offer_voucher extends React.Component {
             <div className="crs_title">
               <h4>
                 <Link
-                  to="/voucher"
+                  to={`/voucher?${_id}&${vendor_id}`}
                   onClick={() => {
                     save_to_session("voucher", {
                       ...voucher,
