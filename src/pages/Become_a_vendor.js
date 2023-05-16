@@ -165,7 +165,7 @@ class Become_a_vendor extends handle_file_upload {
       logo_filename,
       website,
     } = this.state;
-    if (loading) return;
+    if (loading || !this.is_set()) return;
 
     this.setState({ loading: true });
 
@@ -499,7 +499,7 @@ class Become_a_vendor extends handle_file_upload {
                                     filename={ID_filename}
                                     important
                                     accept="image/*,.doc,.pdf,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-                                    info="Type: PDF, Maxsize: 3MB"
+                                    info="Type: PDF, Image, Maxsize: 3MB"
                                     error_message={
                                       this.state[`${ID_type}_oversize`]
                                         ? "Too large"
@@ -537,7 +537,7 @@ class Become_a_vendor extends handle_file_upload {
                                   filename={cac_filename}
                                   important
                                   accept="image/*,.doc,.pdf,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-                                  info="Type: PDF, Maxsize: 3MB"
+                                  info="Type: PDF, Image, Maxsize: 3MB"
                                   error_message={
                                     cac_oversize ? "Too large" : ""
                                   }

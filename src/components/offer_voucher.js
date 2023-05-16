@@ -5,6 +5,7 @@ import { commalise_figures } from "../assets/js/utils/functions";
 import { save_to_session } from "../sections/footer";
 import { scroll_to_top } from "./explore_more";
 import Preview_image from "./preview_image";
+import Text_btn from "./text_btn";
 
 class Offer_voucher extends React.Component {
   constructor(props) {
@@ -19,10 +20,22 @@ class Offer_voucher extends React.Component {
     save_to_session("vendor", vendor);
   };
 
+  on_close = (state) =>
+    this.setState({
+      state:
+        state === "closed"
+          ? this.props.voucher.previous_state || "running"
+          : "closed",
+    });
+
   render() {
-    let { voucher, vendor, in_vouchers, voucher_code, edit } = this.props;
+    let { state: state_ } = this.state;
+    let { voucher, vendor, close, in_vouchers, voucher_code, edit } =
+      this.props;
     let { title, images, total_sales, state, value, _id } = voucher;
     let { category, name, logo, logo_hash, _id: vendor_id } = vendor;
+
+    if (state_) state = state_;
 
     return (
       <div
@@ -53,8 +66,28 @@ class Offer_voucher extends React.Component {
               />
             </Link>
 
+            {close ? (
+              state === "closed" ? (
+                <div className="crs_video_ico cursor-pointer">
+                  <span>
+                    <Text_btn
+                      text="Open"
+                      action={() => close(() => this.on_close(state), state)}
+                    />
+                  </span>
+                </div>
+              ) : (
+                <div
+                  className="crs_video_ico cursor-pointer"
+                  style={{}}
+                  onClick={() => close(() => this.on_close(state), state)}
+                >
+                  <i className={`fa fa-trash`}></i>
+                </div>
+              )
+            ) : null}
             {edit ? (
-              <div className="crs_video_ico cursor-pointer" onClick={edit}>
+              <div className="crs_locked_ico cursor-pointer" onClick={edit}>
                 <i className={`fa fa-edit`}></i>
               </div>
             ) : null}

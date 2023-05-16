@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import Text_btn from "./text_btn";
 import Modal from "./modal";
 import Vendor_verification_details from "./vendor_verification_details";
-import { client_domain } from "../assets/js/utils/constants";
 import { scroll_to_top } from "./explore_more";
 
 class Vendor extends React.Component {
@@ -22,9 +21,9 @@ class Vendor extends React.Component {
   };
 
   render() {
-    let { vendor } = this.props;
-    let { name, verified, logo, description, category, email, _id, address } =
-      vendor;
+    let { vendor, admin } = this.props;
+    console.log(vendor);
+    let { name, verified, suspended, logo, category, _id, address } = vendor;
 
     return (
       <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6">
@@ -49,12 +48,11 @@ class Vendor extends React.Component {
                 </Link>
               </h4>
             </div>
-            {/* <p style={{ fontStyle: "italic" }}>{email}</p> */}
-            {/* <p>{description}</p> */}
             <p>{address}</p>
+            {suspended ? <div className="crs_cates cl_1">Suspended</div> : null}
           </div>
           <div className="crs_trt_footer">
-            {verified ? (
+            {verified && !admin ? (
               <div className="crs_trt_ent">
                 <Link to={`/vendor?${_id}`} onClick={this.save_vendor}>
                   <Text_btn text="View vendor" />

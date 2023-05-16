@@ -78,6 +78,10 @@ class Voucher_sidebar extends React.Component {
               ? "Ticket Price"
               : "Voucher Value"}
           </span>
+
+          {state === "closed" ? (
+            <div className="ml-2 crs_cates cl_1">Closed</div>
+          ) : null}
           <div className="ed_author">
             {voucher_code ? (
               Array.isArray(voucher_code) && voucher_code.length > 1 ? (
@@ -160,7 +164,7 @@ class Voucher_sidebar extends React.Component {
                 </a>
               </div>
             )
-          ) : (
+          ) : state === "closed" ? null : (
             <div className="ed_view_link">
               <a
                 href="#"

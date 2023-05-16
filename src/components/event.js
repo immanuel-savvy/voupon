@@ -51,9 +51,17 @@ class Event extends React.Component {
 
   toggle_read_more = () => this.setState({ full: !this.state.full });
 
+  on_close = (state) =>
+    this.setState({
+      state:
+        state === "closed"
+          ? this.props.event.previous_state || "running"
+          : "closed",
+    });
+
   render() {
-    let { full } = this.state;
-    let { event, edit, ticket, class_name, in_events, ticket_code } =
+    let { full, state: state_ } = this.state;
+    let { event, edit, close, ticket, class_name, in_events, ticket_code } =
       this.props;
     if (!event) return;
 
@@ -70,6 +78,8 @@ class Event extends React.Component {
       _id,
     } = event;
     if (!vendor) return;
+
+    if (state_) state = state_;
 
     let { category, name, logo, logo_hash } = vendor;
 
@@ -105,8 +115,29 @@ class Event extends React.Component {
               />
             </Link>
 
+            {close ? (
+              state === "closed" ? (
+                <div className="crs_video_ico cursor-pointer">
+                  <span>
+                    <Text_btn
+                      text="Open"
+                      action={() => close(() => this.on_close(state), state)}
+                    />
+                  </span>
+                </div>
+              ) : (
+                <div
+                  className="crs_video_ico cursor-pointer"
+                  style={{}}
+                  onClick={() => close(() => this.on_close(state), state)}
+                >
+                  <i className={`fa fa-trash`}></i>
+                </div>
+              )
+            ) : null}
+
             {edit ? (
-              <div className="crs_video_ico cursor-pointer" onClick={edit}>
+              <div className="crs_locked_ico cursor-pointer" onClick={edit}>
                 <i className={`fa fa-edit`}></i>
               </div>
             ) : null}

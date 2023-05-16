@@ -47,31 +47,30 @@ class Vendor_marketplace extends React.Component {
       <div className="container">
         <Section_header
           title="marketplace"
-          // color_title="vouchers"
           description="Subscribe, deal, sell, buy and transact products and offerings with desirable payment plan."
         />
 
         {vendor._id === loggeduser?.vendor ? (
           <User_voucher_header
-            // voucher_filters={this.voucher_states}
-            // set_voucher_filter={(filter) => this.setState({ filter })}
             voucher_type={"Products and Services"}
             side_buttons={
-              new Array(
-                {
-                  title: "add product / service",
-                  action: () => {
-                    window.location.assign(
-                      `${client_domain}/new_product_et_service`
-                    );
-                    save_to_session("vendor", vendor);
-                  },
-                },
-                {
-                  title: "product subscribers",
-                  action: this.toggle_vendor_subscribers,
-                }
-              )
+              vendor.suspended
+                ? null
+                : new Array(
+                    {
+                      title: "add product / service",
+                      action: () => {
+                        window.location.assign(
+                          `${client_domain}/new_product_et_service`
+                        );
+                        save_to_session("vendor", vendor);
+                      },
+                    },
+                    {
+                      title: "product subscribers",
+                      action: this.toggle_vendor_subscribers,
+                    }
+                  )
             }
           />
         ) : null}

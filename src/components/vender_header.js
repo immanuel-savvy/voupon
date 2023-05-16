@@ -96,7 +96,9 @@ class Vendor_header extends React.Component {
             <div className="col-lg-9 col-md-12 col-sm-12">
               <div className="dlkio_452">
                 <div className="ed_detail_wrap">
-                  {vendor.verified ? null : (
+                  {vendor.suspended ? (
+                    <div className="crs_cates cl_1">Suspended</div>
+                  ) : vendor.verified ? null : (
                     <div className="crs_cates cl_1">
                       <span style={{ color: "#fff" }}>Pending Approval</span>
                     </div>
@@ -122,47 +124,9 @@ class Vendor_header extends React.Component {
                 loggeduser.vendor === vendor._id ? (
                   <>
                     <Wallet vendor={vendor} />
-
-                    {/* <Dropdown_menu
-                      items={
-                        new Array(
-                          {
-                            title: "Create offer voucher",
-                            action: this.toggle_create_offer_voucher,
-                          },
-                          {
-                            title: "Create coupon",
-                            action: this.toggle_create_coupon,
-                          },
-                          {
-                            title: "close vendor account",
-                            style: {
-                              backgroundColor: "#d9534f",
-                              color: "#fff",
-                            },
-                            action: this.toggle_close_vendor_account,
-                          }
-                        )
-                      }
-                      style={{ alignSelf: "flex-start", marginTop: 24 }}
-                    /> */}
                   </>
                 ) : null}
               </div>
-
-              {/* {vendor.verified && user === _id ? (
-                <>
-                  <Small_btn
-                    title="Create offer voucher"
-                    action={this.toggle_create_offer_voucher}
-                  />
-                  <Small_btn
-                    variant="danger"
-                    title="Close vendor account"
-                    action={this.toggle_close_vendor_account}
-                  />
-                </>
-              ) : null} */}
             </div>
           </div>
         </div>

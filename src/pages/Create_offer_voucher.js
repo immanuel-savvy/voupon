@@ -54,6 +54,8 @@ class Create_offer_voucher extends Handle_file_upload {
         return window.location.assign(`${client_domain}/become_a_vendor`);
     }
 
+    if (vendor && vendor.suspended) return window.history.go(-1);
+
     this.setState({ vendor });
   };
 
@@ -73,31 +75,29 @@ class Create_offer_voucher extends Handle_file_upload {
   render_tab_pills = () => {
     let { current_pill, _id } = this.state;
 
-    return this.tab_pills.map((pill) =>
-      pill === "pricing" && _id ? null : (
-        <button
-          key={pill}
-          className={pill === current_pill ? "nav-link active" : "nav-link"}
-          id={`v-pills-${pill}-tab`}
-          data-toggle="pill"
-          data-target={`#v-pills-${pill}`}
-          type="button"
-          role="tab"
-          aria-controls={`v-pills-${pill}`}
-          aria-selected={pill === current_pill ? "true" : "false"}
-          onClick={() =>
-            this.setState(
-              { current_pill: pill },
-              pill === "finish" ? this.on_finish : null
-            )
-          }
-        >
-          {_id && pill === "finish"
-            ? "Finish Edit"
-            : to_title(pill.replace(/_/g, " "))}
-        </button>
-      )
-    );
+    return this.tab_pills.map((pill) => (
+      <button
+        key={pill}
+        className={pill === current_pill ? "nav-link active" : "nav-link"}
+        id={`v-pills-${pill}-tab`}
+        data-toggle="pill"
+        data-target={`#v-pills-${pill}`}
+        type="button"
+        role="tab"
+        aria-controls={`v-pills-${pill}`}
+        aria-selected={pill === current_pill ? "true" : "false"}
+        onClick={() =>
+          this.setState(
+            { current_pill: pill },
+            pill === "finish" ? this.on_finish : null
+          )
+        }
+      >
+        {_id && pill === "finish"
+          ? "Finish Edit"
+          : to_title(pill.replace(/_/g, " "))}
+      </button>
+    ));
   };
 
   handle_course = () => {
@@ -106,7 +106,7 @@ class Create_offer_voucher extends Handle_file_upload {
   };
 
   finish_tab_panel = () => {
-    let { uploading_voucher, new_voucher } = this.state;
+    let { uploading_voucher, new_voucher, vendor } = this.state;
 
     return (
       <div
@@ -144,23 +144,29 @@ class Create_offer_voucher extends Handle_file_upload {
           </>
         ) : !uploading_voucher ? (
           <div className="succ_wrap">
-            <div className="succ_121">
-              <i className="fas fa-thumbs-up"></i>
-            </div>
-            <div className="succ_122">
-              <h4>Voucher Successfully Added</h4>
-              <p>{new_voucher?.short_description}</p>
-            </div>
-            <div className="succ_123">
-              <Link to="/voucher">
-                <span
-                  onClick={this.handle_course}
-                  className="btn theme-bg text-white"
-                >
-                  View Voucher
-                </span>
-              </Link>
-            </div>
+            {message ? (
+              <Alert_box message={message} />
+            ) : (
+              <>
+                <div className="succ_121">
+                  <i className="fas fa-thumbs-up"></i>
+                </div>
+                <div className="succ_122">
+                  <h4>Voucher Successfully Added</h4>
+                  <p>{new_voucher?.short_description}</p>
+                </div>
+                <div className="succ_123">
+                  <Link to={`/voucher?${new_voucher?._id}&${vendor?._id}`}>
+                    <span
+                      onClick={this.handle_course}
+                      className="btn theme-bg text-white"
+                    >
+                      View Voucher
+                    </span>
+                  </Link>
+                </div>
+              </>
+            )}
           </div>
         ) : (
           <div className="d-flex justify-content-center align-items-center my-5">
@@ -640,11 +646,19 @@ class Create_offer_voucher extends Handle_file_upload {
       images,
       category,
       vendor,
+      loading,
     } = this.state;
 
-    if (!this.is_set()) return;
+    if (!this.is_set() || loading) return;
 
     this.setState({ loading: true });
+
+    if (vendor.suspended)
+      return this.setState({
+        message: "Vendor account is on suspension",
+        loading: false,
+        uploading_voucher: false,
+      });
 
     let voucher = {
       short_description,

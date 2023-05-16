@@ -5,6 +5,7 @@ import Alert_box from "./alert_box";
 import Form_divider from "./form_divider";
 import Modal_form_title from "./modal_form_title";
 import Preview_image from "./preview_image";
+import Small_btn from "./small_btn";
 import Stretch_button from "./stretch_button";
 import Text_btn from "./text_btn";
 import Text_input from "./text_input";
@@ -13,7 +14,11 @@ class Vendor_verification_details extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    let { vendor } = this.props;
+
+    this.state = {
+      suspended: vendor.suspended,
+    };
   }
 
   url = (file) => window.open(`${domain}/files/${file}`);
@@ -34,8 +39,33 @@ class Vendor_verification_details extends React.Component {
     else toggle && toggle();
   };
 
+  suspend = async () => {
+    if (!window.confirm("Are you sure to suspend vendor?")) return;
+
+    let { vendor } = this.props;
+
+    await post_request(`suspend_vendor/${vendor._id}`);
+
+    this.setState({ suspended: true });
+  };
+
+  remove_suspension = async () => {
+    if (!window.confirm("Are you sure to remove vendor from suspension?"))
+      return;
+
+    let { vendor } = this.props;
+
+    await post_request(`remove_suspension/${vendor._id}`);
+
+    this.setState({ suspended: false });
+  };
+
+  delete_account = async () => {
+    window.alert("Coming soon...");
+  };
+
   render() {
-    let { loading, message } = this.state;
+    let { loading, message, suspended } = this.state;
     let { vendor, toggle } = this.props;
     let {
       name,
@@ -48,6 +78,7 @@ class Vendor_verification_details extends React.Component {
       description,
       logo,
       rc_number,
+      verified,
     } = vendor;
 
     return (
@@ -71,6 +102,11 @@ class Vendor_verification_details extends React.Component {
                 <span style={{ marginRight: 10 }}>RC Number: </span>{" "}
                 <h5>{rc_number}</h5>
               </div>
+              {verified ? (
+                <div style={{ textAlign: "center", marginBottom: 20 }}>
+                  <div className="crs_cates cl_3">{"Verified"}</div>
+                </div>
+              ) : null}
 
               <Form_divider text="brand information" />
               <Text_input value={name} disabled title="Name" />
@@ -123,11 +159,29 @@ class Vendor_verification_details extends React.Component {
 
               {message ? <Alert_box message={message} /> : null}
 
-              <Stretch_button
-                title={"verify"}
-                loading={loading}
-                action={this.verify}
-              />
+              {suspended ? (
+                <div style={{ textAlign: "center" }}>
+                  <Alert_box message={"Vendor is on suspension"} />
+                  <Small_btn
+                    title="Remove Suspension"
+                    action={this.remove_suspension}
+                  />
+                </div>
+              ) : verified ? (
+                <div style={{ textAlign: "center" }}>
+                  <Small_btn title="Suspend" action={this.suspend} />
+                  <Small_btn
+                    title="Delete Account"
+                    action={this.delete_account}
+                  />
+                </div>
+              ) : (
+                <Stretch_button
+                  title={"verify"}
+                  loading={loading}
+                  action={this.verify}
+                />
+              )}
               <div style={{ marginBottom: 24 }} />
             </div>
           </div>

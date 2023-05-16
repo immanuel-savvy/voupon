@@ -28,7 +28,7 @@ class D_vendors extends React.Component {
           {vendors ? (
             vendors.length ? (
               vendors.map((vendor) => (
-                <Vendor vendor={vendor} key={vendor._id} />
+                <Vendor vendor={vendor} admin key={vendor._id} />
               ))
             ) : (
               <Listempty />

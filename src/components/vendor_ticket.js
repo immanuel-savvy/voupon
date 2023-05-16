@@ -9,13 +9,14 @@ import Loadindicator from "./loadindicator";
 import Modal from "./modal";
 import User_voucher_header from "./user_voucher_header";
 import Use_ticket from "./use_ticket";
-import Verify_ticket from "./verify_ticket";
 
 class Vendor_tickets extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      filter: this.event_states[0],
+    };
   }
 
   componentDidMount = async () => {
@@ -25,13 +26,35 @@ class Vendor_tickets extends React.Component {
     this.setState({ events });
   };
 
-  event_states = new Array("upcoming", "past");
+  event_states = new Array("upcoming", "past", "closed");
 
   toggle_use_ticket = () => this.use_ticket?.toggle();
 
   toggle_verify_ticket = () => this.verify_ticket?.toggle();
 
   edit = (event, vendor) => emitter.emit("edit_event", { event, vendor });
+
+  close_event = async (event, cb, state) => {
+    let { vendor } = this.props;
+
+    if (
+      !window.confirm(
+        `Are you sure to ${state === "closed" ? "open" : "close"} ticket?`
+      )
+    )
+      return;
+
+    await post_request(
+      state === "closed" ? "remove_from_closed_ticket" : "close_ticket",
+      {
+        event: event._id,
+        vendor: vendor._id,
+        previous_state: event.previous_state || event.state,
+      }
+    );
+
+    cb && cb();
+  };
 
   render() {
     let { vendor, loggeduser } = this.props;
@@ -55,16 +78,18 @@ class Vendor_tickets extends React.Component {
             set_voucher_filter={(filter) => this.setState({ filter })}
             voucher_type={"Events"}
             side_buttons={
-              new Array(
-                {
-                  title: "create event",
-                  action: () => {
-                    window.location.assign(`${client_domain}/create_event`);
-                    save_to_session("vendor", vendor);
-                  },
-                },
-                { title: "use ticket", action: this.toggle_use_ticket }
-              )
+              vendor.suspended
+                ? null
+                : new Array(
+                    {
+                      title: "create event",
+                      action: () => {
+                        window.location.assign(`${client_domain}/create_event`);
+                        save_to_session("vendor", vendor);
+                      },
+                    },
+                    { title: "use ticket", action: this.toggle_use_ticket }
+                  )
             }
           />
         ) : null}
@@ -73,13 +98,19 @@ class Vendor_tickets extends React.Component {
             events.length ? (
               events.map(({ event }) =>
                 event.state === filter ||
-                (!event.state && filter === "running") ? (
+                (!event.state && filter === "upcoming") ? (
                   <Event
                     in_vendor
                     edit={
                       (loggeduser && loggeduser.vendor) ===
                       (vendor && vendor._id)
                         ? () => this.edit(event, vendor)
+                        : null
+                    }
+                    close={
+                      (loggeduser && loggeduser.vendor) ===
+                      (vendor && vendor._id)
+                        ? (cb, state) => this.close_event(event, cb, state)
                         : null
                     }
                     vendor={vendor}

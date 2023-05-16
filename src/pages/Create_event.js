@@ -104,7 +104,7 @@ class Create_event extends Handle_file_upload {
   };
 
   finish_tab_panel = () => {
-    let { uploading_voucher, new_event } = this.state;
+    let { uploading_ticket, message, new_event } = this.state;
 
     return (
       <div
@@ -140,25 +140,31 @@ class Create_event extends Handle_file_upload {
                 );
             })}
           </>
-        ) : !uploading_voucher ? (
+        ) : !uploading_ticket ? (
           <div className="succ_wrap">
-            <div className="succ_121">
-              <i className="fas fa-thumbs-up"></i>
-            </div>
-            <div className="succ_122">
-              <h4>Event Successfully Added</h4>
-              <p>{new_event?.short_description}</p>
-            </div>
-            <div className="succ_123">
-              <Link to="/event">
-                <span
-                  onClick={this.handle_course}
-                  className="btn theme-bg text-white"
-                >
-                  View Event
-                </span>
-              </Link>
-            </div>
+            {message ? (
+              <Alert_box message={message} />
+            ) : (
+              <>
+                <div className="succ_121">
+                  <i className="fas fa-thumbs-up"></i>
+                </div>
+                <div className="succ_122">
+                  <h4>Event Successfully Added</h4>
+                  <p>{new_event?.short_description}</p>
+                </div>
+                <div className="succ_123">
+                  <Link to={`/event?${new_event?._id}`}>
+                    <span
+                      onClick={this.handle_course}
+                      className="btn theme-bg text-white"
+                    >
+                      View Event
+                    </span>
+                  </Link>
+                </div>
+              </>
+            )}
           </div>
         ) : (
           <div className="d-flex justify-content-center align-items-center my-5">
@@ -503,7 +509,6 @@ class Create_event extends Handle_file_upload {
             className="form-control"
             placeholder="Enter Ticket Price"
             value={price}
-            disabled={!!_id}
             onChange={this.handle_price}
           />
         </div>
@@ -622,7 +627,7 @@ class Create_event extends Handle_file_upload {
   };
 
   on_finish = async () => {
-    this.setState({ uploading_voucher: true });
+    this.setState({ uploading_ticket: true });
     let {
       short_description,
       title,
@@ -638,11 +643,19 @@ class Create_event extends Handle_file_upload {
       vendor,
       more_description,
       location,
+      loading,
     } = this.state;
 
-    if (!this.is_set()) return;
+    if (!this.is_set() || loading) return;
 
     this.setState({ loading: true });
+
+    if (vendor && vendor.suspended)
+      return this.setState({
+        message: "Vendor account is on suspension",
+        loading: false,
+        uploading_ticket: false,
+      });
 
     let event = {
       short_description,
@@ -688,7 +701,7 @@ class Create_event extends Handle_file_upload {
       video: "",
       price: "",
       title: "",
-      uploading_voucher: false,
+      uploading_ticket: false,
       sections: new Array(),
       what_to_expect: new Array(),
       things_to_know: new Array(),

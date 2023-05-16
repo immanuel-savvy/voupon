@@ -67,6 +67,8 @@ class Wallet extends React.Component {
 
   render() {
     let { vendor, user } = this.props;
+    let { suspended } = vendor;
+
     let { wallet } = this.state;
 
     if (!wallet)
@@ -200,22 +202,26 @@ class Wallet extends React.Component {
               alignItems: "center",
             }}
           >
-            <Small_btn title="Topup" action={this.toggle_topup} />
+            {suspended ? null : (
+              <>
+                <Small_btn title="Topup" action={this.toggle_topup} />
 
-            <Small_btn
-              title="Withdraw"
-              action={this.toggle_withdraw}
-              disabled={wallet.value > 0}
-            />
+                <Small_btn
+                  title="Withdraw"
+                  action={this.toggle_withdraw}
+                  disabled={wallet.value > 0}
+                />
 
-            <Dropdown_menu
-              items={
-                new Array({
-                  title: "manage bank account",
-                  action: this.toggle_bank_accounts,
-                })
-              }
-            />
+                <Dropdown_menu
+                  items={
+                    new Array({
+                      title: "manage bank account",
+                      action: this.toggle_bank_accounts,
+                    })
+                  }
+                />
+              </>
+            )}
           </div>
         </div>
 

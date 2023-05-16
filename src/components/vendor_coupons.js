@@ -72,10 +72,12 @@ class Vendor_coupons extends React.Component {
                   voucher_filters={this.coupon_states}
                   side_buttons={
                     loggeduser && loggeduser.vendor === vendor._id
-                      ? new Array({
-                          title: `create coupon`,
-                          action: this.toggle_create_coupon,
-                        })
+                      ? vendor?.suspended
+                        ? null
+                        : new Array({
+                            title: `create coupon`,
+                            action: this.toggle_create_coupon,
+                          })
                       : null
                   }
                   set_voucher_filter={(filter) => this.setState({ filter })}

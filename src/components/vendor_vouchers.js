@@ -1,5 +1,5 @@
 import React from "react";
-import { get_request } from "../assets/js/utils/services";
+import { get_request, post_request } from "../assets/js/utils/services";
 import Loadindicator from "./loadindicator";
 import Listempty from "./listempty";
 import { emitter } from "./../Voupon";
@@ -46,6 +46,28 @@ class Vendor_vouchers extends React.Component {
 
   toggle_use_voucher = () => this.use_voucher?.toggle();
 
+  close_voucher = async (voucher, cb, state) => {
+    let { vendor } = this.props;
+
+    if (
+      !window.confirm(
+        `Are you sure to ${state === "closed" ? "open" : "close"} voucher?`
+      )
+    )
+      return;
+
+    await post_request(
+      state === "closed" ? "remove_from_closed_voucher" : "close_voucher",
+      {
+        voucher: voucher._id,
+        vendor: vendor._id,
+        previous_state: voucher.previous_state || voucher.state,
+      }
+    );
+
+    cb && cb();
+  };
+
   edit = (voucher, vendor) => emitter.emit("edit_voucher", { voucher, vendor });
 
   render() {
@@ -65,18 +87,20 @@ class Vendor_vouchers extends React.Component {
             set_voucher_filter={(filter) => this.setState({ filter })}
             voucher_type={"offer voucher"}
             side_buttons={
-              new Array(
-                {
-                  title: "create offer voucher",
-                  action: () => {
-                    window.location.assign(
-                      `${client_domain}/create_offer_voucher`
-                    );
-                    save_to_session("vendor", vendor);
-                  },
-                },
-                { title: "use voucher", action: this.toggle_use_voucher }
-              )
+              vendor.suspended
+                ? null
+                : new Array(
+                    {
+                      title: "create offer voucher",
+                      action: () => {
+                        window.location.assign(
+                          `${client_domain}/create_offer_voucher`
+                        );
+                        save_to_session("vendor", vendor);
+                      },
+                    },
+                    { title: "use voucher", action: this.toggle_use_voucher }
+                  )
             }
           />
         ) : null}
@@ -92,6 +116,12 @@ class Vendor_vouchers extends React.Component {
                       (loggeduser && loggeduser.vendor) ===
                       (vendor && vendor._id)
                         ? () => this.edit(voucher, vendor)
+                        : null
+                    }
+                    close={
+                      (loggeduser && loggeduser.vendor) ===
+                      (vendor && vendor._id)
+                        ? (cb, state) => this.close_voucher(voucher, cb, state)
                         : null
                     }
                     vendor={vendor}
