@@ -82,7 +82,7 @@ class Vendor_verification_details extends React.Component {
     } = vendor;
 
     return (
-      <div>
+      <div style={{ overflow: "scroll" }}>
         <form>
           <div className="crs_log_wrap">
             <div className="crs_log__caption">

@@ -28,7 +28,7 @@ class Modal extends React.Component {
     return (
       <Modal_
         size={size}
-        scrollable
+        scrollable={true}
         static={no_drop_on_backdrop}
         show={show}
         centered={centered}
@@ -52,7 +52,15 @@ class Modal extends React.Component {
             ) : null}
           </Modal_.Header>
         ) : null}
-        <Modal_.Body style={{ margin: 0, padding: 0, ...style }}>
+        <Modal_.Body
+          style={{
+            margin: 0,
+            padding: 0,
+            ...style,
+            overflowY: "auto",
+            maxHeight: "calc(100vh - 100px)",
+          }}
+        >
           {children}
         </Modal_.Body>
       </Modal_>

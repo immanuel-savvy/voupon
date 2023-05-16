@@ -1,14 +1,15 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { client_domain } from "../assets/js/utils/constants";
 import { to_title } from "../assets/js/utils/functions";
 import { domain, get_request, post_request } from "../assets/js/utils/services";
 import Alert_box from "../components/alert_box";
 import Handle_file_upload from "../components/handle_file_upload";
 import Loadindicator from "../components/loadindicator";
+import Modal from "../components/modal";
 import Padder from "../components/padder";
 import Section_header from "../components/section_headers";
 import Vendor_header from "../components/vender_header";
+import You_need_to_be_a_vendor from "../components/you_need_to_be_a_vendor";
 import { Loggeduser } from "../Contexts";
 import Footer, { get_session } from "../sections/footer";
 import Custom_Nav from "../sections/nav";
@@ -40,18 +41,20 @@ class Create_offer_voucher extends Handle_file_upload {
 
   tab_pills = new Array("basic", "pricing", "media", "meta_info", "finish");
 
+  you_need_to_be_a_vendor = () => this.need_to_be_vendor?.toggle();
+
   componentDidMount = async () => {
     this.loggeduser = this.loggeduser || get_session("loggeduser");
 
     if (!this.loggeduser || (this.loggeduser && !this.loggeduser.vendor))
-      return window.location.assign(`${client_domain}/become_a_vendor`);
+      return this.you_need_to_be_a_vendor();
 
     let vendor = get_session("vendor");
     if (!vendor || (vendor && vendor._id !== this.loggeduser.vendor)) {
       vendor = await get_request(`vendor/${this.loggeduser.vendor}`);
 
       if (!vendor || (vendor && !vendor._id))
-        return window.location.assign(`${client_domain}/become_a_vendor`);
+        return this.you_need_to_be_a_vendor();
     }
 
     if (vendor && vendor.suspended) return window.history.go(-1);
@@ -712,7 +715,6 @@ class Create_offer_voucher extends Handle_file_upload {
 
   render() {
     let { vendor } = this.state;
-    if (!vendor) return <Loadindicator />;
 
     return (
       <Loggeduser.Consumer>
@@ -724,54 +726,68 @@ class Create_offer_voucher extends Handle_file_upload {
               <Custom_Nav />
               <Padder />
 
-              <Vendor_header vendor={vendor} />
-              <div className="container">
-                <Section_header
-                  title="Create Offer Voucher"
-                  description="Allow customers access to your service(s) and keep track of sales record all by yourself"
-                />
+              {vendor ? (
+                <>
+                  <Vendor_header vendor={vendor} />
+                  <div className="container">
+                    <Section_header
+                      title="Create Offer Voucher"
+                      description="Allow customers access to your service(s) and keep track of sales record all by yourself"
+                    />
 
-                <div className="row">
-                  <div className="col-12">
                     <div className="row">
-                      <div className="col-xl-12 col-lg-12 col-md-12">
-                        <div className="dashboard_wrap">
-                          <div className="form_blocs_wrap">
-                            <form>
-                              <div className="row justify-content-between">
-                                <div className="col-xl-3 col-lg-4 col-md-5 col-sm-12">
-                                  <div
-                                    className="nav flex-column nav-pills me-3"
-                                    id="v-pills-tab"
-                                    role="tablist"
-                                    aria-orientation="vertical"
-                                  >
-                                    {this.render_tab_pills()}
+                      <div className="col-12">
+                        <div className="row">
+                          <div className="col-xl-12 col-lg-12 col-md-12">
+                            <div className="dashboard_wrap">
+                              <div className="form_blocs_wrap">
+                                <form>
+                                  <div className="row justify-content-between">
+                                    <div className="col-xl-3 col-lg-4 col-md-5 col-sm-12">
+                                      <div
+                                        className="nav flex-column nav-pills me-3"
+                                        id="v-pills-tab"
+                                        role="tablist"
+                                        aria-orientation="vertical"
+                                      >
+                                        {this.render_tab_pills()}
+                                      </div>
+                                    </div>
+                                    <div className="col-xl-9 col-lg-8 col-md-7 col-sm-12">
+                                      <div
+                                        className="tab-content"
+                                        id="v-pills-tabContent"
+                                      >
+                                        {this.basic_tab_panel()}
+                                        {this.pricing_tab_panel()}
+                                        {this.media_tab_panel()}
+                                        {this.meta_info_tab_panel()}
+                                        {this.finish_tab_panel()}
+                                      </div>
+                                    </div>
                                   </div>
-                                </div>
-                                <div className="col-xl-9 col-lg-8 col-md-7 col-sm-12">
-                                  <div
-                                    className="tab-content"
-                                    id="v-pills-tabContent"
-                                  >
-                                    {this.basic_tab_panel()}
-                                    {this.pricing_tab_panel()}
-                                    {this.media_tab_panel()}
-                                    {this.meta_info_tab_panel()}
-                                    {this.finish_tab_panel()}
-                                  </div>
-                                </div>
+                                </form>
                               </div>
-                            </form>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </div>
-
+                </>
+              ) : (
+                <Loadindicator />
+              )}
               <Footer />
+
+              <Modal
+                no_drop_on_backdrop
+                ref={(need_to_be_vendor) =>
+                  (this.need_to_be_vendor = need_to_be_vendor)
+                }
+              >
+                <You_need_to_be_a_vendor />
+              </Modal>
             </div>
           );
         }}
