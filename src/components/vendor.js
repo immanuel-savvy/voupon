@@ -22,7 +22,6 @@ class Vendor extends React.Component {
 
   render() {
     let { vendor, admin } = this.props;
-    console.log(vendor);
     let { name, verified, suspended, logo, category, _id, address } = vendor;
 
     return (

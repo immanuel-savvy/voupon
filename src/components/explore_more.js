@@ -10,10 +10,7 @@ const Explore_more = ({ to }) => {
       <div className="col-lg-7 col-md-8 mt-2">
         <div className="text-center">
           <Link to={`/${to}`} onClick={scroll_to_top}>
-            <a
-              href="grid-layout-with-sidebar.html"
-              className="btn btn-md theme-bg-light theme-cl"
-            >
+            <a className="btn btn-md theme-bg-light theme-cl">
               Explore More {to_title(to)}
             </a>
           </Link>

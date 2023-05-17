@@ -23,7 +23,8 @@ class Voucher_purchase_details extends React.Component {
   render() {
     let { copied } = this.state;
     let { details, event } = this.props || new Object();
-    let { voucher_code, quantity, firstname, lastname, email, _id } = details;
+    let { voucher_code, quantity, firstname, lastname, ticket_id, email, _id } =
+      details;
     let is_event = _id && _id.startsWith("event");
 
     return (
@@ -99,7 +100,7 @@ class Voucher_purchase_details extends React.Component {
 
         <Modal ref={(codes) => (this.codes = codes)}>
           <Ticket_codes
-            ticket={details}
+            ticket={{ ...details, ticket_code: voucher_code, _id: ticket_id }}
             event={event}
             toggle={this.toggle_ticket_codes}
           />

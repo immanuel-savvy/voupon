@@ -276,9 +276,13 @@ class Event extends React.Component {
               <div className="crs_fl_last">
                 <div className="crs_price">
                   <h2>
-                    <span className="currency">&#8358;</span>
+                    {Number(value) > 0 ? (
+                      <span className="currency">&#8358;</span>
+                    ) : null}
                     <span className="theme-cl">
-                      {commalise_figures(Number(value), true)}
+                      {Number(value) <= 0
+                        ? "Free"
+                        : commalise_figures(Number(value), true)}
                     </span>
                   </h2>
                 </div>

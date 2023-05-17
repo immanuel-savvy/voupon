@@ -17,12 +17,13 @@ class Ticket_codes extends React.Component {
 
   render() {
     let { toggle, ticket, event } = this.props;
+
     let { active_tab } = this.state;
     event = event || (ticket && ticket.event);
 
     if (ticket && !ticket.used_codes) ticket.used_codes = new Array();
 
-    ticket.used_codes = ticket.used_codes.filter((c) => !!c);
+    ticket.used_codes = ticket?.used_codes?.filter((c) => !!c);
 
     return (
       <div>

@@ -136,12 +136,18 @@ class Voucher_sidebar extends React.Component {
               )
             ) : (
               <h2 className="theme-cl m-0">
-                &#8358;{commalise_figures(value)}
-                {actual_price ? (
-                  <span className="old_prc">
-                    &#8358;{commalise_figures(actual_price)}
-                  </span>
-                ) : null}
+                {Number(value) > 0 ? (
+                  <>
+                    &#8358;{commalise_figures(value)}
+                    {actual_price ? (
+                      <span className="old_prc">
+                        &#8358;{commalise_figures(actual_price)}
+                      </span>
+                    ) : null}
+                  </>
+                ) : (
+                  "Free"
+                )}
               </h2>
             )}
           </div>

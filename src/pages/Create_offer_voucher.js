@@ -173,7 +173,7 @@ class Create_offer_voucher extends Handle_file_upload {
           </div>
         ) : (
           <div className="d-flex justify-content-center align-items-center my-5">
-            <Loadindicator />
+            <Loadindicator text="loading..." />
           </div>
         )}
         {this.pill_nav("finish")}

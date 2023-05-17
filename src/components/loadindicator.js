@@ -1,4 +1,5 @@
 import React from "react";
+import { to_title } from "../assets/js/utils/functions";
 
 class Loadindicator extends React.Component {
   constructor(props) {
@@ -6,7 +7,7 @@ class Loadindicator extends React.Component {
   }
 
   render() {
-    let { height, width, small } = this.props;
+    let { height, width, small, text } = this.props;
 
     return (
       <div
@@ -18,6 +19,7 @@ class Loadindicator extends React.Component {
           src={require("../assets/css/img/ajax-loader.gif")}
           style={{ height: height || 64, width: width || 64 }}
         />
+        {text ? <p>{to_title(text)}</p> : null}
       </div>
     );
   }

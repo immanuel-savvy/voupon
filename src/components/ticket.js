@@ -19,6 +19,9 @@ class Ticket extends React.Component {
     let { event, ticket, full, no_user } = this.props;
     let { images, title } = event;
     let { ticket_code, user, state } = ticket;
+
+    if (no_user) user = new Object();
+
     let { firstname, lastname, email } = user;
 
     if (!state) state = "unused";

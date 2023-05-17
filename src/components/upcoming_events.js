@@ -50,7 +50,7 @@ class Upcoming_events extends React.Component {
             </>
           </div>
           {upcoming_events && upcoming_events.length ? (
-            <Explore_more to="events" />
+            <Explore_more to="tickets" />
           ) : null}
         </div>
       </section>

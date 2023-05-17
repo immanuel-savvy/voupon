@@ -52,7 +52,11 @@ class Buy_ticket extends React.Component {
     })
       .then((res) => {
         res.ticket_code && on_purchase && on_purchase(res.ticket_code);
-        this.setState({ updating: false, ticket_code: res.ticket_code });
+        this.setState({
+          updating: false,
+          ticket_id: res._id,
+          ticket_code: res.ticket_code,
+        });
       })
       .catch((e) => console.log(e));
   };
@@ -63,8 +67,16 @@ class Buy_ticket extends React.Component {
     this.setState({ firstname, lastname, email });
 
   render() {
-    let { firstname, lastname, quantity, email, updating, ticket_code, phone } =
-      this.state;
+    let {
+      firstname,
+      lastname,
+      ticket_id,
+      quantity,
+      email,
+      updating,
+      ticket_code,
+      phone,
+    } = this.state;
     let { event, toggle } = this.props;
     let { value, _id } = event;
 
@@ -108,6 +120,7 @@ class Buy_ticket extends React.Component {
                       {ticket_code ? (
                         <Voucher_purchase_details
                           toggle={toggle}
+                          event={event}
                           details={{
                             voucher_code: ticket_code,
                             _id,
@@ -115,6 +128,7 @@ class Buy_ticket extends React.Component {
                             firstname,
                             lastname,
                             quantity,
+                            ticket_id,
                           }}
                         />
                       ) : (
@@ -182,14 +196,20 @@ class Buy_ticket extends React.Component {
                           <PaystackConsumer {...payment_props}>
                             {({ initializePayment }) => (
                               <Stretch_button
-                                title={`Proceed to Payment`}
+                                title={
+                                  Number(value) > 0
+                                    ? `Proceed to Payment`
+                                    : "Proceed"
+                                }
                                 disabled={!this.is_set()}
                                 loading={updating}
                                 action={() => {
-                                  initializePayment(
-                                    this.payment_successful,
-                                    this.cancel
-                                  );
+                                  Number(value) > 0
+                                    ? initializePayment(
+                                        this.payment_successful,
+                                        this.cancel
+                                      )
+                                    : this.payment_successful();
                                 }}
                               />
                             )}

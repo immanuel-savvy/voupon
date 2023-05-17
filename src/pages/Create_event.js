@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { client_domain } from "../assets/js/utils/constants";
 import { to_title } from "../assets/js/utils/functions";
 import { domain, get_request, post_request } from "../assets/js/utils/services";
 import Alert_box from "../components/alert_box";
@@ -70,8 +69,22 @@ class Create_event extends Handle_file_upload {
   );
 
   is_set = () => {
-    let { short_description, title, price, images } = this.state;
-    return !!(short_description && title && Number(price) > 0 && images.length);
+    let {
+      short_description,
+      event_date_time,
+      title,
+      images,
+      category,
+      duration,
+    } = this.state;
+    return !!(
+      short_description &&
+      title &&
+      images.length &&
+      category &&
+      duration &&
+      event_date_time
+    );
   };
 
   render_tab_pills = () => {
@@ -172,7 +185,7 @@ class Create_event extends Handle_file_upload {
           </div>
         ) : (
           <div className="d-flex justify-content-center align-items-center my-5">
-            <Loadindicator />
+            <Loadindicator text="Loading..." />
           </div>
         )}
         {this.pill_nav("finish")}
@@ -199,12 +212,12 @@ class Create_event extends Handle_file_upload {
             <a
               href="#"
               onClick={
-                pill === "finish" || (pill === "media" && !this.is_set())
+                pill === "finish" || (pill === "meta_info" && !this.is_set())
                   ? null
                   : () => this.next_pill(pill)
               }
               className={
-                pill === "finish" || (pill === "media" && !this.is_set())
+                pill === "finish" || (pill === "meta_info" && !this.is_set())
                   ? "btn btn_slide disabled"
                   : "btn btn_slide"
               }
@@ -223,7 +236,7 @@ class Create_event extends Handle_file_upload {
     current_pill_index < this.tab_pills.length - 1 &&
       this.setState(
         { current_pill: this.tab_pills[current_pill_index + 1] },
-        pill === "media" ? this.on_finish : null
+        pill === "meta_info" ? this.on_finish : null
       );
   };
 
@@ -388,6 +401,8 @@ class Create_event extends Handle_file_upload {
             ))}
           </ul>
         ) : null}
+
+        {this.pill_nav("meta_info")}
       </div>
     );
   };
