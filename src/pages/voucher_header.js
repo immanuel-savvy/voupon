@@ -15,7 +15,7 @@ class Voucher_header extends React.Component {
     let { vendor } = this.props;
 
     save_to_session("vendor", vendor);
-    window.location.assign(`${client_domain}/vendor?${vendor._id}`);
+    window.location.assign(`${client_domain}/vendor?${vendor.uri}`);
   };
 
   parse_duration = (duration) => {

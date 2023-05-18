@@ -316,7 +316,7 @@ class Voupon extends React.Component {
                 <Route path="vendors" element={<Vendors />} />
                 <Route path="create_event" element={<Create_event />} />
                 <Route path="tickets" element={<Events />} />
-                <Route path="event" element={<Event />} />
+                <Route path="event/:vendor/:event" element={<Event />} />
                 <Route path="gift_cards" element={<Giftcards />} />
                 <Route path="coupons" element={<Coupons />} />
                 <Route path="dashboard" element={<Dashboard />} />
@@ -357,7 +357,7 @@ class Voupon extends React.Component {
                 />
                 <Route path="user_vouchers" element={<User_vouchers />} />
                 <Route path="become_a_vendor" element={<Become_a_vendor />} />
-                <Route path="voucher" element={<Voucher />} />
+                <Route path="voucher/:vendor/:voucher" element={<Voucher />} />
                 <Route path="product" element={<Product />} />
                 <Route path="developer" element={<Developer />} />
                 <Route path="forgot_password" element={<Forgot_password />} />

@@ -1,6 +1,10 @@
 import React from "react";
 import { client_domain } from "../assets/js/utils/constants";
-import { email_regex, to_title } from "../assets/js/utils/functions";
+import {
+  email_regex,
+  special_chars,
+  to_title,
+} from "../assets/js/utils/functions";
 import { post_request } from "../assets/js/utils/services";
 import Checkbox from "../components/checkbox";
 import File_input from "../components/file_input";
@@ -48,6 +52,7 @@ class Become_a_vendor extends handle_file_upload {
     super(props);
 
     this.state = {
+      name: "",
       director: new Object(),
     };
   }
@@ -113,7 +118,7 @@ class Become_a_vendor extends handle_file_upload {
 
     if (
       !rc_number ||
-      !name ||
+      !name.replace(special_chars, "").trim() ||
       !email_regex.test(email) ||
       !address ||
       !ID_type ||
@@ -172,10 +177,20 @@ class Become_a_vendor extends handle_file_upload {
     let ID = this.state[ID_type];
     let ID_filename = this.state[`${ID_type}_filename`];
 
+    let res = await this.check_name();
+
+    if (!res?.available)
+      return this.setState({
+        loading: false,
+        message: "Vendor name has been taken",
+      });
+    name = name.trim().replace(special_chars, "");
+
     let documents = {
       director,
       rc_number,
       name,
+      uri: name.toLowerCase().replace(/ /g, "_"),
       email,
       category,
       address,
@@ -191,23 +206,40 @@ class Become_a_vendor extends handle_file_upload {
       logo_filename,
     };
 
-    let res = await post_request("request_to_become_a_vendor", documents);
-    if (res._id) {
+    res = await post_request("request_to_become_a_vendor", documents);
+    if (res?._id) {
       this.setState({ details: res });
 
       this.loggeduser.vendor = res._id;
+      this.loggeduser.vendor_uri = documents.uri;
       this.loggeduser.vendor_status = "pending";
       this.set_loggeduser(this.loggeduser, () =>
         this.setState({ loading: false }, () =>
-          window.location.assign(`${client_domain}/vendor?${res._id}`)
+          window.location.assign(`${client_domain}/vendor?${res.uri}`)
         )
       );
-    } else this.setState({ message: res.message });
+    } else
+      this.setState({
+        message: res?.message || "Cannot create vendor profile at the moment",
+      });
   };
 
   toggle_success_modal = () => this.success_modal.toggle();
 
   logo_maxsize = 3 * 1024 ** 2;
+
+  check_name = async () => {
+    let { name } = this.state;
+    name = name.trim().replace(special_chars, "");
+
+    let res = await post_request("vendor_availability", {
+      uri: name.toLowerCase().replace(/ /g, "_"),
+    });
+
+    if (!res?.available)
+      this.setState({ name_error: "Vendor name has been taken" });
+    return res;
+  };
 
   render() {
     let {
@@ -227,6 +259,7 @@ class Become_a_vendor extends handle_file_upload {
       website,
       cac_oversize,
       categories,
+      name_error,
     } = this.state;
 
     let ID_filename = this.state[`${ID_type}_filename`];
@@ -290,15 +323,18 @@ class Become_a_vendor extends handle_file_upload {
                                 </div>
                                 <Text_input
                                   value={name}
+                                  on_blur={this.check_name}
                                   title="Name"
                                   action={(name) =>
                                     this.setState({
                                       name,
                                       message: "",
+                                      name_error: "",
                                     })
                                   }
                                   important
-                                  error_message="Your brand name"
+                                  major_err={name_error}
+                                  error_message={"Your brand name"}
                                 />
 
                                 <Text_input

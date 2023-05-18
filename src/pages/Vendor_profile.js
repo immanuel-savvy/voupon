@@ -36,13 +36,9 @@ class Vendor_profile extends React.Component {
 
   get_vendor = async (vendor) => {
     let vendor_id = window.location.href.split("?");
-    if (vendor_id[1]) {
-      if (
-        !vendor ||
-        (vendor_id[1].split("~").length === 3 && vendor._id !== vendor_id[1])
-      )
-        vendor = await get_request(`vendor/${vendor_id[1]}`);
-    }
+    if (vendor_id[1]) vendor = await get_request(`vendor/${vendor_id[1]}`);
+
+    if (!vendor) return window.history.go(-1);
 
     document.title = `${to_title(vendor.name)} | ${organisation_name}`;
 

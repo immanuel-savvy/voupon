@@ -22,11 +22,12 @@ class Event extends React.Component {
     let vendor = get_session("vendor");
 
     if (!event) {
-      let href = window.location.href.split("?").slice(-1)[0];
-      if (!href || (href && !href.startsWith("event")))
-        return window.history.go(-1);
+      let href = window.location.href.split("/").slice(-2);
 
-      let details = await get_request(`event_page/${href}`);
+      // if (!href || (href && !href.startsWith("event")))
+      //   return window.history.go(-1);
+
+      let details = await get_request(`event_page/${href[0]}/${href[1]}`);
       event = details?.event;
       vendor = details?.vendor;
     }

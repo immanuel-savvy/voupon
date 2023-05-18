@@ -75,6 +75,7 @@ class Event extends React.Component {
       value,
       location,
       event_date_time,
+      uri,
       _id,
     } = event;
     if (!vendor) return;
@@ -95,7 +96,7 @@ class Event extends React.Component {
         <div className="crs_grid">
           <div className="crs_grid_thumb">
             <Link
-              to={`/event?${_id}`}
+              to={`/event/${vendor.uri}/${uri}`}
               onClick={() => {
                 save_to_session("event", {
                   ...event,
@@ -163,7 +164,7 @@ class Event extends React.Component {
             <div className="crs_title">
               <h4>
                 <Link
-                  to={`/event?${_id}`}
+                  to={`/event/${vendor.uri}/${uri}`}
                   onClick={() => {
                     save_to_session("event", {
                       ...event,
@@ -252,7 +253,7 @@ class Event extends React.Component {
                 <div className="crs_tutor">
                   <div className="crs_tutor_thumb">
                     <Link
-                      to={`/vendor?${vendor._id}`}
+                      to={`/vendor?${vendor.uri}`}
                       onClick={this.handle_vendor}
                     >
                       <Preview_image
@@ -265,7 +266,7 @@ class Event extends React.Component {
                   </div>
                   <div className="crs_tutor_name">
                     <Link
-                      to={`/vendor?${vendor._id}`}
+                      to={`/vendor?${vendor.uri}`}
                       onClick={this.handle_vendor}
                     >
                       {name}

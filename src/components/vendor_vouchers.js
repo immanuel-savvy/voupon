@@ -17,6 +17,7 @@ class Vendor_vouchers extends React.Component {
 
     this.state = {
       state: this.voucher_states[0],
+      filter: this.voucher_states[0],
     };
   }
 
@@ -84,6 +85,7 @@ class Vendor_vouchers extends React.Component {
         {vendor._id === loggeduser?.vendor ? (
           <User_voucher_header
             voucher_filters={this.voucher_states}
+            filter={filter}
             set_voucher_filter={(filter) => this.setState({ filter })}
             voucher_type={"offer voucher"}
             side_buttons={

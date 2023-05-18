@@ -136,7 +136,7 @@ class Custom_nav extends React.Component {
                           id="navigation"
                           className="navigation navigation-landscape"
                         >
-                          <Navbar light expand="lg">
+                          <Navbar light expand="xl">
                             <NavbarBrand href="/" className="nav-brand">
                               <img
                                 src={require(`../assets/img/logo_dark.png`)}
@@ -221,7 +221,7 @@ class Custom_nav extends React.Component {
                                               loggeduser.vendor
                                             ) {
                                               subnav.title = "vendor_profile";
-                                              subnav.path = `/vendor?${loggeduser.vendor}`;
+                                              subnav.path = `/vendor?${loggeduser.vendor_uri}`;
                                             } else
                                               subnav.path =
                                                 this.quick_paths[subnav.title];

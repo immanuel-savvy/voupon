@@ -2,15 +2,18 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { email_regex } from "../assets/js/utils/functions";
 import { post_request } from "../assets/js/utils/services";
+import Stretch_button from "../components/stretch_button";
 import { Loggeduser } from "../Contexts";
 import Footer from "../sections/footer";
 import Nav from "../sections/nav";
+
+const code_gx = /^[0-9]{6}$/;
 
 class Verify_email extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = { verification_code: "" };
   }
 
   componentDidMount = () => {
@@ -27,12 +30,20 @@ class Verify_email extends React.Component {
     }
   };
 
+  is_set = () => {
+    let { verification_code } = this.state;
+
+    return code_gx.test(verification_code);
+  };
+
   verify = async (e) => {
     e.preventDefault();
 
     let { email, verification_code } = this.state;
-    if (!email_regex.test(email) || !/[0-9]{6}/.test(verification_code))
+    if (!email_regex.test(email) || !code_gx.test(verification_code))
       return this.setState({ message: "Invalid entry" });
+
+    this.setState({ loading: true });
 
     let result = await post_request("verify_email", {
       email,
@@ -45,7 +56,7 @@ class Verify_email extends React.Component {
   };
 
   render() {
-    let { email, verification_code, edited, message } = this.state;
+    let { email, verification_code, edited, message, loading } = this.state;
 
     return (
       <Loggeduser.Consumer>
@@ -130,13 +141,12 @@ class Verify_email extends React.Component {
 
                               <div className="form-group">
                                 <Link to="/" id="click_login"></Link>
-                                <button
-                                  onClick={this.verify}
-                                  type="button"
-                                  className="btn full-width btn-md theme-bg text-white"
-                                >
-                                  Verify
-                                </button>
+                                <Stretch_button
+                                  action={this.verify}
+                                  title="Verify"
+                                  loading={loading}
+                                  disabled={!this.is_set()}
+                                />
                               </div>
                             </div>
                           </div>

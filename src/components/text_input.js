@@ -19,6 +19,9 @@ class Text_input extends React.Component {
       action,
       important,
       info,
+      on_blur,
+      on_focus,
+      major_err,
     } = this.props;
 
     if (!value && disabled) return null;
@@ -33,6 +36,8 @@ class Text_input extends React.Component {
           <input
             type={type || "text"}
             disabled={disabled}
+            onBlur={on_blur}
+            onFocus={on_focus}
             className="form-control"
             placeholder={placeholder || to_title(title)}
             value={value}
@@ -45,9 +50,9 @@ class Text_input extends React.Component {
               <br />
             </span>
           ) : null}
-          {important && !value ? (
+          {(important && !value) || major_err ? (
             <span style={{ marginBottom: 10 }} className="text-danger">
-              * {error_message || to_title(title)}
+              * {major_err || error_message || to_title(title)}
             </span>
           ) : null}
         </div>

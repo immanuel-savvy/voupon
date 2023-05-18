@@ -10,6 +10,7 @@ const User_voucher_header = ({
   voucher_filters,
   toggle_create_voucher,
   side_buttons,
+  filter,
 }) => {
   return (
     <div class="row">

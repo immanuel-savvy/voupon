@@ -8,7 +8,7 @@ class Voucher_details extends React.Component {
   }
 
   render() {
-    let { voucher, vendor } = this.props;
+    let { voucher } = this.props;
     let {
       short_description,
       things_to_know,
@@ -18,16 +18,18 @@ class Voucher_details extends React.Component {
     } = voucher;
 
     let is_event = _id.startsWith("event");
+    let desc =
+      (is_event ? more_description : short_description) ||
+      short_description ||
+      "";
 
     return (
       <>
         <div class="edu_wraper">
           <h4 class="edu_title">{is_event ? "Event" : "Offer"} Details</h4>
-          {(is_event ? more_description : short_description)
-            .split("\n")
-            .map((d, index) => (
-              <p key={index}>{d}</p>
-            ))}
+          {desc.split("\n").map((d, index) => (
+            <p key={index}>{d}</p>
+          ))}
 
           {things_to_know && things_to_know.length ? (
             <>

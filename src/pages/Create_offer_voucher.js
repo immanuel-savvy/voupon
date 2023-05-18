@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { to_title } from "../assets/js/utils/functions";
+import { special_chars, to_title } from "../assets/js/utils/functions";
 import { domain, get_request, post_request } from "../assets/js/utils/services";
 import Alert_box from "../components/alert_box";
 import Handle_file_upload from "../components/handle_file_upload";
@@ -26,9 +26,11 @@ class Create_offer_voucher extends Handle_file_upload {
       voucher = voucher || get_session("voucher_in_edit");
 
     this.state = {
+      voucher,
       current_pill: "basic",
       what_to_expect: new Array(),
       things_to_know: new Array(),
+      title: "",
       images: new Array(),
       ...voucher,
       learn_index: null,
@@ -109,7 +111,7 @@ class Create_offer_voucher extends Handle_file_upload {
   };
 
   finish_tab_panel = () => {
-    let { uploading_voucher, new_voucher, vendor } = this.state;
+    let { uploading_voucher, new_voucher, vendor, message } = this.state;
 
     return (
       <div
@@ -159,7 +161,7 @@ class Create_offer_voucher extends Handle_file_upload {
                   <p>{new_voucher?.short_description}</p>
                 </div>
                 <div className="succ_123">
-                  <Link to={`/voucher?${new_voucher?._id}&${vendor?._id}`}>
+                  <Link to={`/voucher/${vendor?.uri}/${new_voucher?.uri}`}>
                     <span
                       onClick={this.handle_course}
                       className="btn theme-bg text-white"
@@ -431,6 +433,8 @@ class Create_offer_voucher extends Handle_file_upload {
   };
 
   basic_tab_panel = () => {
+    let { short_description, title, title_error } = this.state;
+
     return (
       <div
         className={
@@ -447,11 +451,15 @@ class Create_offer_voucher extends Handle_file_upload {
           <input
             type="text"
             className="form-control"
-            placeholder="Enter Voucher Title"
-            onChange={({ target }) => this.setState({ title: target.value })}
-            value={this.state.title}
+            onBlur={this.check_name}
+            placeholder="Type Voucher Title"
+            onChange={({ target }) =>
+              this.setState({ title: target.value, title_error: "" })
+            }
+            value={title}
           />
         </div>
+        {title_error ? <Alert_box message={title_error} /> : null}
 
         <div className="form-group smalls">
           <label>Short Description*</label>
@@ -459,7 +467,7 @@ class Create_offer_voucher extends Handle_file_upload {
             onChange={({ target }) =>
               this.setState({ short_description: target.value })
             }
-            value={this.state.short_description}
+            value={short_description}
             type="text"
             className="form-control"
           />
@@ -633,6 +641,23 @@ class Create_offer_voucher extends Handle_file_upload {
     });
   };
 
+  check_name = async () => {
+    let { title, vendor, voucher } = this.state;
+    title = title.trim().replace(special_chars, "");
+
+    if (voucher)
+      if (voucher.title.trim() === title.trim()) return { available: true };
+
+    let res = await post_request("voucher_availability", {
+      uri: title.toLowerCase().replace(/ /g, "_"),
+      vendor: vendor._id,
+    });
+
+    if (!res?.available)
+      this.setState({ title_error: "Voucher title has been used" });
+    return res;
+  };
+
   on_finish = async () => {
     this.setState({ uploading_voucher: true });
     let {
@@ -663,10 +688,21 @@ class Create_offer_voucher extends Handle_file_upload {
         uploading_voucher: false,
       });
 
+    let res = await this.check_name();
+    if (!res?.available)
+      return this.setState({
+        loading: false,
+        uploading_voucher: false,
+        message: "Voucher title already exists",
+      });
+
+    title = title.trim().replace(special_chars, "");
+
     let voucher = {
       short_description,
       title,
       value: Number(price),
+      uri: title.toLowerCase().replace(/ /g, "_"),
       video,
       images,
       category,

@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { to_title } from "../assets/js/utils/functions";
+import { special_chars, to_title } from "../assets/js/utils/functions";
 import { domain, get_request, post_request } from "../assets/js/utils/services";
 import Alert_box from "../components/alert_box";
 import Handle_file_upload from "../components/handle_file_upload";
@@ -26,6 +26,7 @@ class Create_event extends Handle_file_upload {
       event = event || get_session("event_in_edit");
 
     this.state = {
+      event,
       current_pill: "basic",
       what_to_expect: new Array(),
       things_to_know: new Array(),
@@ -121,7 +122,7 @@ class Create_event extends Handle_file_upload {
   };
 
   finish_tab_panel = () => {
-    let { uploading_ticket, message, new_event } = this.state;
+    let { uploading_ticket, message, new_event, vendor } = this.state;
 
     return (
       <div
@@ -171,7 +172,7 @@ class Create_event extends Handle_file_upload {
                   <p>{new_event?.short_description}</p>
                 </div>
                 <div className="succ_123">
-                  <Link to={`/event?${new_event?._id}`}>
+                  <Link to={`/event/${vendor.uri}/${new_event?.uri}`}>
                     <span
                       onClick={this.handle_course}
                       className="btn theme-bg text-white"
@@ -408,6 +409,9 @@ class Create_event extends Handle_file_upload {
   };
 
   basic_tab_panel = () => {
+    let { title_error, title, more_description, short_description } =
+      this.state;
+
     return (
       <div
         className={
@@ -423,12 +427,16 @@ class Create_event extends Handle_file_upload {
           <label>Event Title*</label>
           <input
             type="text"
+            onBlur={this.check_name}
             className="form-control"
-            placeholder="Enter Event Title"
-            onChange={({ target }) => this.setState({ title: target.value })}
-            value={this.state.title}
+            placeholder="Type Event Title"
+            onChange={({ target }) =>
+              this.setState({ title: target.value, title_error: "" })
+            }
+            value={title}
           />
         </div>
+        {title_error ? <Alert_box message={title_error} /> : null}
 
         <div className="form-group smalls">
           <label>Short Description*</label>
@@ -436,7 +444,7 @@ class Create_event extends Handle_file_upload {
             onChange={({ target }) =>
               this.setState({ short_description: target.value })
             }
-            value={this.state.short_description}
+            value={short_description}
             type="text"
             className="form-control"
           />
@@ -449,7 +457,7 @@ class Create_event extends Handle_file_upload {
             onChange={({ target }) =>
               this.setState({ more_description: target.value })
             }
-            value={this.state.more_description}
+            value={more_description}
             type="text"
             className="form-control"
           ></textarea>
@@ -567,6 +575,23 @@ class Create_event extends Handle_file_upload {
     this.setState({ images });
   };
 
+  check_name = async () => {
+    let { title, vendor, event } = this.state;
+    title = title.trim().replace(special_chars, "");
+
+    if (event)
+      if (event.title.trim() === title.trim()) return { available: true };
+
+    let res = await post_request("event_availability", {
+      uri: title.toLowerCase().replace(/ /g, "_"),
+      vendor: vendor._id,
+    });
+
+    if (!res?.available)
+      this.setState({ title_error: "Event title has been used" });
+    return res;
+  };
+
   media_tab_panel = () => {
     let { images } = this.state;
 
@@ -676,10 +701,21 @@ class Create_event extends Handle_file_upload {
         uploading_ticket: false,
       });
 
+    let res = await this.check_name();
+    if (!res?.available)
+      return this.setState({
+        loading: false,
+        uploading_ticket: false,
+        message: "Event title already exists",
+      });
+
+    title = title.trim().replace(special_chars, "");
+
     let event = {
       short_description,
       more_description,
       title,
+      uri: title.toLowerCase().replace(/ /g, "_"),
       value: Number(price),
       video,
       images,

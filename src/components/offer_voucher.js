@@ -32,8 +32,8 @@ class Offer_voucher extends React.Component {
     let { state: state_ } = this.state;
     let { voucher, vendor, close, in_vouchers, voucher_code, edit } =
       this.props;
-    let { title, images, total_sales, state, value, _id } = voucher;
-    let { category, name, logo, logo_hash, _id: vendor_id } = vendor;
+    let { title, images, total_sales, state, value, uri } = voucher;
+    let { category, name, logo, logo_hash } = vendor;
 
     if (state_) state = state_;
 
@@ -48,7 +48,7 @@ class Offer_voucher extends React.Component {
         <div className="crs_grid">
           <div className="crs_grid_thumb">
             <Link
-              to={`/voucher?${_id}&${vendor_id}`}
+              to={`/voucher/${vendor.uri}/${uri}`}
               onClick={() => {
                 save_to_session("voucher", {
                   ...voucher,
@@ -109,7 +109,7 @@ class Offer_voucher extends React.Component {
             <div className="crs_title">
               <h4>
                 <Link
-                  to={`/voucher?${_id}&${vendor_id}`}
+                  to={`/voucher/${vendor.uri}/${uri}`}
                   onClick={() => {
                     save_to_session("voucher", {
                       ...voucher,
@@ -154,7 +154,7 @@ class Offer_voucher extends React.Component {
                 <div className="crs_tutor">
                   <div className="crs_tutor_thumb">
                     <Link
-                      to={`/vendor?${vendor._id}`}
+                      to={`/vendor?${vendor.uri}`}
                       onClick={this.handle_vendor}
                     >
                       <Preview_image
@@ -167,7 +167,7 @@ class Offer_voucher extends React.Component {
                   </div>
                   <div className="crs_tutor_name">
                     <Link
-                      to={`/vendor?${vendor._id}`}
+                      to={`/vendor?${vendor.uri}`}
                       onClick={this.handle_vendor}
                     >
                       {name}

@@ -39,8 +39,10 @@ class Voucher_sidebar extends React.Component {
     return `${date_string(date)}, ${time_string(date)}`;
   };
 
+  toggle_read_more = () => this.setState({ full: !this.state.full });
+
   render() {
-    let { voucher_code } = this.state;
+    let { voucher_code, full } = this.state;
     let { voucher, vendor, on_redeem, on_tranfer, event } = this.props;
     if (!voucher) voucher = event;
 
@@ -177,7 +179,9 @@ class Voucher_sidebar extends React.Component {
                 onClick={this.purchase_voucher}
                 className="btn theme-bg enroll-btn"
               >
-                {is_event ? "Buy Ticket" : "Get Voucher"}
+                {is_event
+                  ? `${Number(value) > 0 ? "Buy" : "Get"} Ticket`
+                  : "Get Voucher"}
                 <i className="ti-angle-right"></i>
               </a>
             </div>
@@ -187,7 +191,18 @@ class Voucher_sidebar extends React.Component {
               <h5 className="font-medium">
                 {is_event ? "Event Description" : "What this offer is about:"}
               </h5>
-              <p>{short_description}</p>
+              <p>
+                {full ? short_description : short_description.slice(0, 200)}
+              </p>
+              {short_description?.length > 200 ? (
+                <span
+                  className="theme-cl cursor-pointer"
+                  style={{ fontStyle: "italic", marginLeft: 5 }}
+                  onClick={this.toggle_read_more}
+                >
+                  {full ? "Show less" : "...Read more"}
+                </span>
+              ) : null}
             </div>
             <div className="eld mb-3">
               <ul className="edu_list right">
