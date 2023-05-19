@@ -22,7 +22,7 @@ const vendor_tabs = new Array(
   "vouchers",
   "coupons",
   "tickets",
-  "marketplace",
+  "ENPL",
   "transactions",
   "settings"
 );
@@ -115,7 +115,7 @@ class Vendor_profile extends React.Component {
                                       loggeduser={loggeduser}
                                       vendor={vendor}
                                     />
-                                  ) : tab === "marketplace" ? (
+                                  ) : tab === "ENPL" ? (
                                     <Vendor_marketplace
                                       loggeduser={loggeduser}
                                       vendor={vendor}

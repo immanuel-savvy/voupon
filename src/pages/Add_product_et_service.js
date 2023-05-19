@@ -911,7 +911,7 @@ class Add_product_et_service extends Handle_file_upload {
                 <Section_header
                   title="Product /"
                   color_title="Service"
-                  description="Deserunt aute proident excepteur duis officia eiusmod sit do duis commodo fugiat nisi est cillum."
+                  description="Explore, manage subscription and trade product listings with best price and plan"
                 />
 
                 <div className="row">

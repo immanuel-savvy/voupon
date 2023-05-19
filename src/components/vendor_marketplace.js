@@ -46,7 +46,7 @@ class Vendor_marketplace extends React.Component {
     return (
       <div className="container">
         <Section_header
-          title="marketplace"
+          title="Enjoy now, Pay later"
           description="Subscribe, deal, sell, buy and transact products and offerings with desirable payment plan."
         />
 
