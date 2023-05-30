@@ -14,7 +14,7 @@ class Product_subscribers extends React.Component {
   componentDidMount = async () => {
     let { product } = this.props;
 
-    let subscribers = await post_request("product_subcribers", {
+    let subscribers = await post_request("product_subscribers", {
       product: product._id,
     });
 
@@ -47,7 +47,7 @@ class Product_subscribers extends React.Component {
               {subscribers ? (
                 subscribers.length ? (
                   subscribers.map((s) => (
-                    <Product_subscription subcription={s} key={s._id} />
+                    <Product_subscription subscription={s} key={s._id} />
                   ))
                 ) : (
                   <Listempty />

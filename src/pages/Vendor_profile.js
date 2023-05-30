@@ -63,7 +63,6 @@ class Vendor_profile extends React.Component {
         {({ loggeduser }) => {
           this.loggeduser = loggeduser;
 
-          console.log(vendor);
           return (
             <div id="main-wrapper">
               <Nav page="vendor" />

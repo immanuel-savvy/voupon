@@ -4,6 +4,7 @@ import { email_regex } from "../assets/js/utils/functions";
 import { post_request } from "../assets/js/utils/services";
 import Loadindicator from "../components/loadindicator";
 import Padder from "../components/padder";
+import Stretch_button from "../components/stretch_button";
 import { Loggeduser } from "../Contexts";
 import Footer from "../sections/footer";
 import Nav from "../sections/nav";
@@ -118,17 +119,11 @@ class Login extends React.Component {
                                 <p className="text-danger">{message}</p>
                               ) : null}
                               <div className="form-group">
-                                {logging_in ? (
-                                  <Loadindicator />
-                                ) : (
-                                  <button
-                                    type="button"
-                                    className="btn full-width btn-md theme-bg text-white"
-                                    onClick={this.proceed}
-                                  >
-                                    Login
-                                  </button>
-                                )}
+                                <Stretch_button
+                                  action={this.proceed}
+                                  title="Login"
+                                  loading={logging_in}
+                                />
                               </div>
                             </div>
                           </div>

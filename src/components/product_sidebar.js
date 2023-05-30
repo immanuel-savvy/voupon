@@ -32,7 +32,16 @@ class Product_sidebar extends React.Component {
   render() {
     let { active_image, wished } = this.state;
     let { product } = this.props;
-    let { short_description, category, video, title, value, images } = product;
+    let {
+      short_description,
+      category,
+      video,
+      title,
+      value,
+      quantities,
+      total_subscribers,
+      images,
+    } = product;
 
     return (
       <Loggeduser.Consumer>
@@ -98,7 +107,7 @@ class Product_sidebar extends React.Component {
                   <h2 class="woo_product_title">
                     <a href="#">{title}</a>
                   </h2>
-                  <ul class="woo_info">
+                  <ul class="woo_info my-2">
                     <li>
                       <strong>Category:</strong>&nbsp;{category}
                     </li>
@@ -123,17 +132,17 @@ class Product_sidebar extends React.Component {
                     <p>{short_description}</p>
                   </div>
                   <div class="quantity-button-wrapper">
-                    <label>Quantity</label>
-                    <div class="quantity">
-                      <input
-                        type="number"
-                        class="form-control qty"
-                        min="1"
-                        title="Qty"
-                        placeholder="1"
-                      />
-                    </div>
+                    <label style={{ fontWeight: "normal" }}>
+                      Initial Quantity: <strong>{quantities}</strong>
+                    </label>
                   </div>
+                  <div class="quantity-button-wrapper">
+                    <label style={{ fontWeight: "normal" }}>
+                      Quantity Remaining:{" "}
+                      <strong>{quantities - (total_subscribers || 0)}</strong>
+                    </label>
+                  </div>
+
                   <div class="woo_buttons">
                     <a
                       onClick={(e) => {

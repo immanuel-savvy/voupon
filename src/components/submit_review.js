@@ -41,7 +41,7 @@ class Submit_review extends React.Component {
 
     return (
       <div class="edu_wraper">
-        <h4 class="edu_title">Submit Reviews</h4>
+        <h4 class="edu_title">Submit Review</h4>
         <div class="review-form-box form-submit">
           <form>
             <div class="row">

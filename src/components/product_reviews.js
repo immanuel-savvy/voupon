@@ -42,7 +42,9 @@ class Product_reviews extends React.Component {
     let { product } = this.props;
 
     return (
-      <div>
+      <div className="edu_wraper">
+        <h4 className="edu_title">Product Reviews</h4>
+
         {reviews ? (
           reviews.length ? (
             reviews.map((review) => (

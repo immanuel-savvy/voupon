@@ -276,7 +276,7 @@ class User_verification extends handle_file_upload {
                                     filename={ID_filename}
                                     important
                                     accept="image/*,.doc,.pdf,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-                                    info="Type: PDF, Maxsize: 3MB"
+                                    info="Type: PDF, Image; Maxsize: 3MB"
                                     error_message={
                                       this.state[`${ID_type}_oversize`]
                                         ? "Too large"

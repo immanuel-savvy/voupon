@@ -643,10 +643,12 @@ class Create_offer_voucher extends Handle_file_upload {
 
   check_name = async () => {
     let { title, vendor, voucher } = this.state;
+
     title = title.trim().replace(special_chars, "");
 
     if (voucher)
-      if (voucher.title.trim() === title.trim()) return { available: true };
+      if (voucher.title.trim().toLowerCase() === title.trim().toLowerCase())
+        return { available: true };
 
     let res = await post_request("voucher_availability", {
       uri: title.toLowerCase().replace(/ /g, "_"),

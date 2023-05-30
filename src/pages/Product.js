@@ -49,9 +49,9 @@ class Product extends React.Component {
               {product ? (
                 <>
                   <section className="pr_detail">
-                    <div class="container">
-                      <div class="row">
-                        <div class="col-lg-12 col-md-12">
+                    <div className="container">
+                      <div className="row">
+                        <div className="col-lg-12 col-md-12">
                           <Product_sidebar
                             product={product}
                             loggeduser={loggeduser}
@@ -61,10 +61,23 @@ class Product extends React.Component {
                     </div>
                   </section>
 
-                  <section class="pt-0">
-                    <div class="container">
-                      <div class="col-lg-10 col-md-12 col-sm-12">
-                        <Tabs
+                  <section className="pt-0 gray">
+                    <div className="container">
+                      <div className="col-12 pt-4">
+                        <Product_description
+                          product={product}
+                          loggeduser={loggeduser}
+                        />
+                        <Custom_details
+                          product={product}
+                          loggeduser={loggeduser}
+                        />
+                        <Product_reviews
+                          product={product}
+                          loggeduser={loggeduser}
+                        />
+
+                        {/* <Tabs
                           defaultActiveKey={active_tab}
                           id="uncontrolled-tab-example"
                           // className="mb-3"
@@ -95,7 +108,7 @@ class Product extends React.Component {
                               </Tab>
                             );
                           })}
-                        </Tabs>
+                        </Tabs> */}
                       </div>
                     </div>
                   </section>

@@ -140,13 +140,15 @@ class Kyc_docs extends React.Component {
                     title="email"
                     placeholder="https://www.brand.com"
                   />
-                  <a
-                    target="_blank"
-                    className="text-info ml-3"
-                    href={`mailto://${email}`}
-                  >
-                    Mail user
-                  </a>
+                  {admin ? (
+                    <a
+                      target="_blank"
+                      className="text-info ml-3"
+                      href={`mailto://${email}`}
+                    >
+                      Mail user
+                    </a>
+                  ) : null}
 
                   {message ? <Alert_box message={message} /> : null}
 

@@ -39,6 +39,7 @@ import Add_product_et_service from "./pages/Add_product_et_service";
 import Product from "./pages/Product";
 import User_verification from "./pages/User_verification";
 import Reset_password from "./pages/Reset_password";
+import Payment_callback from "./pages/Payment_callback";
 
 const emitter = new Emitter();
 
@@ -354,6 +355,10 @@ class Voupon extends React.Component {
                 <Route
                   path="edit_event"
                   element={<Create_event event={event_in_edit} />}
+                />
+                <Route
+                  path="payment_callbacks"
+                  element={<Payment_callback />}
                 />
                 <Route path="user_vouchers" element={<User_vouchers />} />
                 <Route path="become_a_vendor" element={<Become_a_vendor />} />

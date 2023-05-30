@@ -37,6 +37,22 @@ class Vendor_marketplace extends React.Component {
     emitter.emit("edit_product", { product, vendor });
   };
 
+  remove = async (product) => {
+    if (!window.confirm("Are you sure to remove product?")) return;
+
+    let { products_et_services } = this.state;
+    products_et_services = products_et_services.filter((p) => {
+      if (p.product._id !== product._id) return true;
+    });
+
+    this.setState({ products_et_services });
+
+    await post_request("close_product", {
+      product: product?._id,
+      vendor: product.vendor?._id,
+    });
+  };
+
   toggle_vendor_subscribers = () => this.vendor_subscribers?.toggle();
 
   render() {
@@ -75,22 +91,25 @@ class Vendor_marketplace extends React.Component {
           />
         ) : null}
 
-        {products_et_services ? (
-          products_et_services.length ? (
-            products_et_services.map((p) => (
-              <Product
-                edit={() => this.edit_product(p.product, vendor)}
-                product={p.product}
-                in_vendor={p.product?.vendor?._id === loggeduser?.vendor}
-                key={p._id}
-              />
-            ))
+        <div className="row justify-content-center">
+          {products_et_services ? (
+            products_et_services.length ? (
+              products_et_services.map((p) => (
+                <Product
+                  remove={() => this.remove(p.product)}
+                  edit={() => this.edit_product(p.product, vendor)}
+                  product={p.product}
+                  in_vendor={p.product?.vendor?._id === loggeduser?.vendor}
+                  key={p._id}
+                />
+              ))
+            ) : (
+              <Listempty />
+            )
           ) : (
-            <Listempty />
-          )
-        ) : (
-          <Loadindicator />
-        )}
+            <Loadindicator />
+          )}
+        </div>
 
         <Modal
           ref={(vendor_subscribers) =>

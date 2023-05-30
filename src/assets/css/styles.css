@@ -6597,7 +6597,7 @@ a.filter_links {
 .prd_grid_thumb {
   position: relative;
   display: block;
-  padding: 3rem 1rem 0rem;
+  padding: 0.25rem 1rem 0rem;
 }
 .prd_grid_caption {
   position: relative;

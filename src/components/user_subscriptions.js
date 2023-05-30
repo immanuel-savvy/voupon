@@ -47,7 +47,11 @@ class User_subscriptions extends React.Component {
               {subscribers ? (
                 subscribers.length ? (
                   subscribers.map((s) => (
-                    <Product_subscription subcription={s} key={s._id} />
+                    <Product_subscription
+                      user_subscriptions
+                      subscription={s}
+                      key={s._id}
+                    />
                   ))
                 ) : (
                   <Listempty />

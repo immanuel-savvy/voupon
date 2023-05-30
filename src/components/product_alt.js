@@ -28,7 +28,7 @@ class Product_alt extends React.Component {
 
     return (
       <div class={class_name || "col-12"}>
-        <div class="prd_grid_box list_view">
+        <div class="prd_grid_box list_view ed_view_box">
           <div class="prd_grid_thumb">
             <Link to={`/product?${_id}`} onClick={this.handle_product}>
               <Preview_image
@@ -67,11 +67,11 @@ class Product_alt extends React.Component {
               </div>
             </div>
             <div class="prd_bot_capt">
-              <div class="prd_button">
+              {/* <div class="prd_button">
                 <a href="product-detail.html" class="bth bth_prd">
                   Add To Cart
                 </a>
-              </div>
+              </div> */}
               <div
                 class="prd_shaved"
                 onClick={() => remove_wishlist && remove_wishlist(product)}

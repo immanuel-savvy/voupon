@@ -33,14 +33,12 @@ class Verify_email extends React.Component {
   is_set = () => {
     let { verification_code } = this.state;
 
-    return code_gx.test(verification_code);
+    return code_gx.test(verification_code.trim());
   };
 
   verify = async (e) => {
-    e.preventDefault();
-
     let { email, verification_code } = this.state;
-    if (!email_regex.test(email) || !code_gx.test(verification_code))
+    if (!email_regex.test(email) || !code_gx.test(verification_code.trim()))
       return this.setState({ message: "Invalid entry" });
 
     this.setState({ loading: true });
@@ -49,7 +47,10 @@ class Verify_email extends React.Component {
       email,
       verification_code,
     });
-    if (!result._id) return this.setState({ message: result });
+    if (!result._id)
+      return this.setState({
+        message: result?.message || "Err something went wrong.",
+      });
 
     this.login(result);
     document.getElementById("click_login").click();
@@ -145,7 +146,6 @@ class Verify_email extends React.Component {
                                   action={this.verify}
                                   title="Verify"
                                   loading={loading}
-                                  disabled={!this.is_set()}
                                 />
                               </div>
                             </div>

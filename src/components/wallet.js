@@ -1,6 +1,6 @@
 import React from "react";
 import { commalise_figures } from "../assets/js/utils/functions";
-import { get_request, post_request } from "../assets/js/utils/services";
+import { post_request } from "../assets/js/utils/services";
 import Alert_box from "./alert_box";
 import Dropdown_menu from "./dropdown_menu";
 import Loadindicator from "./loadindicator";
@@ -47,13 +47,14 @@ class Wallet extends React.Component {
 
     if (user) return wallet.balance;
 
-    let { vouchers, coupons, tickets, balance } = wallet;
+    let { vouchers, coupons, tickets, enpl, balance } = wallet;
 
     return commalise_figures(
       (
         (vouchers || 0) +
         (coupons || 0) +
         (tickets || 0) +
+        (enpl || 0) +
         (balance || 0)
       ).toFixed(2)
     );
@@ -66,8 +67,8 @@ class Wallet extends React.Component {
   toggle_topup = () => this.topup?.toggle();
 
   render() {
-    let { vendor, user } = this.props;
-    let { suspended } = vendor;
+    let { vendor, user, hide } = this.props;
+    let { suspended } = vendor || new Object();
 
     let { wallet } = this.state;
 
@@ -85,6 +86,8 @@ class Wallet extends React.Component {
           message="Cannot fetch wallet at the moment"
         />
       );
+
+    if (hide) return;
 
     return (
       <div
@@ -161,6 +164,17 @@ class Wallet extends React.Component {
                     NGN {commalise_figures((wallet.tickets || 0).toFixed(2))}
                   </h6>
                   <span>Tickets</span>
+                </div>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <div
+                  className={`dashboard_stats_wrap_content text-${
+                    user ? "dark" : "light"
+                  }`}
+                >
+                  <h6 className="text-${user?'dark':'light'}">
+                    NGN {commalise_figures((wallet.enpl || 0).toFixed(2))}
+                  </h6>
+                  <span>ENPL</span>
                 </div>
                 &nbsp;&nbsp;&nbsp;&nbsp;
               </>

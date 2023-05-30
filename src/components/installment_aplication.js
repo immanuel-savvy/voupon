@@ -139,12 +139,12 @@ class Installment_application extends React.Component {
                     part_payments: part_payment,
                     installment,
                     number_of_payments,
+                    email: loggeduser.email,
                     user: loggeduser._id,
                     type: "pay_small_small",
                     title: "Installmental Payment Initiation",
                     data: product,
-                    value:
-                      (Number(down_payment) || 0) + (Number(part_payment) || 0),
+                    value: Number(down_payment) || 50,
                   }}
                   toggle={this.proceed}
                 />

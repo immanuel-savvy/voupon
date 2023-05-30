@@ -1,6 +1,5 @@
 import React from "react";
 import { commalise_figures, to_title } from "../assets/js/utils/functions";
-import { installments as installments_ } from "../pages/Add_product_et_service";
 import Alert_box from "./alert_box";
 import Loadindicator from "./loadindicator";
 import Product_subscription from "./product_subscription";
@@ -10,12 +9,12 @@ class Installment_summary extends React.Component {
     super(props);
 
     let { product, installment } = this.props;
-    let { payment_duration, value, down_payment } = product;
+    let { down_payment } = product;
     down_payment = down_payment || 0;
 
     let { part_payments, number_of_payments } = this.calc_payments(
-      value - down_payment,
-      payment_duration,
+      product[`${installment}_product_price`] - down_payment,
+      product[`number_of_${installment}_payments`],
       installment
     );
 
@@ -24,14 +23,6 @@ class Installment_summary extends React.Component {
       number_of_payments,
     };
   }
-
-  i_days = new Object({
-    [installments_[0]]: 1,
-    [installments_[1]]: 7,
-    [installments_[2]]: 30,
-    [installments_[3]]: 90,
-    [installments_[4]]: 365,
-  });
 
   calc_payments = (total, days, i) => {
     let { on_part_payment } = this.props;
@@ -43,15 +34,12 @@ class Installment_summary extends React.Component {
 
     days = Number(days);
 
-    if (days < this.i_days[i]) return total;
-
-    let fracs = total / days;
-    let part_payments = (this.i_days[i] * fracs).toFixed(2);
+    let part_payments = total / days;
 
     on_part_payment && on_part_payment(part_payments);
 
     return {
-      number_of_payments: parseInt(total / part_payments),
+      number_of_payments: days,
       part_payments,
     };
   };

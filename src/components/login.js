@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { email_regex } from "../assets/js/utils/functions";
 import { post_request } from "../assets/js/utils/services";
 import { Loggeduser } from "../Contexts";
-import Loadindicator from "./loadindicator";
+import Stretch_button from "./stretch_button";
 
 class Login extends React.Component {
   constructor(props) {
@@ -63,7 +63,7 @@ class Login extends React.Component {
                   <div class="login-form">
                     <form>
                       <div class="form-group">
-                        <label>User Name</label>
+                        <label>Email</label>
                         <div class="input-with-icon">
                           <input
                             type="text"
@@ -75,7 +75,7 @@ class Login extends React.Component {
                                 message: "",
                               })
                             }
-                            placeholder="User or email"
+                            placeholder="Email"
                           />
                           <i class="ti-user"></i>
                         </div>
@@ -116,17 +116,11 @@ class Login extends React.Component {
                       ) : null}
 
                       <div class="form-group">
-                        {logging_in ? (
-                          <Loadindicator />
-                        ) : (
-                          <button
-                            onClick={this.proceed}
-                            type="submit"
-                            class="btn btn-md full-width theme-bg text-white"
-                          >
-                            Login
-                          </button>
-                        )}
+                        <Stretch_button
+                          action={this.proceed}
+                          title="login"
+                          loading={logging_in}
+                        />
                       </div>
                     </form>
                   </div>

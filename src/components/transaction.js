@@ -7,6 +7,8 @@ import {
   to_title,
 } from "../assets/js/utils/functions";
 import { save_to_session } from "../sections/footer";
+import Modal from "./modal";
+import Product_subscription from "./product_subscription";
 import Text_btn from "./text_btn";
 
 class Transaction extends React.Component {
@@ -25,10 +27,24 @@ class Transaction extends React.Component {
     save_to_session("vendor", vendor);
   };
 
+  handle_details = () => {
+    let sb = this.data_.find((d) => d?._id?.startsWith("subscription"));
+    if (sb) this.setState({ datum: sb }, this.details.toggle);
+  };
+
   render() {
-    let { transaction, in_vendor } = this.props;
+    let { transaction, in_vendor, datum } = this.props;
+
     let { title, data, customer, vendor, type, credit, value, created } =
       transaction;
+    this.data_ = data;
+    if (Array.isArray(data))
+      data = data.find((d) =>
+        new Array("events", "vouchers", "products").includes(
+          d?._id?.split("~")[0]
+        )
+      );
+    this.data_ = new Array();
 
     let routename = "";
     if (data)
@@ -79,8 +95,15 @@ class Transaction extends React.Component {
                   <h5 style={{ marginBottom: 0 }}>{data.title}</h5>
                 </Link>
 
-                <Text_btn text="View details" action={this.handle_details} />
-                <br />
+                {this.data_.length ? (
+                  <>
+                    <Text_btn
+                      text="View details"
+                      action={this.handle_details}
+                    />
+                    <br />
+                  </>
+                ) : null}
               </>
             ) : null}
 
@@ -114,6 +137,10 @@ class Transaction extends React.Component {
             </span>
           </div>
         </div>
+
+        <Modal ref={(details) => (this.details = details)}>
+          <Product_subscription subscription={datum} />
+        </Modal>
       </div>
     );
   }

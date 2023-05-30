@@ -20,7 +20,7 @@ const installments = new Array(
   "daily",
   "weekly",
   "monthly",
-  "quarterly",
+  "biannually",
   "annually"
 );
 
@@ -200,12 +200,12 @@ class Add_product_et_service extends Handle_file_upload {
             <a
               href="#"
               onClick={
-                pill === "finish" || (pill === "media" && !this.is_set())
+                pill === "finish" || (pill === "meta_info" && !this.is_set())
                   ? null
                   : () => this.next_pill(pill)
               }
               className={
-                pill === "finish" || (pill === "media" && !this.is_set())
+                pill === "finish" || (pill === "meta_info" && !this.is_set())
                   ? "btn btn_slide disabled"
                   : "btn btn_slide"
               }
@@ -294,13 +294,8 @@ class Add_product_et_service extends Handle_file_upload {
   };
 
   meta_info_tab_panel = () => {
-    let {
-      things_to_know,
-      what_to_expect,
-      what_you_will_learn_in_edit,
-      learn_index,
-      quantities,
-    } = this.state;
+    let { quantities, requirement_in_edit, requirement_index, what_to_expect } =
+      this.state;
 
     return (
       <div
@@ -326,6 +321,28 @@ class Add_product_et_service extends Handle_file_upload {
           />
         </div>
 
+        <div className="form-group smalls">
+          <label>Things you need to know</label>
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Type..."
+            value={requirement_in_edit}
+            onChange={({ target }) =>
+              this.setState({ requirement_in_edit: target.value })
+            }
+          />
+          {requirement_in_edit ? (
+            <a
+              onClick={this.add_requirement}
+              href="#"
+              class="btn theme-bg text-light mt-2"
+            >
+              {requirement_index === null ? "Add" : "Update"}
+            </a>
+          ) : null}
+        </div>
+
         {what_to_expect.length ? (
           <ul class="simple-list p-0">
             {what_to_expect.map((requirement, i) => (
@@ -345,52 +362,7 @@ class Add_product_et_service extends Handle_file_upload {
           </ul>
         ) : null}
 
-        {what_to_expect.length ? <br /> : null}
-        <div className="form-group smalls">
-          <label>Things to know</label>
-          <input
-            type="text"
-            className="form-control"
-            placeholder="What you will learn..."
-            value={what_you_will_learn_in_edit}
-            onChange={({ target }) =>
-              this.setState({ what_you_will_learn_in_edit: target.value })
-            }
-          />
-          {what_you_will_learn_in_edit ? (
-            <a
-              onClick={this.add_to_learn}
-              href="#"
-              class="btn theme-bg text-light mt-2"
-            >
-              {learn_index === null ? "Add" : "Update"}
-            </a>
-          ) : null}
-        </div>
-
-        {things_to_know.length ? (
-          <div class="edu_wraper">
-            <h4 class="edu_title">Things to Know</h4>
-            <ul class="lists-3 row">
-              {things_to_know.map((learn, i) => (
-                <li key={i} class="col-xl-4 col-lg-6 col-md-6 m-0">
-                  <span>
-                    {learn}{" "}
-                    <span
-                      className="px-2"
-                      onClick={() => this.filter_learn_index(i)}
-                    >
-                      <i className={`fa fa-trash`}></i>
-                    </span>
-                    <span className="px-2" onClick={() => this.edit_learn(i)}>
-                      <i className={`fa fa-edit`}></i>
-                    </span>
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ) : null}
+        {this.pill_nav("meta_info")}
       </div>
     );
   };
@@ -489,7 +461,7 @@ class Add_product_et_service extends Handle_file_upload {
     [this.installments[0]]: 1,
     [this.installments[1]]: 7,
     [this.installments[2]]: 30,
-    [this.installments[3]]: 90,
+    [this.installments[3]]: 180,
     [this.installments[4]]: 365,
   });
 
@@ -517,7 +489,7 @@ class Add_product_et_service extends Handle_file_upload {
     this.setState({ payment_types });
   };
 
-  payment_types = new Array("outright", "installment");
+  payment_types = new Array("installment");
 
   calculate_payments = (installment) => {
     let { payment_duration } = this.state;
@@ -573,7 +545,7 @@ class Add_product_et_service extends Handle_file_upload {
           </div>
         }
 
-        {payment_types.includes(this.payment_types[1]) ? (
+        {payment_types.includes(this.payment_types[0]) ? (
           <>
             <Form_divider text="Pay small small / Subscriptions" />
 
@@ -812,7 +784,6 @@ class Add_product_et_service extends Handle_file_upload {
       title,
       price,
       video,
-      things_to_know,
       _id,
       quantities,
       images,
@@ -823,6 +794,7 @@ class Add_product_et_service extends Handle_file_upload {
       description,
       payment_types,
       installments,
+      what_to_expect,
     } = this.state;
 
     if (!this.is_set()) return;
@@ -843,9 +815,10 @@ class Add_product_et_service extends Handle_file_upload {
       quantities: Number(quantities) || 0,
       vendor: vendor._id,
     };
-    if (things_to_know.length) product.things_to_know = things_to_know;
 
-    if (payment_types.includes(this.payment_types[1])) {
+    if (what_to_expect.length) product.what_to_expect = what_to_expect;
+
+    if (payment_types.includes(this.payment_types[0])) {
       product.installments = installments;
       installments.map((installment) => {
         product[`${installment}_product_price`] =

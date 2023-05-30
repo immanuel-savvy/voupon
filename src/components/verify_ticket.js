@@ -59,7 +59,9 @@ class Verify_ticket extends React.Component {
           this.loggeduser = loggeduser;
 
           if (!loggeduser)
-            return <Login action={this.set_details} no_redirect />;
+            return (
+              <Login action={this.set_details} no_redirect toggle={toggle} />
+            );
 
           return (
             <section style={{ paddingTop: 20, paddingBottom: 20 }}>

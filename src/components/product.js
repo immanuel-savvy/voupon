@@ -33,9 +33,10 @@ class Product extends React.Component {
   handle_product = () => save_to_session("product", this.props.product);
 
   render() {
-    let { class_name, product, in_vendor, edit } = this.props;
+    let { class_name, product, remove, in_vendor, edit } = this.props;
 
     let { title, images, value, _id } = product;
+    console.log(product, "HELLO");
 
     return (
       <Loggeduser.Consumer>
@@ -46,7 +47,27 @@ class Product extends React.Component {
             >
               <div className="prd_grid_box">
                 {/* <div className="prd_label hot">Hot</div> */}
-                <div className="shd_142">
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "flex-end",
+                    paddingTop: 10,
+                    paddingRight: 10,
+                  }}
+                >
+                  {remove ? (
+                    <div
+                      className="prt_saveed_12lk pr-3"
+                      onClick={() => remove()}
+                    >
+                      <label className="toggler toggler-danger">
+                        <input type="checkbox" />
+                        <i className="fas fa-trash"></i>
+                      </label>
+                    </div>
+                  ) : null}
+
                   {edit ? (
                     <div
                       className="prt_saveed_12lk pr-3"
