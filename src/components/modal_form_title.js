@@ -10,10 +10,10 @@ class Modal_form_title extends React.Component {
   }
 
   render() {
-    let { toggle, title, text } = this.props;
+    let { toggle, title, text, style } = this.props;
 
     return (
-      <div>
+      <div style={{ ...style }}>
         <div
           style={{
             display: "flex",

@@ -20,7 +20,7 @@ class Wallet extends React.Component {
   componentDidMount = async () => {
     let { vendor, user, on_wallet } = this.props;
     let wallet = await post_request(`wallet`, {
-      user: vendor ? vendor._id || vendor : user._id || user,
+      user: vendor ? vendor._id || vendor : user.wallet || user._id || user,
     });
 
     this.setState({ wallet }, () => on_wallet && on_wallet(wallet));
@@ -45,7 +45,7 @@ class Wallet extends React.Component {
 
     let { wallet } = this.state;
 
-    if (user) return wallet.balance;
+    if (user) return wallet.balance || 0;
 
     let { vouchers, coupons, tickets, enpl, balance } = wallet;
 
@@ -56,7 +56,7 @@ class Wallet extends React.Component {
         (tickets || 0) +
         (enpl || 0) +
         (balance || 0)
-      ).toFixed(2)
+      ).toFixed(2) || 0
     );
   };
 

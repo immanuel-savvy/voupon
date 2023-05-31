@@ -4,6 +4,7 @@ import { post_request } from "../assets/js/utils/services";
 import { installments as installments_ } from "../pages/Add_product_et_service";
 import Installment_application from "./installment_aplication";
 import Modal from "./modal";
+import Product_subscription from "./product_subscription";
 import Small_btn from "./small_btn";
 
 class Custom_details extends React.Component {
@@ -52,13 +53,16 @@ class Custom_details extends React.Component {
     this.setState({ installment: i });
   };
 
-  render() {
-    let { installment, subscriptions } = this.state;
-    let { product } = this.props;
-    let { installments, value, down_payment, payment_duration } = product;
-    down_payment = down_payment || 0;
+  toggle_subscription = (subscription) => {
+    subscription && this.setState({ subscription });
+    this.sub?.toggle();
+  };
 
-    console.log(product);
+  render() {
+    let { installment, subscriptions, subscription } = this.state;
+    let { product } = this.props;
+    let { installments, down_payment } = product;
+    down_payment = down_payment || 0;
 
     return (
       <div className="edu_wraper">
@@ -67,11 +71,21 @@ class Custom_details extends React.Component {
           <table className="table">
             <tbody>
               <tr>
-                <th scope="row">Intervals</th>
-                <td>Down Payment</td>
-                <td>Payments unit</td>
-                <td>Number of Payments</td>
-                <td>Total</td>
+                <th scope="row">
+                  <b>Intervals</b>
+                </th>
+                <td>
+                  <b>Down Payment</b>
+                </td>
+                <td>
+                  <b>Payments unit</b>
+                </td>
+                <td>
+                  <b>Number of Payments</b>
+                </td>
+                <td>
+                  <b>Total</b>
+                </td>
                 <td></td>
               </tr>
 
@@ -97,12 +111,17 @@ class Custom_details extends React.Component {
                     </td>
                     <td>
                       <Small_btn
-                        disabled={
-                          !product[`${i}_plan_code`] ||
-                          (subscriptions && subscriptions[i])
+                        disabled={!product[`${i}_plan_code`]}
+                        title={
+                          subscriptions && subscriptions[i]
+                            ? "View Subscription"
+                            : "Apply"
                         }
-                        title="Apply"
-                        action={() => this.toggle_apply(i)}
+                        action={() =>
+                          subscriptions && subscriptions[i]
+                            ? this.toggle_subscription(subscriptions[i])
+                            : this.toggle_apply(i)
+                        }
                       />
                     </td>
                   </tr>
@@ -110,6 +129,14 @@ class Custom_details extends React.Component {
               })}
             </tbody>
           </table>
+
+          <Modal ref={(sub) => (this.sub = sub)}>
+            <Product_subscription
+              subscription={subscription}
+              user_subscriptions
+              toggle={() => this.toggle_subscription()}
+            />
+          </Modal>
 
           <Modal ref={(apply) => (this.apply = apply)}>
             <Installment_application

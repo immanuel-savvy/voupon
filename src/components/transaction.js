@@ -28,15 +28,29 @@ class Transaction extends React.Component {
   };
 
   handle_details = () => {
-    let sb = this.data_.find((d) => d?._id?.startsWith("subscription"));
-    if (sb) this.setState({ datum: sb }, this.details.toggle);
+    let { transaction } = this.props;
+    let { subscription: sb } = transaction;
+
+    if (sb && typeof sb === "object")
+      this.setState({ datum: sb }, this.details.toggle);
   };
 
   render() {
-    let { transaction, in_vendor, datum } = this.props;
+    let { datum } = this.state;
+    let { transaction, in_vendor } = this.props;
 
-    let { title, data, customer, vendor, type, credit, value, created } =
-      transaction;
+    let {
+      title,
+      data,
+      customer,
+      subscription,
+      vendor,
+      type,
+      credit,
+      value,
+      created,
+      authorisation,
+    } = transaction;
     this.data_ = data;
     if (Array.isArray(data))
       data = data.find((d) =>
@@ -56,8 +70,19 @@ class Transaction extends React.Component {
         ? "product"
         : "";
 
+    authorisation && console.log(authorisation);
+
     return (
-      <div className="col-md-6 col-lg-6 col-sm-12">
+      <div
+        className="col-md-5 col-lg-5 col-sm-12"
+        style={{
+          borderBottom: "1px solid #eee",
+          boxShadow: "5px 5px 20px #eee",
+          margin: 20,
+          boxSizing: "border-box",
+          borderRadius: 10,
+        }}
+      >
         <div class="ground ground-list-single">
           <div
             class={`rounded-circle p-3 p-sm-4 d-flex align-items-center justify-content-center bg-light-${
@@ -75,9 +100,13 @@ class Transaction extends React.Component {
 
           <div class="ground-content">
             <h6>
-              <a href="#" onClick={this.tx_clicked}>
-                {title || "Voucher used"}
-              </a>
+              {datum || subscription ? (
+                <a href="#" onClick={this.handle_details}>
+                  {title}
+                </a>
+              ) : (
+                <span>{title}</span>
+              )}
 
               <div className="ml-2 crs_cates cl_1">
                 <span style={{ fontWeight: "normal" }}>
@@ -94,16 +123,6 @@ class Transaction extends React.Component {
                 >
                   <h5 style={{ marginBottom: 0 }}>{data.title}</h5>
                 </Link>
-
-                {this.data_.length ? (
-                  <>
-                    <Text_btn
-                      text="View details"
-                      action={this.handle_details}
-                    />
-                    <br />
-                  </>
-                ) : null}
               </>
             ) : null}
 
@@ -132,6 +151,43 @@ class Transaction extends React.Component {
                 &#8358; {commalise_figures(value)}
               </small>
             </b>
+
+            <br />
+
+            {authorisation ? (
+              <span>
+                <b>Authorisation:</b>
+                <br />
+                <span className="">
+                  <em>
+                    <b>Type</b>
+                  </em>
+                  : {authorisation.authorisation.card_type}
+                  &nbsp; &nbsp;
+                  <em>
+                    <b>Last4</b>
+                  </em>
+                  : {authorisation.authorisation.last4}
+                  &nbsp; &nbsp;
+                  <em>
+                    <b>Expiry</b>
+                  </em>
+                  : {authorisation.authorisation.exp_month}/
+                  {authorisation.authorisation.exp_year}
+                  <br />
+                </span>
+
+                {subscription && subscription.running !== false ? (
+                  <Text_btn text="Update Card" action={this.update_card} />
+                ) : null}
+                <hr />
+              </span>
+            ) : (
+              <span>
+                <b>Authorisation:</b> Wallet
+              </span>
+            )}
+
             <span class="small">
               {time_string(created)}, {date_string(created)}
             </span>
@@ -139,7 +195,10 @@ class Transaction extends React.Component {
         </div>
 
         <Modal ref={(details) => (this.details = details)}>
-          <Product_subscription subscription={datum} />
+          <Product_subscription
+            subscription={{ subscription: datum }}
+            toggle={this.handle_details}
+          />
         </Modal>
       </div>
     );

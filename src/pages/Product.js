@@ -1,6 +1,5 @@
 import React from "react";
-import { Tab, Tabs } from "react-bootstrap";
-import { to_title } from "../assets/js/utils/functions";
+import { get_request } from "../assets/js/utils/services";
 import Custom_details from "../components/custom_details";
 import Loadindicator from "../components/loadindicator";
 import Padder from "../components/padder";
@@ -25,6 +24,16 @@ class Product extends React.Component {
 
   componentDidMount = async () => {
     let product = get_session("product");
+    let search = window.location.search?.slice(1);
+
+    if (
+      (!search && !product) ||
+      (search &&
+        !search.startsWith("product" || !search.split("~").length === 3))
+    )
+      return window.history.go(-1);
+
+    if (!product) product = await get_request(`product/${search}`);
 
     this.setState({ product });
   };
