@@ -177,9 +177,9 @@ class Transaction extends React.Component {
                   <br />
                 </span>
 
-                {subscription && subscription.running !== false ? (
+                {/* {subscription && subscription.running !== false ? (
                   <Text_btn text="Update Card" action={this.update_card} />
-                ) : null}
+                ) : null} */}
                 <hr />
               </span>
             ) : (

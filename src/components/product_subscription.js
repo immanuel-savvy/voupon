@@ -153,9 +153,9 @@ class Product_subscription extends React.Component {
                   {authorisation.authorisation.exp_year}
                   <br />
                 </span>
-                {running !== false ? (
+                {/* {running !== false ? (
                   <Text_btn text="Update Card" action={this.update_card} />
-                ) : null}
+                ) : null} */}
                 <br />
               </strong>
             </li>
