@@ -1,6 +1,6 @@
 const DEV = false;
 
-const PAYMENT_LIVE = false;
+const PAYMENT_LIVE = true;
 
 const hostname = DEV
   ? `http://${"localhost"}`

@@ -313,6 +313,7 @@ class Add_product_et_service extends Handle_file_upload {
           <input
             type="number"
             className="form-control"
+            min="0"
             placeholder="Quantities"
             value={quantities}
             onChange={({ target }) =>
