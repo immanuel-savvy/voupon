@@ -11,6 +11,7 @@ import Footer from "../sections/footer";
 import Hero_banner from "../sections/hero_banner";
 import Nav from "../sections/nav";
 import Our_vendors from "../sections/our_vendors";
+import Enjoy_now_pay_later from "../sections/enjoy_now_pay_later";
 
 class Home extends React.Component {
   constructor(props) {
@@ -86,6 +87,7 @@ class Home extends React.Component {
                 )}
 
                 <Upcoming_events />
+                <Enjoy_now_pay_later />
                 <Featured_vouchers />
                 <Featured_coupons />
 

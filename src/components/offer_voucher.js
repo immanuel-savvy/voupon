@@ -30,7 +30,7 @@ class Offer_voucher extends React.Component {
 
   render() {
     let { state: state_ } = this.state;
-    let { voucher, vendor, close, in_vouchers, voucher_code, edit } =
+    let { voucher, vendor, full, close, in_vouchers, voucher_code, edit } =
       this.props;
     let { title, images, total_sales, state, value, uri } = voucher;
     let { category, name, logo, logo_hash } = vendor;
@@ -40,7 +40,9 @@ class Offer_voucher extends React.Component {
     return (
       <div
         className={
-          in_vouchers
+          full
+            ? "col-11"
+            : in_vouchers
             ? "col-xl-6 col-lg-6 col-md-6 col-sm-12"
             : "col-xl-4 col-lg-4 col-md-6 col-sm-12"
         }

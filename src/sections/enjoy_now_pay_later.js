@@ -1,15 +1,15 @@
 import React from "react";
-import { get_request } from "../assets/js/utils/services";
+import { post_request } from "../assets/js/utils/services";
 import Explore_more from "../components/explore_more";
 import Loadindicator from "../components/loadindicator";
-import Offer_voucher from "../components/offer_voucher";
 import { Autoplay, Pagination } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/autoplay";
+import Product from "../components/product";
 
-class Featured_vouchers extends React.Component {
+class Enjoy_now_pay_later extends React.Component {
   constructor(props) {
     super(props);
 
@@ -17,14 +17,17 @@ class Featured_vouchers extends React.Component {
   }
 
   componentDidMount = async () => {
-    let { vouchers, vendors } = await get_request("get_offer_vouchers/10");
+    let products = await post_request("products", {
+      limit: 12,
+      shuffle: true,
+    });
 
-    this.setState({ vouchers, vendors });
+    this.setState({ products });
   };
 
   render() {
-    let { vouchers, vendors } = this.state;
-    if (vouchers && !vouchers.length) return;
+    let { products } = this.state;
+    if (products && !products.length) return;
 
     return (
       <section className="">
@@ -33,16 +36,17 @@ class Featured_vouchers extends React.Component {
             <div class="col-lg-7 col-md-8">
               <div class="sec-heading center">
                 <h2>
-                  explore Offer <span class="theme-cl">Vouchers</span>
+                  enjoy Now, <span class="theme-cl">Pay Later</span>
                 </h2>
                 <p>
-                  Get access to your favourite vendors & Top Brands vouchers
+                  Explore, manage subscription and trade product listings with
+                  best price and plan
                 </p>
               </div>
             </div>
           </div>
           <div class="row justify-content-center">
-            {vouchers ? (
+            {products ? (
               <Swiper
                 modules={[Autoplay, Pagination]}
                 pagination={{ clickable: true }}
@@ -55,17 +59,9 @@ class Featured_vouchers extends React.Component {
                 loop
                 className="swiper-container"
               >
-                {vouchers.map((voucher) => (
-                  <SwiperSlide key={voucher._id}>
-                    <Offer_voucher
-                      voucher={voucher}
-                      full
-                      vendor={
-                        voucher.vendor?._id
-                          ? voucher.vendor
-                          : vendors[voucher.vendor]
-                      }
-                    />
+                {products.map((product) => (
+                  <SwiperSlide key={product._id}>
+                    <Product product={product} class_name="col-11" />
                   </SwiperSlide>
                 ))}
               </Swiper>
@@ -74,11 +70,11 @@ class Featured_vouchers extends React.Component {
             )}
           </div>
 
-          {vouchers && vouchers.length ? <Explore_more to="vouchers" /> : null}
+          {products && products.length ? <Explore_more to="products" /> : null}
         </div>
       </section>
     );
   }
 }
 
-export default Featured_vouchers;
+export default Enjoy_now_pay_later;

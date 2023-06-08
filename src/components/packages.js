@@ -69,7 +69,7 @@ class Packages extends React.Component {
                 </div>
                 <div className="prt_price">
                   <h2>
-                    <span>&#8358;</span>10,000
+                    <span>&#8358;</span>15,000
                   </h2>
                   <span>per user, per year</span>
                 </div>

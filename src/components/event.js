@@ -61,8 +61,16 @@ class Event extends React.Component {
 
   render() {
     let { full, state: state_ } = this.state;
-    let { event, edit, close, ticket, class_name, in_events, ticket_code } =
-      this.props;
+    let {
+      event,
+      full: full_col,
+      edit,
+      close,
+      ticket,
+      class_name,
+      in_events,
+      ticket_code,
+    } = this.props;
     if (!event) return;
 
     let {
@@ -87,10 +95,12 @@ class Event extends React.Component {
     return (
       <div
         className={
-          class_name ||
-          (in_events
-            ? "col-xl-6 col-lg-6 col-md-6 col-sm-12"
-            : "col-xl-4 col-lg-4 col-md-6 col-sm-12")
+          full_col
+            ? "col-11"
+            : class_name ||
+              (in_events
+                ? "col-xl-6 col-lg-6 col-md-6 col-sm-12"
+                : "col-xl-4 col-lg-4 col-md-6 col-sm-12")
         }
       >
         <div className="crs_grid">
@@ -248,8 +258,15 @@ class Event extends React.Component {
           </div>
 
           <div className="crs_grid_foot">
-            <div className="crs_flex">
-              <div className="crs_fl_first">
+            <div
+              className="crs_flex"
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                flexDirection: "row",
+              }}
+            >
+              <div className="crs_fl_first" style={{ flex: 6 }}>
                 <div className="crs_tutor">
                   <div className="crs_tutor_thumb">
                     <Link
@@ -274,9 +291,12 @@ class Event extends React.Component {
                   </div>
                 </div>
               </div>
-              <div className="crs_fl_last">
+              <div
+                className="crs_fl_last"
+                style={{ flex: 4, alignItems: "flex-end" }}
+              >
                 <div className="crs_price">
-                  <h2>
+                  <h3>
                     {Number(value) > 0 ? (
                       <span className="currency">&#8358;</span>
                     ) : null}
@@ -285,7 +305,7 @@ class Event extends React.Component {
                         ? "Free"
                         : commalise_figures(Number(value), true)}
                     </span>
-                  </h2>
+                  </h3>
                 </div>
               </div>
             </div>

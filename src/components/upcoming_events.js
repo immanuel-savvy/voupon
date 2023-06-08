@@ -3,6 +3,11 @@ import Explore_more from "./explore_more";
 import Loadindicator from "./loadindicator";
 import Event from "./event";
 import { post_request } from "../assets/js/utils/services";
+import { Autoplay, Pagination } from "swiper";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/autoplay";
 
 class Upcoming_events extends React.Component {
   constructor(props) {
@@ -36,9 +41,24 @@ class Upcoming_events extends React.Component {
           <div className="row justify-content-center">
             <>
               {upcoming_events ? (
-                upcoming_events.map((event) => (
-                  <Event event={event} key={event._id} />
-                ))
+                <Swiper
+                  modules={[Autoplay, Pagination]}
+                  pagination={{ clickable: true }}
+                  slidesPerView={window.innerWidth < 650 ? 1 : 3}
+                  autoplay={{
+                    delay: 2000,
+                    pauseOnMouseEnter: true,
+                    disableOnInteraction: false,
+                  }}
+                  loop
+                  className="swiper-container"
+                >
+                  {upcoming_events.map((event) => (
+                    <SwiperSlide key={event._id}>
+                      <Event full event={event} />
+                    </SwiperSlide>
+                  ))}
+                </Swiper>
               ) : (
                 <div
                   style={{ width: "100%" }}

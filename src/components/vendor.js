@@ -21,12 +21,12 @@ class Vendor extends React.Component {
   };
 
   render() {
-    let { vendor, admin } = this.props;
+    let { vendor, admin, full } = this.props;
     let { name, verified, suspended, logo, category, uri, _id, address } =
       vendor;
 
     return (
-      <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+      <div className={full ? "col-11" : "col-xl-3 col-lg-4 col-md-6 col-sm-6"}>
         <div className="crs_trt_grid">
           <div className="crs_trt_thumb circle">
             <Link
