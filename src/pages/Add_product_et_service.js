@@ -323,7 +323,7 @@ class Add_product_et_service extends Handle_file_upload {
         </div>
 
         <div className="form-group smalls">
-          <label>Things you need to know</label>
+          <label>Other things to let the buyer know about</label>
           <input
             type="text"
             className="form-control"
