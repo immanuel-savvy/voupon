@@ -10,7 +10,14 @@ import Loadindicator from "../components/loadindicator";
 import Socials from "../components/socials";
 import Toaster from "../components/toast";
 import { emitter } from "../Voupon";
-let navs = new Array("vouchers", "tickets", "coupons", "vendors");
+let navs = new Array(
+  "vouchers",
+  "tickets",
+  "ENPL",
+  "coupons",
+  "vendors",
+  "FAQS"
+);
 
 const rewards = new Object({
   create_voucher: 100,
@@ -153,7 +160,13 @@ class Footer extends React.Component {
                               key={nav}
                               onClick={scroll_to_top}
                             >
-                              <Link to={`/${nav.replace(/ /g, "")}`}>
+                              <Link
+                                to={`/${
+                                  nav === "ENPL"
+                                    ? "marketplace"
+                                    : nav.replace(/ /g, "").toLowerCase()
+                                }`}
+                              >
                                 {nav || "home"}
                               </Link>
                             </li>
@@ -167,6 +180,9 @@ class Footer extends React.Component {
                     <div className="footer_widget">
                       <h4 className="widget_title">Company</h4>
                       <ul className="footer-menu">
+                        <li>
+                          <Link to={`/get_started`}>Get Started</Link>
+                        </li>
                         <li>
                           <Link to={`/about`}>About</Link>
                         </li>

@@ -9,7 +9,7 @@ class Hero_banner extends React.Component {
 
   render() {
     let { hero } = this.props;
-    let { main_text, sub_text, bg, overlay } = hero;
+    let { main_text, sub_text, btn, bg, overlay } = hero;
 
     return (
       <div
@@ -32,6 +32,9 @@ class Hero_banner extends React.Component {
               >
                 {sub_text}
               </p>
+              <div style={{ display: "flex", justifyContent: "center" }}>
+                {btn || null}
+              </div>
             </div>
           </div>
         </div>

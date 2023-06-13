@@ -36,7 +36,6 @@ class Product extends React.Component {
     let { class_name, product, remove, in_vendor, edit } = this.props;
 
     let { title, images, value, _id } = product;
-    console.log(product, "HELLO");
 
     return (
       <Loggeduser.Consumer>
@@ -46,7 +45,6 @@ class Product extends React.Component {
               className={class_name || "col-xl-3 col-lg-4 col-md-6 col-sm-12"}
             >
               <div className="prd_grid_box">
-                {/* <div className="prd_label hot">Hot</div> */}
                 <div
                   style={{
                     display: "flex",
@@ -113,7 +111,11 @@ class Product extends React.Component {
                     </div>
                   </div>
                   <div className="prd_bot_capt">
-                    <div className="prd_button">
+                    <div
+                      className={`prd_button ${
+                        class_name === "col-11" ? "mr-4" : ""
+                      }`}
+                    >
                       <Link
                         to={`/product?${_id}`}
                         onClick={this.handle_product}

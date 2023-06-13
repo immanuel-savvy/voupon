@@ -70,7 +70,9 @@ class Enjoy_now_pay_later extends React.Component {
             )}
           </div>
 
-          {products && products.length ? <Explore_more to="products" /> : null}
+          {products && products.length ? (
+            <Explore_more to="marketplace" />
+          ) : null}
         </div>
       </section>
     );

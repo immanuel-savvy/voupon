@@ -1,12 +1,11 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import { organisation_name } from "../assets/js/utils/constants";
 import { get_request } from "../assets/js/utils/services";
 import Contact_us_today from "../components/contact_us_today";
 import Loadindicator from "../components/loadindicator";
 import Padder from "../components/padder";
 import Breadcrumb_banner from "../sections/breadcrumb_banner";
-import Footer from "../sections/footer";
+import Footer, { scroll_to_top } from "../sections/footer";
 import Custom_nav from "../sections/nav";
 
 class About extends React.Component {
@@ -17,6 +16,8 @@ class About extends React.Component {
   }
 
   componentDidMount = async () => {
+    scroll_to_top();
+
     document.title = `About | ${organisation_name}`;
 
     let about_statement = await get_request("about_statement");
@@ -59,13 +60,13 @@ class About extends React.Component {
 
                 <div className="col-xl-5 col-lg-5 col-md-5 col-sm-12">
                   <div className="lmp_thumb">
-                    {/* <img
-                      src="../assets/img/logo.png"
-                      className="img-fluid"
+                    <img
+                      src={require("../assets/img/bgg.jpg")}
+                      className="img-fluid rounded"
                       alt=""
-                    /> */}
+                    />
 
-                    <h2>Voucher Africa</h2>
+                    {/* <h2>Voucher Africa</h2> */}
                   </div>
                 </div>
               </div>

@@ -40,6 +40,8 @@ import Product from "./pages/Product";
 import User_verification from "./pages/User_verification";
 import Reset_password from "./pages/Reset_password";
 import Payment_callback from "./pages/Payment_callback";
+import Faqs from "./pages/Faqs";
+import Get_started from "./pages/Get_started";
 
 const emitter = new Emitter();
 
@@ -366,6 +368,8 @@ class Voupon extends React.Component {
                 <Route path="product" element={<Product />} />
                 <Route path="developer" element={<Developer />} />
                 <Route path="forgot_password" element={<Forgot_password />} />
+                <Route path="faqs" element={<Faqs />} />
+                <Route path="get_started" element={<Get_started />} />
                 <Route path="administrator" element={<Adminstrator />} />
                 <Route path="*" element={<Page_not_found />} />
               </Routes>
