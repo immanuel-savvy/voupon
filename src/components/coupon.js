@@ -11,10 +11,9 @@ import { emitter } from "../Voupon";
 import Dropdown_menu from "./dropdown_menu";
 import Modal from "./modal";
 import Obtain_coupon from "./obtain_coupon";
-import Premium_user from "./premium_user";
 import Small_btn from "./small_btn";
 import Text_btn from "./text_btn";
-import Toaster from "./toast";
+import Coupon_created_details from "./coupon_created_details";
 
 class Coupon extends React.Component {
   constructor(props) {
@@ -36,20 +35,28 @@ class Coupon extends React.Component {
 
   toggle_obtain_coupon = () => this.obtain_coupon?.toggle();
 
+  toggle_copy_coupon_code = () => this.coupon_code?.toggle();
+
   handle_coupon = () => {
     let { coupon } = this.props;
     let { type } = coupon;
 
     if (type === "open") {
-      this.copy_code?.onClick();
-      this.copy_alert();
+      this.toggle_copy_coupon_code();
     } else this.toggle_obtain_coupon();
   };
 
   render() {
     let { copied } = this.state;
 
-    let { coupon, in_user, vendor: vendor_, in_vendor, full } = this.props;
+    let {
+      coupon,
+      in_user,
+      applied,
+      vendor: vendor_,
+      in_vendor,
+      full,
+    } = this.props;
     let {
       vendor,
       title,
@@ -70,7 +77,9 @@ class Coupon extends React.Component {
       <Loggeduser.Consumer>
         {({ loggeduser }) => {
           return (
-            <div className={full ? "" : "col-lg-4 col-md-4 col-sm-6"}>
+            <div
+              className={full || applied ? "" : "col-lg-4 col-md-4 col-sm-6"}
+            >
               <div className="edu_cat_2 cat-1">
                 <div className="edu_cat_icons">
                   <a className="pic-main" href="#">
@@ -91,7 +100,11 @@ class Coupon extends React.Component {
                       }}
                     >
                       <a>{title}</a>{" "}
-                      {state === "closed" ? (
+                      {applied ? (
+                        <div className="ml-2 crs_cates cl_2">
+                          <span>Applied</span>
+                        </div>
+                      ) : state === "closed" ? (
                         <div className="ml-2 crs_cates cl_1">
                           <span>{to_title(state)}</span>
                         </div>
@@ -123,17 +136,19 @@ class Coupon extends React.Component {
                         ) : copied ? (
                           <Text_btn icon="fa-check" />
                         ) : (
-                          <CopyToClipboard
-                            text={coupon_code}
-                            onCopy={this.copy_alert}
-                          >
-                            <span>
-                              <Text_btn
-                                text={coupon_code}
-                                icon={copied ? "fa-check" : "fa-copy"}
-                              />
-                            </span>
-                          </CopyToClipboard>
+                          <></> || (
+                            <CopyToClipboard
+                              text={coupon_code}
+                              onCopy={this.copy_alert}
+                            >
+                              <span>
+                                <Text_btn
+                                  text={coupon_code}
+                                  icon={copied ? "fa-check" : "fa-copy"}
+                                />
+                              </span>
+                            </CopyToClipboard>
+                          )
                         )}
                       </li>
                     )}
@@ -173,11 +188,11 @@ class Coupon extends React.Component {
                       </b>
                     </li>
 
-                    {in_user ? null : (
+                    {in_user || applied ? null : (
                       <Small_btn
                         style={{ marginTop: 10 }}
                         title={
-                          type === "open" ? "Copy coupon code" : "Obtain coupon"
+                          type === "open" ? "Get coupon code" : "Obtain coupon"
                         }
                         action={this.handle_coupon}
                       />
@@ -205,6 +220,15 @@ class Coupon extends React.Component {
                   coupon={coupon}
                   toggle={this.toggle_obtain_coupon}
                   user={loggeduser}
+                />
+              </Modal>
+
+              <Modal ref={(coupon_code) => (this.coupon_code = coupon_code)}>
+                <Coupon_created_details
+                  coupon={coupon}
+                  toggle={this.toggle_copy_coupon_code}
+                  user={loggeduser}
+                  need_user
                 />
               </Modal>
             </div>

@@ -33,9 +33,9 @@ class Create_coupon extends React.Component {
       quantities,
       type: coupon_type,
       title,
-      value,
+      value: Number(value),
       description,
-      duration: new Date(duration).getTime(),
+      duration: duration ? new Date(duration).getTime() : null,
       vendor: vendor._id || vendor,
     };
 

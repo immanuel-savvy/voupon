@@ -9,6 +9,9 @@ import Login from "./login";
 import Voucher_purchase_details from "./voucher_purchase_details";
 import { Paystack_public_key } from "./get_voucher";
 import Modal_form_title from "./modal_form_title";
+import Modal from "./modal";
+import Apply_coupon from "./apply_coupon";
+import Coupon from "./coupon";
 
 class Buy_ticket extends React.Component {
   constructor(props) {
@@ -35,7 +38,8 @@ class Buy_ticket extends React.Component {
 
   payment_successful = () => {
     let { event, on_purchase } = this.props;
-    let { email, quantity, firstname, lastname, phone, updating } = this.state;
+    let { email, quantity, firstname, lastname, phone, updating, coupon } =
+      this.state;
     if (updating) return;
 
     this.setState({ updating: true });
@@ -46,6 +50,7 @@ class Buy_ticket extends React.Component {
       firstname,
       event: event._id,
       lastname,
+      coupon: coupon._id,
       phone,
       quantity: Number(quantity),
       vendor: event.vendor._id || event.vendor,
@@ -66,6 +71,37 @@ class Buy_ticket extends React.Component {
   set_details = ({ firstname, lastname, email }) =>
     this.setState({ firstname, lastname, email });
 
+  toggle_apply_coupon = () => this.apply_coupon?.toggle();
+
+  coupon = async (coupon, cb) => {
+    console.log(coupon);
+    let res = await post_request("applied_coupon", {
+      user: this.loggeduser?._id,
+      coupon: coupon.coupon_id,
+      verbose: true,
+    });
+
+    console.log(res);
+    if (res?.success) {
+      cb({ applied: true });
+      this.apply_coupon.setState({ show: false }, () =>
+        this.setState({ coupon: res.detailed_coupon })
+      );
+    } else cb({ message: res?.message });
+  };
+
+  calculate_coupon = (price) => {
+    let { coupon } = this.state;
+
+    if (!coupon) return price;
+
+    price = Number(price);
+    let val = price * (coupon.value / 100);
+
+    val = price - val;
+    return val < 0 ? 0 : val;
+  };
+
   render() {
     let {
       firstname,
@@ -76,15 +112,16 @@ class Buy_ticket extends React.Component {
       updating,
       ticket_code,
       phone,
+      coupon,
     } = this.state;
     let { event, toggle } = this.props;
-    let { value, _id } = event;
+    let { value, _id, vendor } = event;
 
     let payment_props = {
       email,
       metadata: { firstname, lastname, phone },
       publicKey: Paystack_public_key,
-      amount: Number(quantity) * value * 100,
+      amount: this.calculate_coupon(Number(quantity) * value) * 100,
       onSuccess: this.payment_successful,
       onClose: this.cancel,
     };
@@ -193,6 +230,15 @@ class Buy_ticket extends React.Component {
                             important
                           />
 
+                          {coupon ? (
+                            <Coupon coupon={coupon} applied />
+                          ) : (
+                            <Stretch_button
+                              inverted
+                              title="Apply Coupon"
+                              action={this.toggle_apply_coupon}
+                            />
+                          )}
                           <PaystackConsumer {...payment_props}>
                             {({ initializePayment }) => (
                               <Stretch_button
@@ -220,6 +266,15 @@ class Buy_ticket extends React.Component {
                   </div>
                 </div>
               </div>
+
+              <Modal ref={(apply_coupon) => (this.apply_coupon = apply_coupon)}>
+                <Apply_coupon
+                  toggle={toggle}
+                  user={loggeduser}
+                  vendor={vendor}
+                  on_coupon={this.coupon}
+                />
+              </Modal>
             </section>
           );
         }}

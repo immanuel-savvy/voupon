@@ -8,7 +8,7 @@ import Small_btn from "../components/small_btn";
 import User_voucher_header from "../components/user_voucher_header";
 import { coupon_types } from "../components/vendor_coupons";
 import Breadcrumb_banner from "../sections/breadcrumb_banner";
-import Footer from "../sections/footer";
+import Footer, { scroll_to_top } from "../sections/footer";
 import Nav from "../sections/nav";
 
 class Coupons extends React.Component {
@@ -22,6 +22,8 @@ class Coupons extends React.Component {
   }
 
   componentDidMount = async () => {
+    scroll_to_top();
+
     let { type, limit, page } = this.state;
     let coupons = await post_request("coupons", {
       limit,

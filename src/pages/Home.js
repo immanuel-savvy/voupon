@@ -10,6 +10,7 @@ import Nav from "../sections/nav";
 import Our_vendors from "../sections/our_vendors";
 import Enjoy_now_pay_later from "../sections/enjoy_now_pay_later";
 import Banner from "../sections/banner";
+import Contact_us_today from "../components/contact_us_today";
 
 class Home extends React.Component {
   constructor(props) {
@@ -40,6 +41,8 @@ class Home extends React.Component {
                 {loggeduser && loggeduser.premium ? null : <Packages />}
 
                 <Faqs />
+
+                <Contact_us_today />
               </div>
               <Footer />
             </div>

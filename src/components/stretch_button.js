@@ -15,11 +15,30 @@ class Stretch_button extends React.Component {
   };
 
   render() {
-    let { title, action, class_name, style, loading, disabled } = this.props;
+    let {
+      title,
+      action,
+      no_icon,
+      inverted,
+      class_name,
+      style,
+      loading,
+      disabled,
+    } = this.props;
 
     if (loading) disabled = loading;
 
-    return (
+    return inverted ? (
+      <div class="ed_view_link">
+        <a
+          onClick={() => !disabled && action()}
+          class="btn theme-light enroll-btn cursor-pointer"
+        >
+          {title}
+          {no_icon ? null : <i class="ti-angle-right"></i>}
+        </a>
+      </div>
+    ) : (
       <button
         type="button"
         className={
