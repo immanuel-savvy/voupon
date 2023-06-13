@@ -1,10 +1,15 @@
 import React from "react";
-import Footer from "../sections/footer";
+import Footer, { scroll_to_top } from "../sections/footer";
 import Banner from "../sections/banner";
-import { Nav } from "react-bootstrap";
-import Small_btn from "../components/small_btn";
 import { organisation_name } from "../assets/js/utils/constants";
 import How_it_works from "../sections/how_it_works";
+import Service from "../sections/service";
+import Contact_us_today from "../components/contact_us_today";
+import Faqs from "../sections/faqs";
+import Section_header from "../components/section_headers";
+import { Link } from "react-router-dom";
+import Our_vendors from "../sections/our_vendors";
+import Custom_nav from "../sections/nav";
 
 class Get_started extends React.Component {
   constructor(props) {
@@ -14,13 +19,72 @@ class Get_started extends React.Component {
   }
 
   componentDidMount = () => {
+    scroll_to_top();
+
     document.title = `Get Started | ${organisation_name}`;
   };
+
+  services = new Array(
+    {
+      title: "Vouchers",
+      text: `offer you the opportunity to understand your market and their purchasing ability.
+
+    A customer buys your voucher and then use it against the service you made the provision for.
+    
+    If a service or products sells in store for 1,000NGN and a voucher of 900NGN is created and you get a sell out, it makes you understand how much customers are willing to pay for your goods and services.
+    Voucher also serves as your price list. Everyone, everywhere gets to see how much your products and services costs and you stand to get close to the market as such.
+    
+    Voucher is unlimited as it cuts across every industry and you can also create coupons to help drive your voucher sales faster.`,
+      img: require("../assets/img/vouchers1.png"),
+    },
+    {
+      title: "Coupons",
+      text: `offer you the opportunity to attract potential leads with mouth-watering offer which is usually freebies.
+
+    A customer gets your coupon code for free, then the customer heads on to use it against such service voucher or ticket on the platform or on your existing website.
+    
+    The coupon is an off price in percentage.
+    e.g If you sell a Pen for 1,000NGN, then you create a coupon of 10% discount in 5 quantities. Then 5 different lucky customers that gets the freebie heads on to the voucher of the Pen. When they are about to pay for the pen, they would click on the apply coupon option and 10% would be deducted from the actual price. Such lucky customers get to pay only 900 instead of 1,000.
+    
+    Hence: you must create a Ticket or Voucher before heading to create a coupon for such offer.
+    
+    coupon uses sales, price slash and deals to make a prospect become your loyal customers. 
+    
+    NOTE: coupons generated on our portal can be used on your existing website or platform if you integrate our A.P.I to your existing website or platform.`,
+      img: require("../assets/img/coupons1.jpg"),
+    },
+    {
+      title: "ENPL",
+      text: `stands for acronym Enjoy Now, Pay Later.
+This allows access for leasing (such as housing and rentals) and subscription based services(such as spa, gym and even real estate plan) to get their products and services listed too.
+
+You get to upload such service, how much you are willing to take as down payment, how you want your payment made- daily, weekly or monthly and how many quantities or space you have for such item and service.
+
+Our platform makes the job easy for you as only KYC verified users can access E.N.P.L.
+We also do the book records for you. You know the total subscribers you have for all products you listed on E.N.P.L, you know the total subscriber for each separate products listed, you know the amounts of payment each subscribers have made and of course the users full details including email and telephone for follow up and further engagements.
+
+You also stand the chance to create coupons to help drive your voucher sales faster.`,
+      img: require("../assets/img/bgg.jpg"),
+    },
+    {
+      title: "Tickets",
+      text: `allow buyers entry to your events, training, workshop, tour e.t.c. Tickets can be generated and validated via our platform.
+
+    You just need to create a ticket for an event or training you want to host then you get the chance to sell and know who bought ticket.
+    
+    The ticket code is usually sent to buyer’s mail and also to you so you can always validate the code; you will get to know the name, email, phone no and code of the ticket sent to the particular buyers mail.
+    
+    NOTE: When you create a ticket, you can always share the ticket link out for promotion, anytime anyone clicks on the link, it takes them to your event page directly to make payment.
+    
+    You also stand the chance to create coupons to help drive your voucher sales faster.`,
+      img: require("../assets/img/tickets2.jpeg"),
+    }
+  );
 
   render() {
     return (
       <div>
-        <Nav page="get_started" />
+        <Custom_nav page="get_started" />
         <div className="body">
           <Banner />
 
@@ -70,9 +134,9 @@ class Get_started extends React.Component {
                       This is the way the system works for every other modules.
                     </p>
                     <div class="foot-news-last mt-4">
-                      <div class="input-group">
-                        <Small_btn title="Get Started" />
-                      </div>
+                      <Link to="/" className="btn btn-md text-light theme-bg">
+                        Get Started
+                      </Link>
                     </div>
                   </div>
                 </div>
@@ -83,6 +147,157 @@ class Get_started extends React.Component {
           <div class="clearfix"></div>
           <How_it_works />
 
+          {this.services.map((service, i) => (
+            <Service service={service} index={i} />
+          ))}
+
+          <section class="pt-5 gray">
+            <Section_header title="Why choose" color_title="Us" />
+
+            <div class="container">
+              <div class="row align-items-center justify-content-between">
+                <div class="col-xl-5 col-lg-5 col-md-6 col-sm-12">
+                  <div class="lmp_caption">
+                    <ol class="list-unstyled p-0">
+                      <li class="d-flex align-items-start my-3 my-md-4">
+                        <div class="rounded-circle p-3 p-sm-4 d-flex align-items-center justify-content-center theme-bg">
+                          <div class="position-absolute text-white h5 mb-0">
+                            1
+                          </div>
+                        </div>
+                        <div class="ml-3 ml-md-4">
+                          <h4>Increase Revenue</h4>
+                          <p>
+                            as you leverage on baits and customer satisfaction
+                            as strength.
+                          </p>
+                        </div>
+                      </li>
+                      <li class="d-flex align-items-start my-3 my-md-4">
+                        <div class="rounded-circle p-3 p-sm-4 d-flex align-items-center justify-content-center theme-bg">
+                          <div class="position-absolute text-white h5 mb-0">
+                            2
+                          </div>
+                        </div>
+                        <div class="ml-3 ml-md-4">
+                          <h4>Enjoy massive brand awareness</h4>
+                          <p>
+                            when we promote our platform and blogs, featured
+                            vendors would gain advantage of visibility.
+                          </p>
+                        </div>
+                      </li>
+                      <li class="d-flex align-items-start my-3 my-md-4">
+                        <div class="rounded-circle p-3 p-sm-4 d-flex align-items-center justify-content-center theme-bg">
+                          <div class="position-absolute text-white h5 mb-0">
+                            3
+                          </div>
+                        </div>
+                        <div class="ml-3 ml-md-4">
+                          <h4>Use as C.R.M tool</h4>
+                          <p>
+                            know where customers and prospects are and manage
+                            their datas such as phone number and email.
+                          </p>
+                        </div>
+                      </li>
+                      <li class="d-flex align-items-start my-3 my-md-4">
+                        <div class="rounded-circle p-3 p-sm-4 d-flex align-items-center justify-content-center theme-bg">
+                          <div class="position-absolute text-white h5 mb-0">
+                            4
+                          </div>
+                        </div>
+                        <div class="ml-3 ml-md-4">
+                          <h4>Brand visibility</h4>
+                          <p>
+                            Brands with or without website(s) can have this as
+                            an opportunity to get their stores known online.
+                          </p>
+                        </div>
+                      </li>
+                    </ol>
+
+                    <div class="foot-news-last mt-4">
+                      <Link to="/" className="btn btn-md text-light theme-bg">
+                        Get Started
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-xl-5 col-lg-5 col-md-6 col-sm-12">
+                  <div class="lmp_caption">
+                    <ol class="list-unstyled p-0">
+                      <li class="d-flex align-items-start my-3 my-md-4">
+                        <div class="rounded-circle p-3 p-sm-4 d-flex align-items-center justify-content-center theme-bg">
+                          <div class="position-absolute text-white h5 mb-0">
+                            5
+                          </div>
+                        </div>
+                        <div class="ml-3 ml-md-4">
+                          <h4>Generate Traffic</h4>
+                          <p>
+                            you have the choice to redirect your customer to
+                            your website and also your contact details would be
+                            visible to them and other potential prospects.
+                          </p>
+                        </div>
+                      </li>
+                      <li class="d-flex align-items-start my-3 my-md-4">
+                        <div class="rounded-circle p-3 p-sm-4 d-flex align-items-center justify-content-center theme-bg">
+                          <div class="position-absolute text-white h5 mb-0">
+                            6
+                          </div>
+                        </div>
+                        <div class="ml-3 ml-md-4">
+                          <h4>Validate</h4>
+                          <p>
+                            our system is built to validate every coupon, ticket
+                            or voucher created to disabuse continuous usage by
+                            customer.
+                          </p>
+                        </div>
+                      </li>
+                      <li class="d-flex align-items-start my-3 my-md-4">
+                        <div class="rounded-circle p-3 p-sm-4 d-flex align-items-center justify-content-center theme-bg">
+                          <div class="position-absolute text-white h5 mb-0">
+                            7
+                          </div>
+                        </div>
+                        <div class="ml-3 ml-md-4">
+                          <h4>Seamless Integration</h4>
+                          <p>
+                            our system A.P.I is available to be integrated to
+                            existing platforms and websites.
+                          </p>
+                        </div>
+                      </li>
+                      <li class="d-flex align-items-start my-3 my-md-4">
+                        <div class="rounded-circle p-3 p-sm-4 d-flex align-items-center justify-content-center theme-bg">
+                          <div class="position-absolute text-white h5 mb-0">
+                            8
+                          </div>
+                        </div>
+                        <div class="ml-3 ml-md-4">
+                          <h4>Vendor</h4>
+                          <p>
+                            Vendors and verified users earn as we make money.
+                            Share from our revenue.
+                          </p>
+                        </div>
+                      </li>
+                    </ol>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+          <div class="clearfix"></div>
+
+          <Our_vendors />
+
+          <Faqs />
+
+          <Contact_us_today />
           <Footer />
         </div>
       </div>

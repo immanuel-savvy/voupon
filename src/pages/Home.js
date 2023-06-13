@@ -5,7 +5,7 @@ import { Loggeduser } from "../Contexts";
 import Faqs from "../sections/faqs";
 import Featured_coupons from "../sections/featured_coupons";
 import Featured_vouchers from "../sections/featured_vouchers";
-import Footer from "../sections/footer";
+import Footer, { scroll_to_top } from "../sections/footer";
 import Nav from "../sections/nav";
 import Our_vendors from "../sections/our_vendors";
 import Enjoy_now_pay_later from "../sections/enjoy_now_pay_later";
@@ -17,6 +17,8 @@ class Home extends React.Component {
 
     this.state = { index: 0 };
   }
+
+  componentDidMount = () => scroll_to_top();
 
   render() {
     return (

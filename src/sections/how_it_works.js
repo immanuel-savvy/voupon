@@ -1,5 +1,6 @@
 import React from "react";
 import { developer_domain } from "../assets/js/utils/constants";
+import { Link } from "react-router-dom";
 
 class How_it_works extends React.Component {
   constructor(props) {
@@ -23,9 +24,13 @@ class How_it_works extends React.Component {
                   <b>COUPONS-VOUCHERS-TICKETS-E.N.P.L</b>
                 </p>
                 <p>
-                  You can integrate our API to your existing platform or website
-                  from our{" "}
-                  <a href={developer_domain} target="_blank">
+                  Integrate our API to your existing platform or website from
+                  our{" "}
+                  <a
+                    className="theme-cl"
+                    href={developer_domain}
+                    target="_blank"
+                  >
                     “DEVELOPER”
                   </a>{" "}
                   menu
@@ -35,7 +40,7 @@ class How_it_works extends React.Component {
                     <div className="rounded-circle bg-light-success theme-cl p-2 small d-flex align-items-center justify-content-center">
                       <i className="fas fa-check"></i>
                     </div>
-                    <h6 className="mb-0 ml-3">Fine New Audience</h6>
+                    <h6 className="mb-0 ml-3">Find New Audience</h6>
                   </div>
                 </div>
                 <div className="mb-3 mr-4 ml-lg-0 mr-lg-4">
@@ -62,11 +67,14 @@ class How_it_works extends React.Component {
                     <h6 className="mb-0 ml-3">Enjoy More Sales</h6>
                   </div>
                 </div>
-                {/* <div className="text-left mt-4">
-                  <a href="#" className="btn btn-md text-light theme-bg">
-                    Enrolled Today
-                  </a>
-                </div> */}
+                <div className="text-left mt-4">
+                  <Link
+                    to="/become_a_vendor"
+                    className="btn btn-md text-light theme-bg"
+                  >
+                    Become A Vendor
+                  </Link>
+                </div>
               </div>
             </div>
 
