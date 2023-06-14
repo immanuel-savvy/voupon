@@ -129,7 +129,7 @@ class Coupon extends React.Component {
                     </div>
                   </h4>
                   <ul className="meta">
-                    {coupon_id.startsWith("offer_voucher") ? null : (
+                    {coupon_id?.startsWith("offer_voucher") ? null : (
                       <li className="video">
                         {type === "premium" && !in_user ? (
                           <Text_btn text="Premium" />
@@ -158,13 +158,17 @@ class Coupon extends React.Component {
                       <span>%</span>
                     </li>
 
-                    {in_vendor ? (
+                    {in_vendor ||
+                    !Number(quantities) ||
+                    Number(quantities) < 0 ? (
                       <li className="video">
                         <span>Total Usage:</span>
                         <b> {total_usage || 0}</b>
                       </li>
                     ) : null}
-                    {in_user ? null : (
+                    {in_user ||
+                    !Number(quantities) ||
+                    Number(quantities) < 0 ? null : (
                       <li className="video">
                         <span>Quantities:</span>
                         <b> {quantities}</b>

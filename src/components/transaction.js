@@ -10,6 +10,8 @@ import { save_to_session } from "../sections/footer";
 import Modal from "./modal";
 import Product_subscription from "./product_subscription";
 import Text_btn from "./text_btn";
+import Coupon from "./coupon";
+import Modal_form_title from "./modal_form_title";
 
 class Transaction extends React.Component {
   constructor(props) {
@@ -35,6 +37,8 @@ class Transaction extends React.Component {
       this.setState({ datum: sb }, this.details.toggle);
   };
 
+  toggle_coupon = () => this.coupon?.toggle();
+
   render() {
     let { datum } = this.state;
     let { transaction, in_vendor } = this.props;
@@ -50,7 +54,9 @@ class Transaction extends React.Component {
       value,
       created,
       authorisation,
+      coupon,
     } = transaction;
+
     this.data_ = data;
     if (Array.isArray(data))
       data = data.find((d) =>
@@ -110,7 +116,7 @@ class Transaction extends React.Component {
 
               <div className="ml-2 crs_cates cl_1">
                 <span style={{ fontWeight: "normal" }}>
-                  {to_title(type || "voucher")}
+                  {to_title(type?.replace(/_/g, " ") || "voucher")}
                 </span>
               </div>
             </h6>
@@ -148,7 +154,18 @@ class Transaction extends React.Component {
 
             <b>
               <small class="text-fade">
-                &#8358; {commalise_figures(value)}
+                {type === "reward_token" ? "RTK" : <>&#8358;</>}{" "}
+                {commalise_figures(value)}
+                {coupon ? (
+                  <div
+                    className="ml-2 crs_cates cl_2 cursor-pointer"
+                    onClick={this.toggle_coupon}
+                  >
+                    <span style={{ fontWeight: "normal" }}>
+                      {`${coupon?.value}% OFF`}
+                    </span>
+                  </div>
+                ) : null}
               </small>
             </b>
 
@@ -199,6 +216,13 @@ class Transaction extends React.Component {
             subscription={{ subscription: datum }}
             toggle={this.handle_details}
           />
+        </Modal>
+
+        <Modal ref={(coupon) => (this.coupon = coupon)}>
+          <div className="px-4">
+            <Modal_form_title title="Coupon" toggle={this.toggle_coupon} />
+            <Coupon coupon={coupon} full />
+          </div>
         </Modal>
       </div>
     );

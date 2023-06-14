@@ -74,14 +74,12 @@ class Buy_ticket extends React.Component {
   toggle_apply_coupon = () => this.apply_coupon?.toggle();
 
   coupon = async (coupon, cb) => {
-    console.log(coupon);
     let res = await post_request("applied_coupon", {
       user: this.loggeduser?._id,
       coupon: coupon.coupon_id,
       verbose: true,
     });
 
-    console.log(res);
     if (res?.success) {
       cb({ applied: true });
       this.apply_coupon.setState({ show: false }, () =>

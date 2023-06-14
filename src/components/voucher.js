@@ -65,7 +65,7 @@ class Voucher extends React.Component {
   render() {
     let { vendor, redeemed, closed, transferred, copied } = this.state;
 
-    let { voucher, full, in_vendor, voucher_code } = this.props;
+    let { voucher, full, no_q, in_vendor, voucher_code } = this.props;
 
     let { logo, _id } = vendor || new Object();
 
@@ -180,10 +180,12 @@ class Voucher extends React.Component {
                         {commalise_figures(total_sales, true)}
                       </li>
                     ) : null}
-                    <li className="video">
-                      <span>Quantities:</span>
-                      {quantities}
-                    </li>
+                    {no_q ? null : (
+                      <li className="video">
+                        <span>Quantities:</span>
+                        {quantities}
+                      </li>
+                    )}
                   </ul>
 
                   {full || in_vendor ? null : state === "unused" ? (

@@ -9,6 +9,9 @@ import { post_request } from "../assets/js/utils/services";
 import Login from "./login";
 import Voucher_purchase_details from "./voucher_purchase_details";
 import { PAYMENT_LIVE } from "../assets/js/utils/constants";
+import Coupon from "./coupon";
+import Modal from "./modal";
+import Apply_coupon from "./apply_coupon";
 
 const Paystack_public_key = PAYMENT_LIVE
   ? "pk_live_6cd13fb4fd5c17c366bbd44862d639aea71e5670"
@@ -40,7 +43,7 @@ class Get_voucher extends React.Component {
 
   payment_successful = () => {
     let { voucher, on_purchase } = this.props;
-    let { email, firstname, lastname, phone, updating } = this.state;
+    let { email, firstname, coupon, lastname, phone, updating } = this.state;
     if (updating) return;
 
     this.setState({ updating: true });
@@ -52,6 +55,7 @@ class Get_voucher extends React.Component {
       voucher: voucher._id,
       lastname,
       phone,
+      coupon: coupon?._id,
       vendor: voucher.vendor._id || voucher.vendor,
     })
       .then((res) => {
@@ -66,8 +70,37 @@ class Get_voucher extends React.Component {
   set_details = ({ firstname, lastname, email }) =>
     this.setState({ firstname, lastname, email });
 
+  toggle_apply_coupon = () => this.apply_coupon?.toggle();
+
+  coupon = async (coupon, cb) => {
+    let res = await post_request("applied_coupon", {
+      user: this.loggeduser?._id,
+      coupon: coupon.coupon_id,
+      verbose: true,
+    });
+
+    if (res?.success) {
+      cb({ applied: true });
+      this.apply_coupon.setState({ show: false }, () =>
+        this.setState({ coupon: res.detailed_coupon })
+      );
+    } else cb({ message: res?.message });
+  };
+
+  calculate_coupon = (price) => {
+    let { coupon } = this.state;
+
+    if (!coupon) return price;
+
+    price = Number(price);
+    let val = price * (coupon.value / 100);
+
+    val = price - val;
+    return val < 0 ? 0 : val;
+  };
+
   render() {
-    let { firstname, lastname, email, updating, voucher_code, phone } =
+    let { firstname, coupon, lastname, email, updating, voucher_code, phone } =
       this.state;
     let { voucher, vendor, toggle } = this.props;
     let { value } = voucher;
@@ -76,7 +109,7 @@ class Get_voucher extends React.Component {
       email,
       metadata: { firstname, lastname, phone },
       publicKey: Paystack_public_key,
-      amount: value * 100,
+      amount: this.calculate_coupon(value) * 100,
       onSuccess: this.payment_successful,
       onClose: this.cancel,
     };
@@ -116,7 +149,7 @@ class Get_voucher extends React.Component {
                         className="col-xl-12 col-lg-12 col-md-12 col-sm-12"
                         style={{ width: "100%" }}
                       >
-                        <Voucher full voucher={voucher} vendor={vendor} />
+                        <Voucher full no_q voucher={voucher} vendor={vendor} />
                       </div>
                       {voucher_code ? (
                         <Voucher_purchase_details
@@ -172,6 +205,16 @@ class Get_voucher extends React.Component {
                             important
                           />
 
+                          {coupon ? (
+                            <Coupon coupon={coupon} applied />
+                          ) : (
+                            <Stretch_button
+                              inverted
+                              title="Apply Coupon"
+                              action={this.toggle_apply_coupon}
+                            />
+                          )}
+
                           <PaystackConsumer {...payment_props}>
                             {({ initializePayment }) => (
                               <Stretch_button
@@ -193,6 +236,15 @@ class Get_voucher extends React.Component {
                   </div>
                 </div>
               </div>
+
+              <Modal ref={(apply_coupon) => (this.apply_coupon = apply_coupon)}>
+                <Apply_coupon
+                  toggle={toggle}
+                  user={loggeduser}
+                  vendor={vendor}
+                  on_coupon={this.coupon}
+                />
+              </Modal>
             </section>
           );
         }}
