@@ -6,7 +6,6 @@ import How_it_works from "../sections/how_it_works";
 import Service from "../sections/service";
 import Contact_us_today from "../components/contact_us_today";
 import Faqs from "../sections/faqs";
-import Section_header from "../components/section_headers";
 import { Link } from "react-router-dom";
 import Our_vendors from "../sections/our_vendors";
 import Custom_nav from "../sections/nav";
