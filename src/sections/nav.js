@@ -405,7 +405,7 @@ class Custom_nav extends React.Component {
                                         >
                                           {loggeduser
                                             ? `${loggeduser.firstname} ${loggeduser.lastname}`
-                                            : "Get Started"}
+                                            : "Register"}
                                         </Link>
                                       </li>
                                     </ul>

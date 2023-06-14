@@ -29,7 +29,7 @@ class Home extends React.Component {
             <div>
               <Nav page="" />
               <div className="body">
-                <Banner />
+                <Banner home />
 
                 <Upcoming_events />
                 <Enjoy_now_pay_later />

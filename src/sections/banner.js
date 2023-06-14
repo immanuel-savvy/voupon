@@ -3,6 +3,7 @@ import { Carousel } from "react-bootstrap";
 import Hero_banner from "./hero_banner";
 import Loadindicator from "../components/loadindicator";
 import Small_btn from "../components/small_btn";
+import { client_domain } from "../assets/js/utils/constants";
 
 class Banner extends React.Component {
   constructor(props) {
@@ -12,13 +13,20 @@ class Banner extends React.Component {
   }
 
   componentDidMount = () => {
+    let { home } = this.props;
+
     let heros = new Array(
       {
         main_text:
           "Expand Your Reach: Join our Platform and increase your revenue",
         sub_text: '"Explore Vouchers, Coupons, Tickets and E.N.P.L!"',
         bg: require("../assets/img/bgg.jpg"),
-        btn: <Small_btn title="Get Started" />,
+        btn: home ? null : (
+          <Small_btn
+            title="Get Started"
+            action={() => window.location.assign(`${client_domain}`)}
+          />
+        ),
       },
       {
         main_text:

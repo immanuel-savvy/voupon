@@ -83,7 +83,7 @@ class Vendor_coupons extends React.Component {
                   set_voucher_filter={(filter) => this.setState({ filter })}
                 />
 
-                <Section_header description="Pariatur dolor nostrud Lorem culpa excepteur sint." />
+                <Section_header description="" />
 
                 <div className="row align-items-center">
                   {this.state[`${type}_coupons`] ? (
