@@ -25,6 +25,8 @@ class Create_offer_voucher extends Handle_file_upload {
     if (window.location.pathname === "/edit_offer_voucher")
       voucher = voucher || get_session("voucher_in_edit");
 
+    let duration = voucher && new Date(voucher.duration);
+
     this.state = {
       voucher,
       current_pill: "basic",
@@ -36,7 +38,12 @@ class Create_offer_voucher extends Handle_file_upload {
       learn_index: null,
       requirement_index: null,
       vendor: null,
-      duration: voucher && new Date(voucher.duration),
+      duration:
+        duration &&
+        `${duration.getFullYear()}-${String(duration.getMonth() + 1).padStart(
+          2,
+          "0"
+        )}-${String(duration.getDate()).padStart(2, "0")}`,
       price: (voucher && voucher.value) || "",
     };
   }

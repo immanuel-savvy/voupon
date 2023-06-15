@@ -25,6 +25,9 @@ class Create_event extends Handle_file_upload {
     if (window.location.pathname === "/edit_event")
       event = event || get_session("event_in_edit");
 
+    let event_date_time =
+      event && new Date(event.event_date_time).toISOString();
+
     this.state = {
       event,
       current_pill: "basic",
@@ -35,7 +38,7 @@ class Create_event extends Handle_file_upload {
       images: new Array(),
       ...event,
       price: (event && event.value) || "",
-      event_date_time: event && new Date(event.event_date_time),
+      event_date_time: event_date_time && `${event_date_time.slice(0, -8)}`,
     };
   }
 
