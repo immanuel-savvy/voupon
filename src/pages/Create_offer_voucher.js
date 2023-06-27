@@ -734,14 +734,24 @@ class Create_offer_voucher extends Handle_file_upload {
       voucher._id = response._id;
       voucher.created = response.created;
     }
+    this.reset_state();
     if (response?._id) {
-      this.setState({ new_voucher: voucher });
+      this.setState({
+        new_voucher: voucher,
+        loading: false,
+        uploading_voucher: false,
+      });
 
       emitter.emit(_id ? "voucher_updated" : "new_voucher", {
         ...voucher,
       });
-      this.reset_state();
-    }
+      
+    } else
+      this.setState({
+        loading: false,
+        uploading_voucher: false,
+        new_voucher: null,
+      });
   };
 
   reset_state = () =>
@@ -752,6 +762,7 @@ class Create_offer_voucher extends Handle_file_upload {
       price: "",
       title: "",
       uploading_voucher: false,
+      images: new Array(),actual_price:'',
       quantities: "",
       sections: new Array(),
       what_to_expect: new Array(),

@@ -2,11 +2,10 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { email_regex } from "../assets/js/utils/functions";
 import { post_request } from "../assets/js/utils/services";
-import Loadindicator from "../components/loadindicator";
 import Padder from "../components/padder";
 import Stretch_button from "../components/stretch_button";
 import { Loggeduser } from "../Contexts";
-import Footer from "../sections/footer";
+import Footer, { scroll_to_top } from "../sections/footer";
 import Nav from "../sections/nav";
 
 class Login extends React.Component {
@@ -15,6 +14,10 @@ class Login extends React.Component {
 
     this.state = {};
   }
+
+  componentDidMount = () => {
+    scroll_to_top();
+  };
 
   proceed = async () => {
     let { email, password, logging_in } = this.state;

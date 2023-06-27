@@ -21,7 +21,14 @@ class Banner extends React.Component {
           "Expand Your Reach: Join our Platform and increase your revenue",
         sub_text: '"Explore Vouchers, Coupons, Tickets and E.N.P.L!"',
         bg: require("../assets/img/bgg.jpg"),
-        btn: home ? null : (
+        btn: home ? (
+          <Small_btn
+            title="Get Started"
+            action={() =>
+              window.location.assign(`${client_domain}/get_started`)
+            }
+          />
+        ) : (
           <Small_btn
             title="Get Started"
             action={() => window.location.assign(`${client_domain}`)}

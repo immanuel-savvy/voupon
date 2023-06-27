@@ -5,7 +5,7 @@ import { post_request } from "../assets/js/utils/services";
 import Loadindicator from "../components/loadindicator";
 import Padder from "../components/padder";
 import { Loggeduser } from "../Contexts";
-import Footer from "../sections/footer";
+import Footer, { scroll_to_top } from "../sections/footer";
 import Nav from "../sections/nav";
 
 class Signup extends React.Component {
@@ -14,6 +14,10 @@ class Signup extends React.Component {
 
     this.state = { password: "" };
   }
+
+  componentDidMount = () => {
+    scroll_to_top();
+  };
 
   toggle_reavel_password = () =>
     this.setState({ reveal_password: !this.state.reveal_password });

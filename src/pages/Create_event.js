@@ -742,14 +742,23 @@ class Create_event extends Handle_file_upload {
       event._id = response._id;
       event.created = response.created;
     }
+    this.reset_state();
     if (response?._id) {
-      this.setState({ new_event: event });
+      this.setState({
+        new_event: event,
+        loading: false,
+        uploading_ticket: false,
+      });
 
       emitter.emit(_id ? "event_updated" : "new_event", {
         ...event,
       });
-      this.reset_state();
-    }
+    } else
+      this.setState({
+        loading: false,
+        uploading_ticket: false,
+        new_event: null,
+      });
   };
 
   reset_state = () =>
