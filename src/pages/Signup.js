@@ -1,12 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { email_regex } from "../assets/js/utils/functions";
+import { email_regex, phone_regex } from "../assets/js/utils/functions";
 import { post_request } from "../assets/js/utils/services";
 import Loadindicator from "../components/loadindicator";
 import Padder from "../components/padder";
 import { Loggeduser } from "../Contexts";
-import Footer, { scroll_to_top } from "../sections/footer";
+import Footer, { save_to_session, scroll_to_top } from "../sections/footer";
 import Nav from "../sections/nav";
+import { client_domain } from "../assets/js/utils/constants";
 
 class Signup extends React.Component {
   constructor(props) {
@@ -22,14 +23,22 @@ class Signup extends React.Component {
   toggle_reavel_password = () =>
     this.setState({ reveal_password: !this.state.reveal_password });
 
-  sign_up = async () => {
-    let { firstname, lastname, email, password, loading, referral } =
-      this.state;
+  sign_up = async (vendor) => {
+    let {
+      firstname,
+      phone_number,
+      lastname,
+      email,
+      password,
+      loading,
+      referral,
+    } = this.state;
 
     if (
       !firstname ||
       !lastname ||
       !password ||
+      !phone_regex.test(phone_number) ||
       !email_regex.test(email) ||
       loading
     )
@@ -40,9 +49,17 @@ class Signup extends React.Component {
 
     this.setState({ loading: true });
 
-    let user = { firstname, lastname, email, password, referral };
+    let user = {
+      firstname,
+      vendor,
+      phone_number,
+      lastname,
+      email,
+      password,
+      referral,
+    };
 
-    let res = await post_request("signup", user);
+    let res = await post_request("signup", { ...user, vendor });
     if (!res._id) return this.setState({ message: res, loading: false });
 
     delete user.password;
@@ -50,7 +67,12 @@ class Signup extends React.Component {
     user.created = res.created;
     this.reset_state();
 
-    document.getElementById("click_verify").click();
+    vendor
+      ? (save_to_session("loggeduser", user),
+        window.location.assign(
+          `${client_domain}/become_a_vendor?u=${user._id}`
+        ))
+      : document.getElementById("click_verify").click();
   };
 
   reset_state = () =>
@@ -71,6 +93,7 @@ class Signup extends React.Component {
       message,
       password,
       reveal_password,
+      phone_number,
     } = this.state;
 
     return (
@@ -141,21 +164,38 @@ class Signup extends React.Component {
                                   </div>
                                 </div>
                               </div>
-                              <div className="form-group">
-                                <label>Email</label>
-                                <input
-                                  type="email"
-                                  className="form-control"
-                                  placeholder="you@mail.com"
-                                  value={email}
-                                  onChange={({ target }) =>
-                                    this.setState({
-                                      email: target.value,
-                                      message: "",
-                                    })
-                                  }
-                                />
+                              <div className="row">
+                                <div className="form-group col-md-6 col-sm-12">
+                                  <label>Email</label>
+                                  <input
+                                    type="email"
+                                    className="form-control"
+                                    placeholder="you@mail.com"
+                                    value={email}
+                                    onChange={({ target }) =>
+                                      this.setState({
+                                        email: target.value,
+                                        message: "",
+                                      })
+                                    }
+                                  />
+                                </div>
+                                <div className="form-group col-md-6 col-sm-12">
+                                  <label>Phone Number</label>
+                                  <input
+                                    className="form-control"
+                                    placeholder="234 901 111 2234"
+                                    value={phone_number}
+                                    onChange={({ target }) =>
+                                      this.setState({
+                                        phone_number: target.value,
+                                        message: "",
+                                      })
+                                    }
+                                  />
+                                </div>
                               </div>
+
                               <div className="form-group">
                                 <label>Password</label>
 
@@ -204,14 +244,27 @@ class Signup extends React.Component {
                                   <button
                                     type="button"
                                     className="btn full-width btn-md theme-bg text-white"
-                                    onClick={this.sign_up}
+                                    onClick={() => this.sign_up()}
                                   >
                                     Sign Up
                                   </button>
                                 )}
                               </div>
+                              <hr />
+                              <div className="form-group">
+                                {loading ? null : (
+                                  <button
+                                    type="button"
+                                    class="btn theme-light enroll-btn text-dark full-width"
+                                    onClick={() => this.sign_up(true)}
+                                  >
+                                    Create Vendor Profile
+                                  </button>
+                                )}
+                              </div>
                             </div>
                           </div>
+
                           <div className="crs_log__footer d-flex justify-content-between">
                             <div className="fhg_45">
                               <p className="musrt">
@@ -222,14 +275,7 @@ class Signup extends React.Component {
                               </p>
                             </div>
                             <div className="fhg_45">
-                              <p className="musrt">
-                                <Link
-                                  to="/forgot_password"
-                                  className="text-danger"
-                                >
-                                  Forgot Password?
-                                </Link>
-                              </p>
+                              <p className="musrt"></p>
                             </div>
                           </div>
                         </div>

@@ -7,6 +7,7 @@ import Stretch_button from "../components/stretch_button";
 import { Loggeduser } from "../Contexts";
 import Footer, { scroll_to_top } from "../sections/footer";
 import Nav from "../sections/nav";
+import { client_domain } from "../assets/js/utils/constants";
 
 class Login extends React.Component {
   constructor(props) {
@@ -29,7 +30,11 @@ class Login extends React.Component {
 
     let res = await post_request("login", { email, password });
     if (res && res._id) {
-      this.login(res);
+      res.verified
+        ? this.login(res)
+        : window.location.assign(
+            `${client_domain}/verify_email?addr=${res.email}`
+          );
     } else this.setState({ message: res, logging_in: false });
   };
 

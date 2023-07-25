@@ -24,7 +24,9 @@ class User_card extends React.Component {
       _id,
       email,
       premium,
+      vendor_uri,
       kyc_verified,
+      phone_number,
     } = user;
 
     return (
@@ -59,8 +61,9 @@ class User_card extends React.Component {
             {/* <p style={{ fontStyle: "italic" }}>{email}</p> */}
             {/* <p>{description}</p> */}
             <p>{email}</p>
+            <p>{phone_number}</p>
             {vendor ? (
-              <Link to={`/vendor?${vendor}`}>
+              <Link to={`/vendor?${vendor_uri}`}>
                 <div className="instructor_tag dark">
                   <span>{"Vendor"}</span>
                 </div>

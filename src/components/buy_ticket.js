@@ -241,14 +241,18 @@ class Buy_ticket extends React.Component {
                             {({ initializePayment }) => (
                               <Stretch_button
                                 title={
-                                  Number(value) > 0
+                                  this.calculate_coupon(
+                                    Number(quantity) * value
+                                  ) > 0
                                     ? `Proceed to Payment`
                                     : "Proceed"
                                 }
                                 disabled={!this.is_set()}
                                 loading={updating}
                                 action={() => {
-                                  Number(value) > 0
+                                  this.calculate_coupon(
+                                    Number(quantity) * value
+                                  ) > 0
                                     ? initializePayment(
                                         this.payment_successful,
                                         this.cancel

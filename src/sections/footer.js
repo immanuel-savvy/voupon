@@ -23,13 +23,17 @@ const rewards = new Object({
   create_voucher: 100,
   ticket_sales: 5,
   offer_voucher_sales: 5,
-  subscription_fee: 15000,
+  subscription_fee: 20000,
 });
 
 const scroll_to_top = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
-const save_to_session = (key, value) =>
+const save_to_session = (key, value) => {
+  if (key === "loggeduser" && typeof value === "object")
+    value.log_timestamp = Date.now();
+
   window.sessionStorage.setItem(key, JSON.stringify(value));
+};
 
 const get_session = (key) => {
   let value = window.sessionStorage.getItem(key);
@@ -193,6 +197,9 @@ class Footer extends React.Component {
                           <a href={developer_domain} target="_blank">
                             Developer
                           </a>
+                        </li>
+                        <li>
+                          <Link to="/become_a_partner">Become a Partner</Link>
                         </li>
                       </ul>
                     </div>

@@ -18,6 +18,7 @@ class Vendor_verification_details extends React.Component {
 
     this.state = {
       suspended: vendor.suspended,
+      commision_fee: vendor.commision_fee || 25,
     };
   }
 
@@ -64,8 +65,20 @@ class Vendor_verification_details extends React.Component {
     window.alert("Coming soon...");
   };
 
+  update_vendor_commision_fee = async () => {
+    let { vendor } = this.props;
+    let { commision_fee } = this.state;
+    this.setState({ comitting: true });
+
+    await post_request(`update_vendor_commision`, {
+      vendor: vendor._id,
+      commision_fee: commision_fee || vendor.commision_fee,
+    });
+    this.setState({ comitting: false });
+  };
+
   render() {
-    let { loading, message, suspended } = this.state;
+    let { loading, message, suspended, comitting, commision_fee } = this.state;
     let { vendor, toggle } = this.props;
     let {
       name,
@@ -107,6 +120,25 @@ class Vendor_verification_details extends React.Component {
                   <div className="crs_cates cl_3">{"Verified"}</div>
                 </div>
               ) : null}
+
+              <Text_input
+                action={(commision_fee) => this.setState({ commision_fee })}
+                value={commision_fee}
+                title="Vendor commision (%)"
+              />
+              <div
+                className="col-xl-12 col-lg-12 col-md-12 col-sm-12"
+                style={{ marginBottom: 30 }}
+              >
+                {comitting ? (
+                  <span>Saving...</span>
+                ) : (
+                  <Text_btn
+                    text="Update Vendor commision fee"
+                    action={() => this.update_vendor_commision_fee()}
+                  />
+                )}
+              </div>
 
               <Form_divider text="brand information" />
               <Text_input value={name} disabled title="Name" />

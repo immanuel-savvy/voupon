@@ -22,14 +22,10 @@ class Voucher extends React.Component {
     let vendor = get_session("vendor");
 
     if (!voucher) {
-      let href = window.location.href.split("?").slice(-1)[0].split("&");
-      vendor = href[1];
-      href = href[0];
+      let href = window.location.href.split("/").slice(-2);
 
-      if (!href || (href && !href.startsWith("offer_voucher")))
-        return window.history.go(-1);
+      let details = await get_request(`voucher_page/${href[1]}/${href[0]}`);
 
-      let details = await get_request(`voucher_page/${href}/${vendor}`);
       voucher = details?.voucher;
       vendor = details?.vendor;
     }

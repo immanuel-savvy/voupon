@@ -440,7 +440,7 @@ class Create_offer_voucher extends Handle_file_upload {
   };
 
   basic_tab_panel = () => {
-    let { short_description, title, title_error } = this.state;
+    let { short_description, title, category, title_error } = this.state;
 
     return (
       <div
@@ -486,12 +486,15 @@ class Create_offer_voucher extends Handle_file_upload {
           <div className="simple-input">
             <select
               id="Category"
+              value={category}
               onChange={({ target }) =>
                 this.setState({ category: target.value })
               }
               className="form-control"
             >
-              <option value="">-- Select Offer Category --</option>
+              <option value="" selected={!category} disabled>
+                -- Select Offer Category --
+              </option>
               {categories.map((category) => (
                 <option key={category._id} value={category._id}>
                   {to_title(category.title.replace(/_/g, " "))}
@@ -745,7 +748,6 @@ class Create_offer_voucher extends Handle_file_upload {
       emitter.emit(_id ? "voucher_updated" : "new_voucher", {
         ...voucher,
       });
-      
     } else
       this.setState({
         loading: false,
@@ -762,7 +764,8 @@ class Create_offer_voucher extends Handle_file_upload {
       price: "",
       title: "",
       uploading_voucher: false,
-      images: new Array(),actual_price:'',
+      images: new Array(),
+      actual_price: "",
       quantities: "",
       sections: new Array(),
       what_to_expect: new Array(),

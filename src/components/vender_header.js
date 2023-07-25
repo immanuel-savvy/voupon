@@ -3,7 +3,6 @@ import Preview_image from "./preview_image";
 import Modal from "./modal";
 import Create_offer_voucher from "./create_offer_voucher";
 import Close_vendor_account from "./close_vendor_account";
-import Dropdown_menu from "./dropdown_menu";
 import Wallet from "./wallet";
 import Text_btn from "./text_btn";
 import CopyToClipboard from "react-copy-to-clipboard";
@@ -103,6 +102,15 @@ class Vendor_header extends React.Component {
                       <span style={{ color: "#fff" }}>Pending Approval</span>
                     </div>
                   )}
+                  {verified &&
+                  loggeduser.vendor &&
+                  loggeduser.vendor === vendor._id ? (
+                    <div className="crs_cates cl_3">
+                      <span style={{ color: "#fff" }}>
+                        Commision Fee: <b>{vendor.commision_fee || 25}%</b>
+                      </span>
+                    </div>
+                  ) : null}
                   <div className="ed_header_caption">
                     <h4 className="ed_title text-light">{`${firstname} ${lastname}`}</h4>
                     <h2 className="ed_title text-light">{`${name}`}</h2>

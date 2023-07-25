@@ -4,6 +4,7 @@ import { email_regex } from "../assets/js/utils/functions";
 import { post_request } from "../assets/js/utils/services";
 import { Loggeduser } from "../Contexts";
 import Stretch_button from "./stretch_button";
+import { client_domain } from "../assets/js/utils/constants";
 
 class Login extends React.Component {
   constructor(props) {
@@ -25,7 +26,11 @@ class Login extends React.Component {
 
     if (res && res._id) {
       action && action(res);
-      this.login(res, this.props.no_redirect);
+      res.verified
+        ? this.login(res, this.props.no_redirect)
+        : window.location.assign(
+            `${client_domain}/verify_email?addr=${res.email}`
+          );
     } else
       this.setState({
         message: res?.message || "Cannot login at the moment",

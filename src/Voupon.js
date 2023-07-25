@@ -30,7 +30,7 @@ import Events from "./pages/Events";
 import Event from "./pages/Event";
 import User_tickets_dash from "./pages/User_tickets";
 import { post_request } from "./assets/js/utils/services";
-import { save_to_session } from "./sections/footer";
+import { get_session, save_to_session } from "./sections/footer";
 import Search_results from "./pages/Search_results";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
@@ -170,11 +170,10 @@ class Voupon extends React.Component {
   }
 
   componentDidMount = () => {
-    let loggeduser = window.sessionStorage.getItem("loggeduser");
+    let loggeduser = get_session("loggeduser");
     if (loggeduser) {
-      try {
-        this.setState({ loggeduser: JSON.parse(loggeduser) });
-      } catch (e) {}
+      if (Date.now() - (loggeduser.log_timestamp || 0) > 60 * 60 * 24 * 1000) {
+      } else this.login(loggeduser, true);
     }
 
     emitter.single_listener("is_logged_in", this.is_logged_in);
@@ -221,14 +220,7 @@ class Voupon extends React.Component {
 
   set_subnav = async (nav) => {
     let { subnavs } = this.state;
-    if (subnavs[nav._id]) return;
 
-    let navs = await post_request("get_courses", { courses: nav.submenu });
-    subnavs[nav._id] = navs.map((nav) => ({
-      ...nav,
-      path: "/course",
-      on_click: () => this.handle_course(nav),
-    }));
     this.setState({ subnavs });
   };
 
@@ -255,15 +247,16 @@ class Voupon extends React.Component {
 
   restore_loggeduser = (loggeduser, cb) =>
     this.setState({ loggeduser }, () => {
-      window.sessionStorage.setItem("loggeduser", JSON.stringify(loggeduser));
+      save_to_session("loggeduser", loggeduser);
       cb && cb();
     });
 
   login = (user, no_redirect) =>
     this.setState({ loggeduser: user }, () => {
-      window.sessionStorage.setItem("loggeduser", JSON.stringify(user));
+      user.log_timestamp = Date.now();
+      save_to_session("loggeduser", user);
 
-      if (!this.log_timestamp) this.log_timestamp = Date.now();
+      if (!this.log_timestamp) this.log_timestamp = user.log_timestamp;
 
       if (no_redirect) return;
 

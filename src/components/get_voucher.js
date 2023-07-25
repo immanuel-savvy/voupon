@@ -218,14 +218,20 @@ class Get_voucher extends React.Component {
                           <PaystackConsumer {...payment_props}>
                             {({ initializePayment }) => (
                               <Stretch_button
-                                title={`Proceed to Payment`}
+                                title={
+                                  this.calculate_coupon(value) > 0
+                                    ? `Proceed to Payment`
+                                    : "Proceed"
+                                }
                                 disabled={!this.is_set()}
                                 loading={updating}
                                 action={() => {
-                                  initializePayment(
-                                    this.payment_successful,
-                                    this.cancel
-                                  );
+                                  this.calculate_coupon(value) > 0
+                                    ? initializePayment(
+                                        this.payment_successful,
+                                        this.cancel
+                                      )
+                                    : this.payment_successful();
                                 }}
                               />
                             )}

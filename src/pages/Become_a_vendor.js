@@ -5,7 +5,7 @@ import {
   special_chars,
   to_title,
 } from "../assets/js/utils/functions";
-import { post_request } from "../assets/js/utils/services";
+import { get_request, post_request } from "../assets/js/utils/services";
 import Checkbox from "../components/checkbox";
 import File_input from "../components/file_input";
 import Form_divider from "../components/form_divider";
@@ -14,7 +14,7 @@ import Loadindicator from "../components/loadindicator";
 import Padder from "../components/padder";
 import Text_input from "../components/text_input";
 import { Loggeduser } from "../Contexts";
-import Footer from "../sections/footer";
+import Footer, { get_session } from "../sections/footer";
 import Nav from "../sections/nav";
 
 const means_of_id = new Array(
@@ -69,12 +69,16 @@ class Become_a_vendor extends handle_file_upload {
     });
   };
 
-  componentDidMount = () => {
-    let loggeduser = window.sessionStorage.getItem("loggeduser");
+  componentDidMount = async () => {
+    let loggeduser = get_session("loggeduser");
+
+    if (!loggeduser) {
+      let search = window.location.search.split("=")[1];
+      if (search && search.startsWith("users~"))
+        loggeduser = await get_request(`user/${search}`);
+    }
 
     if (loggeduser) {
-      loggeduser = JSON.parse(loggeduser);
-
       if (loggeduser.vendor) {
         return window.location.assign(
           `${client_domain}/vendor?${loggeduser.vendor}`

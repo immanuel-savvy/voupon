@@ -9,7 +9,6 @@ import {
 import { save_to_session } from "../sections/footer";
 import Modal from "./modal";
 import Product_subscription from "./product_subscription";
-import Text_btn from "./text_btn";
 import Coupon from "./coupon";
 import Modal_form_title from "./modal_form_title";
 
