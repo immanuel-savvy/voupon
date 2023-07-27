@@ -4,11 +4,11 @@ const PAYMENT_LIVE = true;
 
 const hostname = DEV
   ? `http://${"localhost"}`
-  : "https://api.voucherafrica.com:2559";
+  : "https://api.voucherafrica.com:2571";
 
 const client_domain = DEV ? `${hostname}:3000` : `https://voucherafrica.com`;
 
-const domain = DEV ? `${hostname}:1449` : `https://api.voucherafrica.com:2559`;
+const domain = DEV ? `${hostname}:1449` : `https://api.voucherafrica.com:2571`;
 
 const developer_domain = `${domain}/docs`;
 
