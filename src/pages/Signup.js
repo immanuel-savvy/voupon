@@ -233,34 +233,36 @@ class Signup extends React.Component {
                                 </div>
                               ) : null}
 
-                              <div className="form-group">
-                                <Link
-                                  id="click_verify"
-                                  to={`/verify_email?addr=${email}`}
-                                ></Link>
-                                {loading ? (
-                                  <Loadindicator />
-                                ) : (
-                                  <button
-                                    type="button"
-                                    className="btn full-width btn-md theme-bg text-white"
-                                    onClick={() => this.sign_up()}
-                                  >
-                                    Sign Up
-                                  </button>
-                                )}
-                              </div>
-                              <hr />
-                              <div className="form-group">
-                                {loading ? null : (
-                                  <button
-                                    type="button"
-                                    class="btn theme-light enroll-btn text-dark full-width"
-                                    onClick={() => this.sign_up(true)}
-                                  >
-                                    Create Vendor Profile
-                                  </button>
-                                )}
+                              <div className="row">
+                                <div className="form-group ed_view_link col-md-6 col-sm-12">
+                                  {loading ? null : (
+                                    <button
+                                      type="button"
+                                      class="btn theme-light py-3 enroll-btn text-dark full-width"
+                                      onClick={() => this.sign_up(true)}
+                                    >
+                                      Create Vendor Profile
+                                    </button>
+                                  )}
+                                </div>
+
+                                <div className="ed_view_link form-group mt-4 col-md-6 col-sm-12">
+                                  <Link
+                                    id="click_verify"
+                                    to={`/verify_email?addr=${email}`}
+                                  ></Link>
+                                  {loading ? (
+                                    <Loadindicator />
+                                  ) : (
+                                    <button
+                                      type="button"
+                                      className="btn full-width btn-md theme-bg text-white"
+                                      onClick={() => this.sign_up()}
+                                    >
+                                      Sign Up
+                                    </button>
+                                  )}
+                                </div>
                               </div>
                             </div>
                           </div>
