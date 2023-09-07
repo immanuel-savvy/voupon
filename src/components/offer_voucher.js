@@ -177,14 +177,14 @@ class Offer_voucher extends React.Component {
                   </div>
                 </div>
               </div>
-              <div className="crs_fl_last">
-                <div className="crs_price">
-                  <h2>
+              <div className="ml-2 crs_fl_last">
+                <div className="">
+                  <h5>
                     <span className="currency">&#8358;</span>
                     <span className="theme-cl">
                       {commalise_figures(Number(value))}
                     </span>
-                  </h2>
+                  </h5>
                 </div>
               </div>
             </div>
